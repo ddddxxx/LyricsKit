@@ -6,12 +6,6 @@
       "reason": null,
       "repositoryURL": "https://github.com/SwiftyJSON/SwiftyJSON.git",
       "version": "3.1.4"
-    },
-    {
-      "package": "Then",
-      "reason": null,
-      "repositoryURL": "https://github.com/devxoul/Then",
-      "version": "2.1.0"
     }
   ],
   "version": 1

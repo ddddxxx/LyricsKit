@@ -19,7 +19,6 @@
 //
 
 import Foundation
-import Then
 
 public protocol LyricsProvider {
     
