@@ -1,5 +1,5 @@
 //
-//  LyricsSourceProtocol.swift
+//  ProviderProtocol.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -19,16 +19,8 @@
 //
 
 import Foundation
-import Then
 
-public protocol LyricsConsuming: class {
-    
-    func lyricsReceived(lyrics: Lyrics)
-    
-    func fetchCompleted(result: [Lyrics])
-}
-
-public protocol LyricsSource {
+public protocol LyricsProvider {
     
     func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void)
     
@@ -37,9 +29,7 @@ public protocol LyricsSource {
     func cancelSearch()
 }
 
-// MARK: Internal Protocol
-
-protocol MultiResultLyricsSource: LyricsSource {
+protocol MultiResultLyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     
@@ -51,7 +41,12 @@ protocol MultiResultLyricsSource: LyricsSource {
     func getLyricsWithToken(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void)
 }
 
-extension MultiResultLyricsSource {
+protocol SingleResultLyricsProvider: LyricsProvider {
+    
+    var session: URLSession { get }
+}
+
+extension MultiResultLyricsProvider {
     
     public func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
         dispatchGroup.enter()
@@ -90,11 +85,7 @@ extension MultiResultLyricsSource {
     }
 }
 
-protocol SingleResultLyricsSource: LyricsSource {
-    var session: URLSession { get }
-}
-
-extension SingleResultLyricsSource {
+extension SingleResultLyricsProvider {
     
     public func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
         iFeelLucky(criteria: criteria, duration: duration) {
@@ -114,13 +105,18 @@ extension SingleResultLyricsSource {
     }
 }
 
-// MARK: - Utility
-
 extension CharacterSet {
     
     static var uriComponentAllowed: CharacterSet {
         let unsafe = CharacterSet(charactersIn: "!*'();:&=+$,[]~")
         return CharacterSet.urlHostAllowed.subtracting(unsafe)
+    }
+}
+
+extension URLSessionConfiguration {
+    
+    static let providerConfig = URLSessionConfiguration.default.with {
+        $0.timeoutIntervalForRequest = 10
     }
 }
 

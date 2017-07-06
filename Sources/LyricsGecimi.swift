@@ -19,20 +19,14 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 extension Lyrics.MetaData.Source {
     static let Gecimi = Lyrics.MetaData.Source("Gecimi")
 }
 
-public final class LyricsGecimi: MultiResultLyricsSource {
+public final class LyricsGecimi: MultiResultLyricsProvider {
     
-    let session = { () -> URLSession in
-        let config = URLSessionConfiguration.default.with {
-            $0.timeoutIntervalForRequest = 10
-        }
-        return URLSession(configuration: config)
-    }()
+    let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {

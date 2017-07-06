@@ -19,20 +19,14 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 extension Lyrics.MetaData.Source {
     static let Kugou = Lyrics.MetaData.Source("Kugou")
 }
 
-public final class LyricsKugou: MultiResultLyricsSource {
+public final class LyricsKugou: MultiResultLyricsProvider {
     
-    let session = { () -> URLSession in
-        let config = URLSessionConfiguration.default.with {
-            $0.timeoutIntervalForRequest = 10
-        }
-        return URLSession(configuration: config)
-    }()
+    let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {

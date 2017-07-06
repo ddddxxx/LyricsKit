@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BB4FBE601F0E39250045A8FA /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE5F1F0E39250045A8FA /* Then.swift */; };
+		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
+		OBJ_50 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_8 /* Lyrics.swift */; };
+		OBJ_51 /* Lyrics163.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Lyrics163.swift */; };
+		OBJ_52 /* LyricsGecimi.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* LyricsGecimi.swift */; };
+		OBJ_53 /* LyricsKugou.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* LyricsKugou.swift */; };
+		OBJ_54 /* LyricsLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* LyricsLine.swift */; };
+		OBJ_55 /* LyricsProviderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* LyricsProviderManager.swift */; };
+		OBJ_56 /* LyricsQQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* LyricsQQ.swift */; };
+		OBJ_57 /* LyricsTTPod.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* LyricsTTPod.swift */; };
+		OBJ_58 /* LyricsXiami.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* LyricsXiami.swift */; };
+		OBJ_59 /* ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* ProviderProtocol.swift */; };
+		OBJ_70 /* LyricsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* LyricsProviderTests.swift */; };
+		OBJ_74 /* LyricsProvider.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* LyricsProvider.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BB4FBE5A1F0DFB330045A8FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJ_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = OBJ_45;
+			remoteInfo = LyricsProvider;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		BB4FBE5F1F0E39250045A8FA /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
+		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		OBJ_10 /* LyricsGecimi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsGecimi.swift; sourceTree = "<group>"; };
+		OBJ_11 /* LyricsKugou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsKugou.swift; sourceTree = "<group>"; };
+		OBJ_12 /* LyricsLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLine.swift; sourceTree = "<group>"; };
+		OBJ_13 /* LyricsProviderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsProviderManager.swift; sourceTree = "<group>"; };
+		OBJ_14 /* LyricsQQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsQQ.swift; sourceTree = "<group>"; };
+		OBJ_15 /* LyricsTTPod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsTTPod.swift; sourceTree = "<group>"; };
+		OBJ_16 /* LyricsXiami.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsXiami.swift; sourceTree = "<group>"; };
+		OBJ_17 /* ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderProtocol.swift; sourceTree = "<group>"; };
+		OBJ_20 /* LyricsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsProviderTests.swift; sourceTree = "<group>"; };
+		OBJ_23 /* Then.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
+		OBJ_25 /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		OBJ_29 /* LyricsProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LyricsProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_30 /* LyricsProviderTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = LyricsProviderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		OBJ_8 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
+		OBJ_9 /* Lyrics163.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics163.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		OBJ_60 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_74 /* LyricsProvider.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BB4FBE5B1F0DFB480045A8FA /* Provider */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_9 /* Lyrics163.swift */,
+				OBJ_10 /* LyricsGecimi.swift */,
+				OBJ_11 /* LyricsKugou.swift */,
+				OBJ_14 /* LyricsQQ.swift */,
+				OBJ_15 /* LyricsTTPod.swift */,
+				OBJ_16 /* LyricsXiami.swift */,
+			);
+			name = Provider;
+			sourceTree = "<group>";
+		};
+		BB4FBE611F0E39280045A8FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */,
+				BB4FBE5F1F0E39250045A8FA /* Then.swift */,
+			);
+			name = Frameworks;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		OBJ_18 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_19 /* LyricsProviderTests */,
+			);
+			name = Tests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_19 /* LyricsProviderTests */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_20 /* LyricsProviderTests.swift */,
+			);
+			name = LyricsProviderTests;
+			path = Tests/LyricsProviderTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_21 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_22 /* Then 2.1.0 */,
+				OBJ_24 /* SwiftyJSON 3.1.4 */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		OBJ_22 /* Then 2.1.0 */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_23 /* Then.swift */,
+			);
+			name = "Then 2.1.0";
+			path = ".build/checkouts/Then-9147344704269568239/Sources";
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_24 /* SwiftyJSON 3.1.4 */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_25 /* SwiftyJSON.swift */,
+			);
+			name = "SwiftyJSON 3.1.4";
+			path = ".build/checkouts/SwiftyJSON.git-3043514560129222422/Source";
+			sourceTree = SOURCE_ROOT;
+		};
+		OBJ_26 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_29 /* LyricsProvider.framework */,
+				OBJ_30 /* LyricsProviderTests.xctest */,
+			);
+			name = Products;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		OBJ_5 = {
+			isa = PBXGroup;
+			children = (
+				OBJ_6 /* Package.swift */,
+				BB4FBE611F0E39280045A8FA /* Frameworks */,
+				OBJ_7 /* Sources */,
+				OBJ_18 /* Tests */,
+				OBJ_21 /* Dependencies */,
+				OBJ_26 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		OBJ_7 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				OBJ_12 /* LyricsLine.swift */,
+				OBJ_8 /* Lyrics.swift */,
+				OBJ_13 /* LyricsProviderManager.swift */,
+				OBJ_17 /* ProviderProtocol.swift */,
+				BB4FBE5B1F0DFB480045A8FA /* Provider */,
+			);
+			path = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		OBJ_45 /* LyricsProvider */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_46 /* Build configuration list for PBXNativeTarget "LyricsProvider" */;
+			buildPhases = (
+				OBJ_49 /* Sources */,
+				OBJ_60 /* Frameworks */,
+				BB4FBE641F0E3F910045A8FA /* Bump Build */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LyricsProvider;
+			productName = LyricsProvider;
+			productReference = OBJ_29 /* LyricsProvider.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		OBJ_65 /* LyricsProviderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = OBJ_66 /* Build configuration list for PBXNativeTarget "LyricsProviderTests" */;
+			buildPhases = (
+				OBJ_69 /* Sources */,
+				OBJ_71 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				OBJ_77 /* PBXTargetDependency */,
+			);
+			name = LyricsProviderTests;
+			productName = LyricsProviderTests;
+			productReference = OBJ_30 /* LyricsProviderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		OBJ_1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "LyricsProvider" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = OBJ_5;
+			productRefGroup = OBJ_26 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				OBJ_45 /* LyricsProvider */,
+				OBJ_65 /* LyricsProviderTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BB4FBE641F0E3F910045A8FA /* Bump Build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bump Build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		OBJ_49 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_50 /* Lyrics.swift in Sources */,
+				OBJ_51 /* Lyrics163.swift in Sources */,
+				OBJ_52 /* LyricsGecimi.swift in Sources */,
+				BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */,
+				OBJ_53 /* LyricsKugou.swift in Sources */,
+				OBJ_54 /* LyricsLine.swift in Sources */,
+				OBJ_55 /* LyricsProviderManager.swift in Sources */,
+				OBJ_56 /* LyricsQQ.swift in Sources */,
+				OBJ_57 /* LyricsTTPod.swift in Sources */,
+				OBJ_58 /* LyricsXiami.swift in Sources */,
+				OBJ_59 /* ProviderProtocol.swift in Sources */,
+				BB4FBE601F0E39250045A8FA /* Then.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJ_69 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				OBJ_70 /* LyricsProviderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		OBJ_77 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJ_45 /* LyricsProvider */;
+			targetProxy = BB4FBE5A1F0DFB330045A8FA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		OBJ_3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				USE_HEADERMAP = NO;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		OBJ_4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_OPTIMIZATION_LEVEL = s;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_SWIFT_FLAGS = "-DXcode";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = SWIFT_PACKAGE;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				USE_HEADERMAP = NO;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		OBJ_47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProvider_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = LyricsProvider;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGET_NAME = LyricsProvider;
+			};
+			name = Debug;
+		};
+		OBJ_48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProvider_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = LyricsProvider;
+				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGET_NAME = LyricsProvider;
+			};
+			name = Release;
+		};
+		OBJ_67 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProviderTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				TARGET_NAME = LyricsProviderTests;
+			};
+			name = Debug;
+		};
+		OBJ_68 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProviderTests_Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				TARGET_NAME = LyricsProviderTests;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		OBJ_2 /* Build configuration list for PBXProject "LyricsProvider" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_3 /* Debug */,
+				OBJ_4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_46 /* Build configuration list for PBXNativeTarget "LyricsProvider" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_47 /* Debug */,
+				OBJ_48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		OBJ_66 /* Build configuration list for PBXNativeTarget "LyricsProviderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJ_67 /* Debug */,
+				OBJ_68 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = OBJ_1 /* Project object */;
+}
