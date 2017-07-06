@@ -1,5 +1,5 @@
 //
-//  LyricsSourceHelper.swift
+//  LyricsProviderManager.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,12 +20,19 @@
 
 import Foundation
 
-public class LyricsSourceManager {
+public protocol LyricsConsuming: class {
+    
+    func lyricsReceived(lyrics: Lyrics)
+    
+    func fetchCompleted(result: [Lyrics])
+}
+
+public class LyricsProviderManager {
     
     public weak var consumer: LyricsConsuming?
     
     private var dispatchGroup = DispatchGroup()
-    let lyricsSource: [LyricsSource] = [
+    let providers: [LyricsProvider] = [
         LyricsXiami(),
         LyricsGecimi(),
         LyricsTTPod(),
@@ -41,8 +48,8 @@ public class LyricsSourceManager {
     fileprivate func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, title: String?, artist: String?, duration: TimeInterval) {
         self.criteria = criteria
         lyrics = []
-        lyricsSource.forEach { $0.cancelSearch() }
-        lyricsSource.forEach { source in
+        providers.forEach { $0.cancelSearch() }
+        providers.forEach { source in
             dispatchGroup.enter()
             source.searchLyrics(criteria: criteria, duration: duration, using: { lrc in
                 guard self.criteria == criteria else {
@@ -69,8 +76,8 @@ public class LyricsSourceManager {
     fileprivate func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, title: String?, artist: String?, duration: TimeInterval) {
         self.criteria = criteria
         lyrics = []
-        lyricsSource.forEach { $0.cancelSearch() }
-        lyricsSource.forEach { source in
+        providers.forEach { $0.cancelSearch() }
+        providers.forEach { source in
             dispatchGroup.enter()
             source.iFeelLucky(criteria: criteria, duration: duration) {
                 defer {
@@ -94,7 +101,7 @@ public class LyricsSourceManager {
     }
 }
 
-extension LyricsSourceManager {
+extension LyricsProviderManager {
     
     public func searchLyrics(keyword: String? = nil, title: String, artist: String, duration: TimeInterval) {
         let criteria: Lyrics.MetaData.SearchCriteria

@@ -25,14 +25,9 @@ extension Lyrics.MetaData.Source {
     static let Xiami = Lyrics.MetaData.Source("Xiami")
 }
 
-public final class LyricsXiami: MultiResultLyricsSource {
+public final class LyricsXiami: MultiResultLyricsProvider {
     
-    let session = { () -> URLSession in
-        let config = URLSessionConfiguration.default.with {
-            $0.timeoutIntervalForRequest = 10
-        }
-        return URLSession(configuration: config)
-    }()
+    let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([Int]) -> Void) {

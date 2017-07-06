@@ -25,14 +25,9 @@ extension Lyrics.MetaData.Source {
     static let TTPod = Lyrics.MetaData.Source("TTPod")
 }
 
-public final class LyricsTTPod: SingleResultLyricsSource {
+public final class LyricsTTPod: SingleResultLyricsProvider {
     
-    let session = { () -> URLSession in
-        let config = URLSessionConfiguration.default.with {
-            $0.timeoutIntervalForRequest = 10
-        }
-        return URLSession(configuration: config)
-    }()
+    let session = URLSession(configuration: .providerConfig)
     var task: URLSessionDataTask?
     
     public func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void) {

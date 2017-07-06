@@ -25,14 +25,9 @@ extension Lyrics.MetaData.Source {
     public static let Music163 = Lyrics.MetaData.Source("163")
 }
 
-public final class Lyrics163: MultiResultLyricsSource {
+public final class Lyrics163: MultiResultLyricsProvider {
     
-    let session = { () -> URLSession in
-        let config = URLSessionConfiguration.default.with {
-            $0.timeoutIntervalForRequest = 10
-        }
-        return URLSession(configuration: config)
-    }()
+    let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {

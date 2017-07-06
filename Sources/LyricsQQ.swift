@@ -25,14 +25,9 @@ extension Lyrics.MetaData.Source {
     static let QQMusic = Lyrics.MetaData.Source("QQMusic")
 }
 
-public final class LyricsQQ: MultiResultLyricsSource {
+public final class LyricsQQ: MultiResultLyricsProvider {
     
-    let session = { () -> URLSession in
-        let config = URLSessionConfiguration.default.with {
-            $0.timeoutIntervalForRequest = 10
-        }
-        return URLSession(configuration: config)
-    }()
+    let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([Int]) -> Void) {
