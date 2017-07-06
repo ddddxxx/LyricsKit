@@ -19,7 +19,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 extension Lyrics.MetaData.Source {
     public static let Music163 = Lyrics.MetaData.Source("163")

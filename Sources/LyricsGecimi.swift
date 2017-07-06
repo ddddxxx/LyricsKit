@@ -19,7 +19,6 @@
 //
 
 import Foundation
-import SwiftyJSON
 
 extension Lyrics.MetaData.Source {
     static let Gecimi = Lyrics.MetaData.Source("Gecimi")

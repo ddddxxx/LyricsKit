@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BB4FBE601F0E39250045A8FA /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE5F1F0E39250045A8FA /* Then.swift */; };
+		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
 		OBJ_50 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_8 /* Lyrics.swift */; };
 		OBJ_51 /* Lyrics163.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Lyrics163.swift */; };
 		OBJ_52 /* LyricsGecimi.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* LyricsGecimi.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		BB4FBE5F1F0E39250045A8FA /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
+		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		OBJ_10 /* LyricsGecimi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsGecimi.swift; sourceTree = "<group>"; };
 		OBJ_11 /* LyricsKugou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsKugou.swift; sourceTree = "<group>"; };
 		OBJ_12 /* LyricsLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLine.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 		BB4FBE611F0E39280045A8FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */,
 				BB4FBE5F1F0E39250045A8FA /* Then.swift */,
 			);
 			name = Frameworks;
@@ -240,6 +243,7 @@
 				OBJ_50 /* Lyrics.swift in Sources */,
 				OBJ_51 /* Lyrics163.swift in Sources */,
 				OBJ_52 /* LyricsGecimi.swift in Sources */,
+				BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */,
 				OBJ_53 /* LyricsKugou.swift in Sources */,
 				OBJ_54 /* LyricsLine.swift in Sources */,
 				OBJ_55 /* LyricsProviderManager.swift in Sources */,
@@ -327,30 +331,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=appletvos*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/tvOS/",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/iOS/",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/Mac/",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=watchos*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/watchOS/",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProvider_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
@@ -370,30 +351,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=appletvos*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/tvOS/",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/iOS/",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=macosx*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/Mac/",
-				);
-				"FRAMEWORK_SEARCH_PATHS[sdk=watchos*]" = (
-					"$(inherited)",
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(SRCROOT)/Carthage/Build/watchOS/",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProvider_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
