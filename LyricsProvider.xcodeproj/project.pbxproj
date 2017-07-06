@@ -221,6 +221,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_32 /* Build configuration list for PBXNativeTarget "SwiftyJSON" */;
 			buildPhases = (
+				BB4FBE5D1F0E058F0045A8FA /* Run Script */,
 				OBJ_35 /* Sources */,
 				OBJ_37 /* Frameworks */,
 			);
@@ -237,6 +238,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = OBJ_39 /* Build configuration list for PBXNativeTarget "Then" */;
 			buildPhases = (
+				BB4FBE5E1F0E059A0045A8FA /* ShellScript */,
 				OBJ_42 /* Sources */,
 				OBJ_44 /* Frameworks */,
 			);
@@ -313,6 +315,36 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BB4FBE5D1F0E058F0045A8FA /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "swift package fetch";
+		};
+		BB4FBE5E1F0E059A0045A8FA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "swift package fetch";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_35 /* Sources */ = {
