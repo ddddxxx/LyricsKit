@@ -48,25 +48,30 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
     }
     
     func getLyricsWithToken(token: JSON, completionHandler: @escaping (Lyrics?) -> Void) {
-        guard let lrcURL = token["lrc"].url,
-            // FIXME: use URLSession instead of contentsOfURL
-            let lrc = Lyrics(url: lrcURL) else {
+        guard let lrcURL = token["lrc"].url else {
+            completionHandler(nil)
+            return
+        }
+        let task = session.dataTask(with: lrcURL) { data, resp, error in
+            guard let data = data,
+                let lrcContent = String(data: data, encoding: .utf8),
+                let lyrics = Lyrics(lrcContent)else {
                 completionHandler(nil)
                 return
-        }
-        lrc.metadata.source = .Gecimi
-        if let aid = token["aid"].string,
-            let url = URL(string:"http://gecimi.com/api/cover/\(aid)") {
-            let req = URLRequest(url: url)
-            let task = self.session.dataTask(with: req) { data, resp, error in
-                // FIXME: contentsOf
-                if let data = try? Data(contentsOf: url),
-                    let artworkURL = JSON(data)["result"]["cover"].url {
-                    lrc.metadata.artworkURL = artworkURL
-                }
             }
-            task.resume()
+            lyrics.metadata.lyricsURL = lrcURL
+            lyrics.metadata.source = .Gecimi
+            
+            if let aid = token["aid"].string,
+                let url = URL(string:"http://gecimi.com/api/cover/\(aid)") {
+                let task = self.session.dataTask(with: url) { data, resp, error in
+                    lyrics.metadata.artworkURL = data.map(JSON.init)?["result"]["cover"].url
+                }
+                task.resume()
+            }
+            
+            completionHandler(lyrics)
         }
-        completionHandler(lrc)
+        task.resume()
     }
 }

@@ -29,7 +29,7 @@ public protocol LyricsProvider {
     func cancelSearch()
 }
 
-protocol MultiResultLyricsProvider: LyricsProvider {
+protocol MultiResultLyricsProvider: class, LyricsProvider {
     
     associatedtype LyricsToken
     
@@ -63,7 +63,7 @@ extension MultiResultLyricsProvider {
             }
             self.dispatchGroup.leave()
         }
-        dispatchGroup.notify(queue: .global(), execute: completionHandler)
+        dispatchGroup.notify(queue: .global(),execute: completionHandler)
     }
     
     public func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void) {
