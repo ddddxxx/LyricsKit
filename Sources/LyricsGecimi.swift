@@ -51,6 +51,7 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
         guard let lrcURL = token["lrc"].url,
             // FIXME: use URLSession instead of contentsOfURL
             let lrc = Lyrics(url: lrcURL) else {
+                completionHandler(nil)
                 return
         }
         lrc.metadata.source = .Gecimi
