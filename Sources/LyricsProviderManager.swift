@@ -100,6 +100,9 @@ public class LyricsProviderManager {
                 }
             }
         }
+        dispatchGroup.notify(queue: .global()) {
+            self.consumer?.fetchCompleted(result: self.lyrics)
+        }
     }
 }
 
