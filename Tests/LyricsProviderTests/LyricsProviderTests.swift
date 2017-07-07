@@ -3,59 +3,50 @@ import XCTest
 
 class LyricsProviderTests: XCTestCase {
     
-    func testFetchLyricsPerformance() {
-        let testSong = "Rolling in the Deep"
-        let testArtist = "Adele"
+    let testSong = "Uprising"
+    let testArtist = "Muse"
+    
+    func testSearchLyricsPerformance() {
         let src = LyricsProviderManager()
         
         measure {
-            var fetchReturnedEx: XCTestExpectation? = self.expectation(description: "fetch lrc")
-            let fetchCompleteEx = self.expectation(description: "fetch complete")
+            let searchCompleteEx = self.expectation(description: "Search complete")
             let consumer = TestConsumer(completedHandle: {
-                fetchReturnedEx?.fulfill()
-                fetchReturnedEx = nil
-                fetchCompleteEx.fulfill()
+                searchCompleteEx.fulfill()
             })
             src.consumer = consumer
-            src.searchLyrics(title: testSong, artist: testArtist, duration: 230)
+            src.searchLyrics(title: self.testSong, artist: self.testArtist, duration: 230)
             self.waitForExpectations(timeout: 10) { _ in
                 self.stopMeasuring()
             }
         }
     }
     
-    func testLyricsSourceAvailability() {
-        let testCase = [
-            ("Rolling in the Deep", "Adele"),
-//            ("海阔天空", "Beyond"),
-            ]
-        
-        let lyricsSources: [LyricsProvider] = [
-//            LyricsXiami(),
-//            LyricsGecimi(),
-//            LyricsTTPod(),
-//            Lyrics163(),
+    func testLyricsProviderAvailability() {
+        let lyricsProviders: [LyricsProvider] = [
+            LyricsXiami(),
+            LyricsGecimi(),
+            LyricsTTPod(),
+            Lyrics163(),
             LyricsQQ(),
             ]
-        lyricsSources.forEach { src in
-            var fetchReturnedEx: XCTestExpectation? = expectation(description: "fetch from \(src)")
-            let fetchCompleteEx = expectation(description: "fetch complete \(src)")
-            for song in testCase {
-                src.searchLyrics(criteria: .info(title: song.0, artist: song.1), duration: 0, using: {_ in
-                    fetchReturnedEx?.fulfill()
-                    fetchReturnedEx = nil
-                }, completionHandler: {
-                    fetchCompleteEx.fulfill()
-                })
-            }
-            waitForExpectations(timeout: 10)
+        lyricsProviders.forEach { provider in
+            var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
+            let searchCompleteEx = expectation(description: "Search complete: \(provider)")
+            provider.searchLyrics(criteria: .info(title: testSong, artist: testArtist), duration: 0, using: {_ in
+                searchResultEx?.fulfill()
+                searchResultEx = nil
+            }, completionHandler: {
+                searchCompleteEx.fulfill()
+            })
         }
+        waitForExpectations(timeout: 10)
     }
 
 
     static var allTests = [
-        ("testFetchLyricsPerformance", testFetchLyricsPerformance),
-        ("testLyricsSourceAvailability", testLyricsSourceAvailability),
+        ("testFetchLyricsPerformance", testSearchLyricsPerformance),
+        ("testLyricsSourceAvailability", testLyricsProviderAvailability),
     ]
 }
 
