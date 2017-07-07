@@ -45,6 +45,8 @@ public class LyricsProviderManager {
     
     public var lyrics: [Lyrics] = []
     
+    public init() {}
+    
     fileprivate func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, title: String?, artist: String?, duration: TimeInterval) {
         self.criteria = criteria
         lyrics = []
