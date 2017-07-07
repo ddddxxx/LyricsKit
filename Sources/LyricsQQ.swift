@@ -91,7 +91,7 @@ private class LyricsQQXMLParser: NSObject, XMLParserDelegate {
     }
 }
 
-extension String {
+private extension String {
     
     static let entities = [
         "&quot;"    : "\"",
