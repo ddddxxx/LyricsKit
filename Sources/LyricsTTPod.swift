@@ -27,11 +27,11 @@ extension Lyrics.MetaData.Source {
 public final class LyricsTTPod: SingleResultLyricsProvider {
     
     let session = URLSession(configuration: .providerConfig)
-    var task: URLSessionDataTask?
     
     public func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void) {
         guard case let .info(title, artist) = criteria else {
             // cannot search by keyword
+            completionHandler(nil)
             return
         }
         let encodedTitle = title.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
@@ -40,7 +40,7 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
         let urlStr = "http://lp.music.ttpod.com/lrc/down?lrcid=&artist=\(encodedArtist)&title=\(encodedTitle)"
         let url = URL(string: urlStr)!
         let req = URLRequest(url: url)
-        task = session.dataTask(with: req) { data, resp, error in
+        let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,
                 let lrcContent = JSON(data)["data"]["lrc"].string,
                 let lrc = Lyrics(lrcContent) else {
@@ -52,6 +52,6 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
             lrc.metadata.searchIndex = 0
             completionHandler(lrc)
         }
-        task?.resume()
+        task.resume()
     }
 }

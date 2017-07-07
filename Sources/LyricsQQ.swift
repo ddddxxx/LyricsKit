@@ -35,7 +35,6 @@ public final class LyricsQQ: MultiResultLyricsProvider {
         let urlString = "http://s.music.qq.com/fcgi-bin/music_search_new_platform?t=0&n=10&aggr=1&cr=1&loginUin=0&format=json&inCharset=GB2312&outCharset=utf-8&notice=0&platform=jqminiframe.json&needNewCode=0&p=1&catZhida=0&remoteplace=sizer.newclient.next_song&w=\(encodedKeyword)"
         let url = URL(string: urlString)!
         let req = URLRequest(url: url)
-        dispatchGroup.enter()
         let task = session.dataTask(with: req) { data, resp, error in
             let ids = data.map(JSON.init)?["data"]["song"]["list"].array?.flatMap { (item: JSON) -> Int? in
                 guard let f = item["f"].string,
@@ -91,7 +90,7 @@ private class LyricsQQXMLParser: NSObject, XMLParserDelegate {
     }
 }
 
-extension String {
+private extension String {
     
     static let entities = [
         "&quot;"    : "\"",
