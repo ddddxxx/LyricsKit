@@ -16,10 +16,27 @@ class LyricsProviderTests: XCTestCase {
             })
             src.consumer = consumer
             src.searchLyrics(title: self.testSong, artist: self.testArtist, duration: 230)
-            self.waitForExpectations(timeout: 10) { _ in
-                self.stopMeasuring()
+            self.waitForExpectations(timeout: 10)
+        }
+    }
+    
+    func testIfeelLucky() {
+        let lyricsProviders: [LyricsProvider] = [
+            LyricsXiami(),
+            LyricsGecimi(),
+            LyricsTTPod(),
+            Lyrics163(),
+            LyricsQQ(),
+            ]
+        lyricsProviders.forEach { provider in
+            let searchCompleteEx = expectation(description: "Search complete: \(provider)")
+            provider.iFeelLucky(criteria: .info(title: testSong, artist: testArtist), duration: 0) {
+                if $0 != nil {
+                    searchCompleteEx.fulfill()
+                }
             }
         }
+        waitForExpectations(timeout: 10)
     }
     
     func testLyricsProviderAvailability() {
