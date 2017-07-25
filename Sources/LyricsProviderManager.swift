@@ -104,6 +104,12 @@ public class LyricsProviderManager {
             self.consumer?.fetchCompleted(result: self.lyrics)
         }
     }
+    
+    public func cancelSearching() {
+        self.criteria = nil
+        lyrics = []
+        providers.forEach { $0.cancelSearch() }
+    }
 }
 
 extension LyricsProviderManager {
