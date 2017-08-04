@@ -26,6 +26,8 @@ extension Lyrics.MetaData.Source {
 
 public final class LyricsQQ: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .QQMusic
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     

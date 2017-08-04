@@ -26,6 +26,8 @@ extension Lyrics.MetaData.Source {
 
 public final class Lyrics163: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .Music163
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     

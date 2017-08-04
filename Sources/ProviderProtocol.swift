@@ -22,6 +22,8 @@ import Foundation
 
 public protocol LyricsProvider {
     
+    static var source: Lyrics.MetaData.Source { get }
+    
     func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void)
     
     func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void)

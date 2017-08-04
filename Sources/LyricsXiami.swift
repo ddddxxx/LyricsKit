@@ -26,6 +26,8 @@ extension Lyrics.MetaData.Source {
 
 public final class LyricsXiami: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .Xiami
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     

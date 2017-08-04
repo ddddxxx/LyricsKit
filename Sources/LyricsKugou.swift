@@ -26,6 +26,8 @@ extension Lyrics.MetaData.Source {
 
 public final class LyricsKugou: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .Kugou
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     

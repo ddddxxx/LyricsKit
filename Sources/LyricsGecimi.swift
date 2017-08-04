@@ -26,6 +26,8 @@ extension Lyrics.MetaData.Source {
 
 public final class LyricsGecimi: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .Gecimi
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
