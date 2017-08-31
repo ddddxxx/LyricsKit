@@ -114,24 +114,22 @@ public class LyricsProviderManager {
 
 extension LyricsProviderManager {
     
-    public func searchLyrics(keyword: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term: Lyrics.MetaData.SearchTerm
-        if let keyword = keyword {
-            term = .keyword(keyword)
-        } else {
-            term = .info(title: title, artist: artist)
-        }
+    public func searchLyrics(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
+        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchTitle ?? title)
         searchLyrics(term: term, title: title, artist: artist, duration: duration)
     }
     
-    public func iFeelLucky(keyword: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term: Lyrics.MetaData.SearchTerm
-        if let keyword = keyword {
-            term = .keyword(keyword)
-        } else {
-            term = .info(title: title, artist: artist)
-        }
+    public func iFeelLucky(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
+        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchTitle ?? title)
         iFeelLucky(term: term, title: title, artist: artist, duration: duration)
+    }
+    
+    public func searchLyrics(keyword: String, title: String, artist: String, duration: TimeInterval) {
+        searchLyrics(term: .keyword(keyword), title: title, artist: artist, duration: duration)
+    }
+    
+    public func iFeelLucky(keyword: String, title: String, artist: String, duration: TimeInterval) {
+        iFeelLucky(term: .keyword(keyword), title: title, artist: artist, duration: duration)
     }
     
 }
