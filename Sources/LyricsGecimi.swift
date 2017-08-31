@@ -26,11 +26,13 @@ extension Lyrics.MetaData.Source {
 
 public final class LyricsGecimi: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .Gecimi
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
-        guard case let .info(title, artist) = criteria else {
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
+        guard case let .info(title, artist) = term else {
             // cannot search by keyword
             completionHandler([])
             return

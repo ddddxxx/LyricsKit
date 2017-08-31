@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		BB4FBE601F0E39250045A8FA /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE5F1F0E39250045A8FA /* Then.swift */; };
 		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
+		BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */; };
+		BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */; };
 		OBJ_50 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_8 /* Lyrics.swift */; };
 		OBJ_51 /* Lyrics163.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Lyrics163.swift */; };
 		OBJ_52 /* LyricsGecimi.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* LyricsGecimi.swift */; };
@@ -36,6 +38,8 @@
 /* Begin PBXFileReference section */
 		BB4FBE5F1F0E39250045A8FA /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
 		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconView.swift; sourceTree = "<group>"; };
+		BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconDrawing.swift; sourceTree = "<group>"; };
 		OBJ_10 /* LyricsGecimi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsGecimi.swift; sourceTree = "<group>"; };
 		OBJ_11 /* LyricsKugou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsKugou.swift; sourceTree = "<group>"; };
 		OBJ_12 /* LyricsLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLine.swift; sourceTree = "<group>"; };
@@ -94,6 +98,15 @@
 			);
 			name = Frameworks;
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		BBD10B221F3461BB007FA2CD /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */,
+				BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */,
+			);
+			name = Drawing;
 			sourceTree = "<group>";
 		};
 		OBJ_18 /* Tests */ = {
@@ -169,6 +182,7 @@
 				OBJ_13 /* LyricsProviderManager.swift */,
 				OBJ_17 /* ProviderProtocol.swift */,
 				BB4FBE5B1F0DFB480045A8FA /* Provider */,
+				BBD10B221F3461BB007FA2CD /* Drawing */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -267,7 +281,9 @@
 				OBJ_55 /* LyricsProviderManager.swift in Sources */,
 				OBJ_56 /* LyricsQQ.swift in Sources */,
 				OBJ_57 /* LyricsTTPod.swift in Sources */,
+				BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */,
 				OBJ_58 /* LyricsXiami.swift in Sources */,
+				BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */,
 				OBJ_59 /* ProviderProtocol.swift in Sources */,
 				BB4FBE601F0E39250045A8FA /* Then.swift in Sources */,
 			);
@@ -356,7 +372,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = LyricsProvider;
+				PRODUCT_BUNDLE_IDENTIFIER = ddddxxx.LyricsX.LyricsProvider;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -376,7 +392,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = LyricsProvider;
+				PRODUCT_BUNDLE_IDENTIFIER = ddddxxx.LyricsX.LyricsProvider;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

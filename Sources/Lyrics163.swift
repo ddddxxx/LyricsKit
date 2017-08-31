@@ -26,11 +26,13 @@ extension Lyrics.MetaData.Source {
 
 public final class Lyrics163: MultiResultLyricsProvider {
     
+    public static let source: Lyrics.MetaData.Source = .Music163
+    
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
-        let keyword = criteria.description
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
+        let keyword = term.description
         let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         let url = URL(string: "http://music.163.com/api/search/pc")!
         let body = "s=\(encodedKeyword)&offset=0&limit=10&type=1".data(using: .utf8)!
