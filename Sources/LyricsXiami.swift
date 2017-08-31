@@ -31,8 +31,8 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping ([Int]) -> Void) {
-        let keyword = criteria.description
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([Int]) -> Void) {
+        let keyword = term.description
         let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         let url = URL(string: "http://www.xiami.com/web/search-songs?key=\(encodedKeyword)")!
         let req = URLRequest(url: url)

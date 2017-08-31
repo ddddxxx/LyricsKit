@@ -157,13 +157,13 @@ public class Lyrics {
         public var source: Source
         public var title: String?
         public var artist: String?
-        public var searchBy: SearchCriteria?
+        public var searchBy: SearchTerm?
         public var searchIndex: Int
         public var lyricsURL: URL?
         public var artworkURL: URL?
         public var includeTranslation: Bool
         
-        public init(source: Source, title: String? = nil, artist: String? = nil, searchBy: SearchCriteria? = nil, searchIndex: Int = 0, lyricsURL: URL? = nil, artworkURL: URL? = nil, includeTranslation: Bool = false) {
+        public init(source: Source, title: String? = nil, artist: String? = nil, searchBy: SearchTerm? = nil, searchIndex: Int = 0, lyricsURL: URL? = nil, artworkURL: URL? = nil, includeTranslation: Bool = false) {
             self.source = source
             self.title = title
             self.artist = artist
@@ -191,7 +191,7 @@ public class Lyrics {
             public static let Import = Source("Import")
         }
         
-        public enum SearchCriteria {
+        public enum SearchTerm {
             
             case keyword(String)
             case info(title: String, artist: String)
@@ -358,8 +358,8 @@ extension Lyrics.MetaData.Source: Equatable {
     }
 }
 
-extension Lyrics.MetaData.SearchCriteria: Equatable {
-    public static func ==(lhs: Lyrics.MetaData.SearchCriteria, rhs: Lyrics.MetaData.SearchCriteria) -> Bool {
+extension Lyrics.MetaData.SearchTerm: Equatable {
+    public static func ==(lhs: Lyrics.MetaData.SearchTerm, rhs: Lyrics.MetaData.SearchTerm) -> Bool {
         switch (lhs, rhs) {
         case (.keyword, .info), (.info, .keyword):
             return false
@@ -373,7 +373,7 @@ extension Lyrics.MetaData.SearchCriteria: Equatable {
 
 // MARK: CustomStringConvertible
 
-extension Lyrics.MetaData.SearchCriteria: CustomStringConvertible {
+extension Lyrics.MetaData.SearchTerm: CustomStringConvertible {
     
     public var description: String {
         switch self {

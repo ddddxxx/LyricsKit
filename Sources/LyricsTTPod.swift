@@ -30,8 +30,8 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
     
     let session = URLSession(configuration: .providerConfig)
     
-    public func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void) {
-        guard case let .info(title, artist) = criteria else {
+    public func iFeelLucky(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void) {
+        guard case let .info(title, artist) = term else {
             // cannot search by keyword
             completionHandler(nil)
             return
@@ -50,7 +50,7 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
                     return
             }
             lrc.metadata.source = .TTPod
-            lrc.metadata.searchBy = criteria
+            lrc.metadata.searchBy = term
             lrc.metadata.searchIndex = 0
             completionHandler(lrc)
         }

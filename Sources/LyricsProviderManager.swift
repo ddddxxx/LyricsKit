@@ -41,20 +41,20 @@ public class LyricsProviderManager {
         LyricsKugou(),
     ]
     
-    public var criteria: Lyrics.MetaData.SearchCriteria?
+    public var term: Lyrics.MetaData.SearchTerm?
     
     public var lyrics: [Lyrics] = []
     
     public init() {}
     
-    fileprivate func searchLyrics(criteria: Lyrics.MetaData.SearchCriteria, title: String?, artist: String?, duration: TimeInterval) {
-        self.criteria = criteria
+    fileprivate func searchLyrics(term: Lyrics.MetaData.SearchTerm, title: String?, artist: String?, duration: TimeInterval) {
+        self.term = term
         lyrics = []
         providers.forEach { $0.cancelSearch() }
         providers.forEach { source in
             dispatchGroup.enter()
-            source.searchLyrics(criteria: criteria, duration: duration, using: { lrc in
-                guard self.criteria == criteria else {
+            source.searchLyrics(term: term, duration: duration, using: { lrc in
+                guard self.term == term else {
                     return
                 }
                 
@@ -75,18 +75,18 @@ public class LyricsProviderManager {
         }
     }
     
-    fileprivate func iFeelLucky(criteria: Lyrics.MetaData.SearchCriteria, title: String?, artist: String?, duration: TimeInterval) {
-        self.criteria = criteria
+    fileprivate func iFeelLucky(term: Lyrics.MetaData.SearchTerm, title: String?, artist: String?, duration: TimeInterval) {
+        self.term = term
         lyrics = []
         providers.forEach { $0.cancelSearch() }
         providers.forEach { source in
             dispatchGroup.enter()
-            source.iFeelLucky(criteria: criteria, duration: duration) {
+            source.iFeelLucky(term: term, duration: duration) {
                 defer {
                     self.dispatchGroup.leave()
                 }
                 if let lrc = $0 {
-                    guard self.criteria == criteria else {
+                    guard self.term == term else {
                         return
                     }
                     lrc.metadata.title = title
@@ -106,7 +106,7 @@ public class LyricsProviderManager {
     }
     
     public func cancelSearching() {
-        self.criteria = nil
+        self.term = nil
         lyrics = []
         providers.forEach { $0.cancelSearch() }
     }
@@ -115,23 +115,23 @@ public class LyricsProviderManager {
 extension LyricsProviderManager {
     
     public func searchLyrics(keyword: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let criteria: Lyrics.MetaData.SearchCriteria
+        let term: Lyrics.MetaData.SearchTerm
         if let keyword = keyword {
-            criteria = .keyword(keyword)
+            term = .keyword(keyword)
         } else {
-            criteria = .info(title: title, artist: artist)
+            term = .info(title: title, artist: artist)
         }
-        searchLyrics(criteria: criteria, title: title, artist: artist, duration: duration)
+        searchLyrics(term: term, title: title, artist: artist, duration: duration)
     }
     
     public func iFeelLucky(keyword: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let criteria: Lyrics.MetaData.SearchCriteria
+        let term: Lyrics.MetaData.SearchTerm
         if let keyword = keyword {
-            criteria = .keyword(keyword)
+            term = .keyword(keyword)
         } else {
-            criteria = .info(title: title, artist: artist)
+            term = .info(title: title, artist: artist)
         }
-        iFeelLucky(criteria: criteria, title: title, artist: artist, duration: duration)
+        iFeelLucky(term: term, title: title, artist: artist, duration: duration)
     }
     
 }

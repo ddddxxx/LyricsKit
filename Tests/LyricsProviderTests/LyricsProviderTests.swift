@@ -30,7 +30,7 @@ class LyricsProviderTests: XCTestCase {
             ]
         lyricsProviders.forEach { provider in
             let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.iFeelLucky(criteria: .info(title: testSong, artist: testArtist), duration: 0) {
+            provider.iFeelLucky(term: .info(title: testSong, artist: testArtist), duration: 0) {
                 if $0 != nil {
                     searchCompleteEx.fulfill()
                 }
@@ -50,7 +50,7 @@ class LyricsProviderTests: XCTestCase {
         lyricsProviders.forEach { provider in
             var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
             let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.searchLyrics(criteria: .info(title: testSong, artist: testArtist), duration: 0, using: {_ in
+            provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: 0, using: {_ in
                 searchResultEx?.fulfill()
                 searchResultEx = nil
             }, completionHandler: {
