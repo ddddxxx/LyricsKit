@@ -60,17 +60,20 @@ public class Lyrics {
                 let lyricsSentence: String = line.substring(from: line.characters.index(line.startIndex, offsetBy: index))
                 let components = lyricsSentence.components(separatedBy: "【")
                 let lyricsStr: String
-                let translation: String?
+                let translation: LyricsLine.AttachmentTranslation?
                 if components.count == 2, components[1].characters.last == "】" {
                     lyricsStr = components[0]
-                    translation = String(components[1].characters.dropLast())
+                    let tranStr = String(components[1].characters.dropLast())
+                    translation = LyricsLine.AttachmentTranslation(translation: tranStr)
                 } else {
                     lyricsStr = lyricsSentence
                     translation = nil
                 }
                 let lyrics = timeTagsMatched.flatMap { result -> LyricsLine? in
                     let timeTagStr = (line as NSString).substring(with: result.range) as String
-                    return LyricsLine(sentence: lyricsStr, translation: translation, timeTag: timeTagStr)
+                    var line = LyricsLine(sentence: lyricsStr, timeTag: timeTagStr)
+                    line?.attachment[.translation] = translation
+                    return line
                 }
                 self.lyrics += lyrics
             } else {

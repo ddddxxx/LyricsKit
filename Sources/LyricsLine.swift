@@ -23,9 +23,11 @@ import Foundation
 public struct LyricsLine {
     
     public var sentence: String
-    public var translation: String?
+    public var attachment: [AttachmentType: LyricsLineAttachment] = [:]
     public var position: TimeInterval
-    public var enabled: Bool
+    public var enabled: Bool = true
+    
+//    public var
     
     public var timeTag: String {
         let min = Int(position / 60)
@@ -33,15 +35,13 @@ public struct LyricsLine {
         return String(format: "%02d:%06.3f", min, sec)
     }
     
-    public init(sentence: String, translation: String? = nil, position: TimeInterval) {
+    public init(sentence: String, position: TimeInterval) {
         self.sentence = sentence
-        self.translation = translation
         self.position = position
-        enabled = true
         normalization()
     }
     
-    public init?(sentence: String, translation: String? = nil, timeTag: String) {
+    public init?(sentence: String, timeTag: String) {
         var tagContent = timeTag
         tagContent.remove(at: tagContent.startIndex)
         tagContent.remove(at: tagContent.index(before: tagContent.endIndex))
@@ -50,7 +50,7 @@ public struct LyricsLine {
             let min = TimeInterval(components[0]),
             let sec = TimeInterval(components[1]) {
             let position = sec + min * 60
-            self.init(sentence: sentence, translation: translation, position: position)
+            self.init(sentence: sentence, position: position)
         } else {
             return nil
         }
@@ -67,10 +67,52 @@ public struct LyricsLine {
     }
 }
 
+public protocol LyricsLineAttachment {
+    var stringRepresentation: String { get }
+}
+
+public extension LyricsLine {
+    
+    public struct AttachmentType: RawRepresentable {
+        
+        public var rawValue: String
+        
+        public init(_ rawValue: String) {
+            self.rawValue = rawValue
+        }
+        
+        public init(rawValue: String) {
+            self.init(rawValue)
+        }
+        
+        static let translation = AttachmentType("translation")
+    }
+    
+    public struct AttachmentTranslation: LyricsLineAttachment {
+        
+        public var translation: String
+        
+        public var stringRepresentation: String {
+            return translation
+        }
+    }
+}
+
+extension LyricsLine.AttachmentType: Equatable, Hashable {
+    
+    public var hashValue: Int {
+        return rawValue.hashValue
+    }
+    
+    public static func ==(lhs: LyricsLine.AttachmentType, rhs: LyricsLine.AttachmentType) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+}
+
 extension LyricsLine: Equatable, Hashable {
     
     public var hashValue: Int {
-        return sentence.hashValue ^ position.hashValue ^ (translation?.hash ?? 0)
+        return sentence.hashValue ^ position.hashValue
     }
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {
@@ -86,9 +128,6 @@ extension LyricsLine {
             content += "[" + timeTag + "]"
         }
         content += sentence
-        if translation, let transStr = self.translation {
-            content += "【" + transStr + "】"
-        }
         return content
     }
 }

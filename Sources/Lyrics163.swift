@@ -92,8 +92,9 @@ extension Lyrics {
         while index < lyrics.endIndex, transIndex < translation.lyrics.endIndex {
             if lyrics[index].position == translation.lyrics[transIndex].position {
                 let transStr = translation.lyrics[transIndex].sentence
-                if transStr.characters.count > 0 {
-                    lyrics[index].translation = transStr
+                if !transStr.isEmpty {
+                    let translation = LyricsLine.AttachmentTranslation(translation: transStr)
+                    lyrics[index].attachment[.translation] = translation
                 }
                 lyrics.formIndex(after: &index)
                 translation.lyrics.formIndex(after: &transIndex)
