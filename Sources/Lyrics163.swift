@@ -87,21 +87,21 @@ public final class Lyrics163: MultiResultLyricsProvider {
 extension Lyrics {
     
     fileprivate func merge(translation: Lyrics) {
-        var index = lyrics.startIndex
-        var transIndex = translation.lyrics.startIndex
-        while index < lyrics.endIndex, transIndex < translation.lyrics.endIndex {
-            if lyrics[index].position == translation.lyrics[transIndex].position {
-                let transStr = translation.lyrics[transIndex].sentence
+        var index = lines.startIndex
+        var transIndex = translation.lines.startIndex
+        while index < lines.endIndex, transIndex < translation.lines.endIndex {
+            if lines[index].position == translation.lines[transIndex].position {
+                let transStr = translation.lines[transIndex].content
                 if !transStr.isEmpty {
                     let translation = LyricsLineAttachmentTranslation(translation: transStr)
-                    lyrics[index].attachment[.translation] = translation
+                    lines[index].attachment[.translation] = translation
                 }
-                lyrics.formIndex(after: &index)
-                translation.lyrics.formIndex(after: &transIndex)
-            } else if lyrics[index].position > translation.lyrics[transIndex].position {
-                translation.lyrics.formIndex(after: &transIndex)
+                lines.formIndex(after: &index)
+                translation.lines.formIndex(after: &transIndex)
+            } else if lines[index].position > translation.lines[transIndex].position {
+                translation.lines.formIndex(after: &transIndex)
             } else {
-                lyrics.formIndex(after: &index)
+                lines.formIndex(after: &index)
             }
         }
     }

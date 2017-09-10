@@ -22,10 +22,12 @@ import Foundation
 
 public struct LyricsLine {
     
-    public var sentence: String
+    public var content: String
     public var attachment: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]
     public var position: TimeInterval
     public var enabled: Bool = true
+    
+    public weak var lyrics: Lyrics?
     
     public var timeTag: String {
         let min = Int(position / 60)
@@ -33,13 +35,13 @@ public struct LyricsLine {
         return String(format: "%02d:%06.3f", min, sec)
     }
     
-    public init(sentence: String, position: TimeInterval) {
-        self.sentence = sentence
+    public init(content: String, position: TimeInterval) {
+        self.content = content
         self.position = position
         normalization()
     }
     
-    public init?(sentence: String, timeTag: String) {
+    public init?(content: String, timeTag: String) {
         var tagContent = timeTag
         tagContent.remove(at: tagContent.startIndex)
         tagContent.remove(at: tagContent.index(before: tagContent.endIndex))
@@ -48,7 +50,7 @@ public struct LyricsLine {
             let min = TimeInterval(components[0]),
             let sec = TimeInterval(components[1]) {
             let position = sec + min * 60
-            self.init(sentence: sentence, position: position)
+            self.init(content: content, position: position)
         } else {
             return nil
         }
@@ -57,10 +59,10 @@ public struct LyricsLine {
     private static let serialWhiteSpacesRegex = try! NSRegularExpression(pattern: "( )+")
     
     private mutating func normalization() {
-        sentence = sentence.trimmingCharacters(in: .whitespaces)
-        sentence = LyricsLine.serialWhiteSpacesRegex.stringByReplacingMatches(in: sentence, options: [], range: sentence.range, withTemplate: " ")
-        if sentence == "." {
-            sentence = ""
+        content = content.trimmingCharacters(in: .whitespaces)
+        content = LyricsLine.serialWhiteSpacesRegex.stringByReplacingMatches(in: content, options: [], range: content.range, withTemplate: " ")
+        if content == "." {
+            content = ""
         }
     }
 }
@@ -72,7 +74,7 @@ extension LyricsLine {
         if withTimeTag {
             content += "[" + timeTag + "]"
         }
-        content += sentence
+        content += content
         return content
     }
 }
@@ -80,7 +82,7 @@ extension LyricsLine {
 extension LyricsLine: Equatable, Hashable {
     
     public var hashValue: Int {
-        return sentence.hashValue ^ position.hashValue
+        return content.hashValue ^ position.hashValue
     }
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {

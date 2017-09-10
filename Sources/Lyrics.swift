@@ -22,7 +22,7 @@ import Foundation
 
 public class Lyrics {
     
-    public var lyrics: [LyricsLine]
+    public var lines: [LyricsLine]
     public var idTags: [IDTagKey: String]
     public var metadata: MetaData
     
@@ -48,7 +48,7 @@ public class Lyrics {
     private static let timeTagRegex = try! NSRegularExpression(pattern: "\\[\\d+:\\d+.\\d+\\]|\\[\\d+:\\d+\\]")
     
     public init?(_ lrcContents: String) {
-        lyrics = []
+        lines = []
         idTags = [:]
         metadata = MetaData(source: .Unknown)
         
@@ -57,8 +57,8 @@ public class Lyrics {
             let timeTagsMatched = Lyrics.timeTagRegex.matches(in: line, options: [], range: line.range)
             if timeTagsMatched.count > 0 {
                 let index: Int = timeTagsMatched.last!.range.location + timeTagsMatched.last!.range.length
-                let lyricsSentence: String = line.substring(from: line.characters.index(line.startIndex, offsetBy: index))
-                let components = lyricsSentence.components(separatedBy: "【")
+                let lyricsContent = line.substring(from: line.characters.index(line.startIndex, offsetBy: index))
+                let components = lyricsContent.components(separatedBy: "【")
                 let lyricsStr: String
                 let translation: LyricsLineAttachmentTranslation?
                 if components.count == 2, components[1].characters.last == "】" {
@@ -66,16 +66,16 @@ public class Lyrics {
                     let tranStr = String(components[1].characters.dropLast())
                     translation = LyricsLineAttachmentTranslation(translation: tranStr)
                 } else {
-                    lyricsStr = lyricsSentence
+                    lyricsStr = lyricsContent
                     translation = nil
                 }
                 let lyrics = timeTagsMatched.flatMap { result -> LyricsLine? in
                     let timeTagStr = (line as NSString).substring(with: result.range) as String
-                    var line = LyricsLine(sentence: lyricsStr, timeTag: timeTagStr)
+                    var line = LyricsLine(content: lyricsStr, timeTag: timeTagStr)
                     line?.attachment[.translation] = translation
                     return line
                 }
-                self.lyrics += lyrics
+                self.lines += lyrics
             } else {
                 let idTagsMatched = Lyrics.idTagRegex.matches(in: line, range: line.range)
                 guard idTagsMatched.count > 0 else {
@@ -95,11 +95,17 @@ public class Lyrics {
             }
         }
         
-        if lyrics.count == 0 {
+        if lines.count == 0 {
             return nil
         }
         
-        lyrics.sort() { $0.position < $1.position }
+        lines = lines.sorted {
+            $0.position < $1.position
+        }.map {
+            var line = $0
+            line.lyrics = self
+            return line
+        }
     }
     
     public convenience init?(url: URL) {
@@ -113,19 +119,19 @@ public class Lyrics {
     
     public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {
         let position = position + timeDelay
-        var left = lyrics.startIndex
-        var right = lyrics.endIndex - 1
+        var left = lines.startIndex
+        var right = lines.endIndex - 1
         while left <= right {
             let mid = (left + right) / 2
-            if lyrics[mid].position <= position {
+            if lines[mid].position <= position {
                 left = mid + 1
             } else {
                 right = mid - 1
             }
         }
         
-        let current = right < 0 ? nil : lyrics[lyrics.startIndex...right].reversed().first { $0.enabled }
-        let next = lyrics[left..<lyrics.endIndex].first { $0.enabled }
+        let current = right < 0 ? nil : lines[lines.startIndex...right].reversed().first { $0.enabled }
+        let next = lines[left..<lines.endIndex].first { $0.enabled }
         return (current, next)
     }
     
@@ -215,7 +221,7 @@ extension Lyrics {
             }.joined()
         }
         
-        content += lyrics.map {
+        content += lines.map {
             return $0.contentString(withTimeTag: timeTag, translation: translation) + "\n"
         }.joined()
         
@@ -226,29 +232,29 @@ extension Lyrics {
 extension Lyrics {
     
     public func filtrate(using regex: NSRegularExpression) {
-        for (index, lyric) in lyrics.enumerated() {
-            let sentence = lyric.sentence.replacingOccurrences(of: " ", with: "")
-            let numberOfMatches = regex.numberOfMatches(in: sentence, options: [], range: sentence.range)
+        for (index, lyric) in lines.enumerated() {
+            let content = lyric.content.replacingOccurrences(of: " ", with: "")
+            let numberOfMatches = regex.numberOfMatches(in: content, options: [], range: content.range)
             if numberOfMatches > 0 {
-                lyrics[index].enabled = false
+                lines[index].enabled = false
                 continue
             }
         }
     }
     
     public func smartFiltrate() {
-        for (index, lyric) in lyrics.enumerated() {
-            let sentence = lyric.sentence
+        for (index, lyric) in lines.enumerated() {
+            let content = lyric.content
             if let idTagTitle = idTags[.title],
                 let idTagArtist = idTags[.artist],
-                sentence.contains(idTagTitle),
-                sentence.contains(idTagArtist) {
-                lyrics[index].enabled = false
+                content.contains(idTagTitle),
+                content.contains(idTagArtist) {
+                lines[index].enabled = false
             } else if let iTunesTitle = metadata.title,
                 let iTunesArtist = metadata.artist,
-                sentence.contains(iTunesTitle),
-                sentence.contains(iTunesArtist) {
-                lyrics[index].enabled = false
+                content.contains(iTunesTitle),
+                content.contains(iTunesArtist) {
+                lines[index].enabled = false
             }
         }
     }
