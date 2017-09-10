@@ -23,11 +23,9 @@ import Foundation
 public struct LyricsLine {
     
     public var sentence: String
-    public var attachment: [AttachmentType: LyricsLineAttachment] = [:]
+    public var attachment: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]
     public var position: TimeInterval
     public var enabled: Bool = true
-    
-//    public var
     
     public var timeTag: String {
         let min = Int(position / 60)
@@ -67,45 +65,15 @@ public struct LyricsLine {
     }
 }
 
-public protocol LyricsLineAttachment {
-    var stringRepresentation: String { get }
-}
-
-public extension LyricsLine {
+extension LyricsLine {
     
-    public struct AttachmentType: RawRepresentable {
-        
-        public var rawValue: String
-        
-        public init(_ rawValue: String) {
-            self.rawValue = rawValue
+    public func contentString(withTimeTag: Bool, translation: Bool) -> String {
+        var content = ""
+        if withTimeTag {
+            content += "[" + timeTag + "]"
         }
-        
-        public init(rawValue: String) {
-            self.init(rawValue)
-        }
-        
-        static let translation = AttachmentType("translation")
-    }
-    
-    public struct AttachmentTranslation: LyricsLineAttachment {
-        
-        public var translation: String
-        
-        public var stringRepresentation: String {
-            return translation
-        }
-    }
-}
-
-extension LyricsLine.AttachmentType: Equatable, Hashable {
-    
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-    
-    public static func ==(lhs: LyricsLine.AttachmentType, rhs: LyricsLine.AttachmentType) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        content += sentence
+        return content
     }
 }
 
@@ -117,18 +85,6 @@ extension LyricsLine: Equatable, Hashable {
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {
         return lhs.hashValue == rhs.hashValue
-    }
-}
-
-extension LyricsLine {
-    
-    public func contentString(withTimeTag: Bool, translation: Bool) -> String {
-        var content = ""
-        if withTimeTag {
-            content += "[" + timeTag + "]"
-        }
-        content += sentence
-        return content
     }
 }
 

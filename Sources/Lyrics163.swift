@@ -93,7 +93,7 @@ extension Lyrics {
             if lyrics[index].position == translation.lyrics[transIndex].position {
                 let transStr = translation.lyrics[transIndex].sentence
                 if !transStr.isEmpty {
-                    let translation = LyricsLine.AttachmentTranslation(translation: transStr)
+                    let translation = LyricsLineAttachmentTranslation(translation: transStr)
                     lyrics[index].attachment[.translation] = translation
                 }
                 lyrics.formIndex(after: &index)
