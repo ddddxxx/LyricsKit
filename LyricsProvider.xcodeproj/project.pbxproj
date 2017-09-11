@@ -11,6 +11,8 @@
 		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
 		BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */; };
 		BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */; };
+		BBC80B861F665AD80052578A /* LyricsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC80B851F665AD80052578A /* LyricsParser.swift */; };
+		BBC80B881F665F120052578A /* LyricsLineAttachmentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC80B871F665F120052578A /* LyricsLineAttachmentFactory.swift */; };
 		BBFAF74E1F650FB0001A50C3 /* LyricsLineAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFAF74D1F650FB0001A50C3 /* LyricsLineAttachment.swift */; };
 		OBJ_50 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_8 /* Lyrics.swift */; };
 		OBJ_51 /* Lyrics163.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Lyrics163.swift */; };
@@ -41,6 +43,8 @@
 		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconView.swift; sourceTree = "<group>"; };
 		BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconDrawing.swift; sourceTree = "<group>"; };
+		BBC80B851F665AD80052578A /* LyricsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsParser.swift; sourceTree = "<group>"; };
+		BBC80B871F665F120052578A /* LyricsLineAttachmentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineAttachmentFactory.swift; sourceTree = "<group>"; };
 		BBFAF74D1F650FB0001A50C3 /* LyricsLineAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineAttachment.swift; sourceTree = "<group>"; };
 		OBJ_10 /* LyricsGecimi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsGecimi.swift; sourceTree = "<group>"; };
 		OBJ_11 /* LyricsKugou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsKugou.swift; sourceTree = "<group>"; };
@@ -180,8 +184,10 @@
 			isa = PBXGroup;
 			children = (
 				BBFAF74D1F650FB0001A50C3 /* LyricsLineAttachment.swift */,
+				BBC80B871F665F120052578A /* LyricsLineAttachmentFactory.swift */,
 				OBJ_12 /* LyricsLine.swift */,
 				OBJ_8 /* Lyrics.swift */,
+				BBC80B851F665AD80052578A /* LyricsParser.swift */,
 				OBJ_13 /* LyricsProviderManager.swift */,
 				OBJ_17 /* ProviderProtocol.swift */,
 				BB4FBE5B1F0DFB480045A8FA /* Provider */,
@@ -275,6 +281,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				BBC80B881F665F120052578A /* LyricsLineAttachmentFactory.swift in Sources */,
 				OBJ_50 /* Lyrics.swift in Sources */,
 				OBJ_51 /* Lyrics163.swift in Sources */,
 				OBJ_52 /* LyricsGecimi.swift in Sources */,
@@ -288,6 +295,7 @@
 				OBJ_58 /* LyricsXiami.swift in Sources */,
 				BBFAF74E1F650FB0001A50C3 /* LyricsLineAttachment.swift in Sources */,
 				BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */,
+				BBC80B861F665AD80052578A /* LyricsParser.swift in Sources */,
 				OBJ_59 /* ProviderProtocol.swift in Sources */,
 				BB4FBE601F0E39250045A8FA /* Then.swift in Sources */,
 			);

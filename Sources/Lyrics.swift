@@ -60,11 +60,11 @@ public class Lyrics {
                 let lyricsContent = line.substring(from: line.characters.index(line.startIndex, offsetBy: index))
                 let components = lyricsContent.components(separatedBy: "【")
                 let lyricsStr: String
-                let translation: LyricsLineAttachmentTranslation?
+                let translation: LyricsLineAttachmentPlainText?
                 if components.count == 2, components[1].characters.last == "】" {
                     lyricsStr = components[0]
                     let tranStr = String(components[1].characters.dropLast())
-                    translation = LyricsLineAttachmentTranslation(translation: tranStr)
+                    translation = LyricsLineAttachmentPlainText(string: tranStr)
                 } else {
                     lyricsStr = lyricsContent
                     translation = nil
