@@ -32,12 +32,12 @@ public struct LyricsLineAttachmentTag: RawRepresentable {
         self.init(rawValue)
     }
     
-    static let translation: LyricsLineAttachmentTag = "tr"
-    static let timetag: LyricsLineAttachmentTag = "tt"
-    static let furigana: LyricsLineAttachmentTag = "fu"
-    static let romaji: LyricsLineAttachmentTag = "ro"
+    public static let translation: LyricsLineAttachmentTag = "tr"
+    public static let timetag: LyricsLineAttachmentTag = "tt"
+    public static let furigana: LyricsLineAttachmentTag = "fu"
+    public static let romaji: LyricsLineAttachmentTag = "ro"
     
-    static func translation(languageCode: String) -> LyricsLineAttachmentTag {
+    public static func translation(languageCode: String) -> LyricsLineAttachmentTag {
         if languageCode.isEmpty {
             return .init("tr")
         } else {
