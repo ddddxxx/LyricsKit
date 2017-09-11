@@ -53,13 +53,14 @@ func resolveLyricsLine(_ str: String) -> [LyricsLine]? {
 
 let id3TagPattern = "^\\[(.+):(.*)\\]$"
 let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern)
-func resolveID3Tag(_ str: String) -> (String, String)? {
+func resolveID3Tag(_ str: String) -> (Lyrics.IDTagKey, String)? {
     guard let match = id3TagRegex.firstMatch(in: str),
         let key = str[match.rangeAt(1)]?.trimmingCharacters(in: .whitespaces),
         let value = str[match.rangeAt(2)]?.trimmingCharacters(in: .whitespaces) else {
             return nil
     }
-    return (key, value)
+    let k = Lyrics.IDTagKey(key)
+    return (k, value)
 }
 
 let timeTagPattern = "\\[([-+]?\\d+):(\\d+(?:.\\d+)?)\\]"

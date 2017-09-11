@@ -38,32 +38,6 @@ public struct LyricsLine {
     public init(content: String, position: TimeInterval) {
         self.content = content
         self.position = position
-        normalization()
-    }
-    
-    public init?(content: String, timeTag: String) {
-        var tagContent = timeTag
-        tagContent.remove(at: tagContent.startIndex)
-        tagContent.remove(at: tagContent.index(before: tagContent.endIndex))
-        let components = tagContent.components(separatedBy: ":")
-        if components.count == 2,
-            let min = TimeInterval(components[0]),
-            let sec = TimeInterval(components[1]) {
-            let position = sec + min * 60
-            self.init(content: content, position: position)
-        } else {
-            return nil
-        }
-    }
-    
-    private static let serialWhiteSpacesRegex = try! NSRegularExpression(pattern: "( )+")
-    
-    private mutating func normalization() {
-        content = content.trimmingCharacters(in: .whitespaces)
-        content = LyricsLine.serialWhiteSpacesRegex.stringByReplacingMatches(in: content, options: [], range: content.range, withTemplate: " ")
-        if content == "." {
-            content = ""
-        }
     }
 }
 

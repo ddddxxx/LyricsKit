@@ -52,69 +52,59 @@ public class Lyrics {
         idTags = [:]
         metadata = MetaData(source: .Unknown)
         
+        var tempAttechment: [(TimeInterval, LyricsLineAttachmentTag, LyricsLineAttachment)] = []
+        
         let lyricsLines = lrcContents.components(separatedBy: .newlines)
         for line in lyricsLines {
-            let timeTagsMatched = Lyrics.timeTagRegex.matches(in: line, options: [], range: line.range)
-            if timeTagsMatched.count > 0 {
-                let index: Int = timeTagsMatched.last!.range.location + timeTagsMatched.last!.range.length
-                let lyricsContent = line.substring(from: line.characters.index(line.startIndex, offsetBy: index))
-                let components = lyricsContent.components(separatedBy: "【")
-                let lyricsStr: String
-                let translation: LyricsLineAttachmentPlainText?
-                if components.count == 2, components[1].characters.last == "】" {
-                    lyricsStr = components[0]
-                    let tranStr = String(components[1].characters.dropLast())
-                    translation = LyricsLineAttachmentPlainText(string: tranStr)
+            if let attechment = resolveLyricsLineAttachment(line) {
+                tempAttechment += attechment
+                continue
+            }
+            if let l = resolveLyricsLine(line) {
+                lines += l
+                continue
+            }
+            if let tag = resolveID3Tag(line) {
+                idTags[tag.0] = tag.1
+                continue
+            }
+            // TODO: unresolved lines
+        }
+        
+        guard !lines.isEmpty else {
+            return nil
+        }
+        
+        lines.sort {
+            $0.position < $1.position
+        }
+        
+        for index in 0..<lines.count {
+            lines[index].lyrics = self
+        }
+        
+        func indexOf(position: TimeInterval) -> Int? {
+            var left = lines.startIndex
+            var right = lines.endIndex - 1
+            while left <= right {
+                let mid = (left + right) / 2
+                if lines[mid].position < position {
+                    left = mid + 1
+                } else if lines[mid].position > position {
+                    right = mid - 1
                 } else {
-                    lyricsStr = lyricsContent
-                    translation = nil
-                }
-                let lyrics = timeTagsMatched.flatMap { result -> LyricsLine? in
-                    let timeTagStr = (line as NSString).substring(with: result.range) as String
-                    var line = LyricsLine(content: lyricsStr, timeTag: timeTagStr)
-                    line?.attachment[.translation] = translation
-                    return line
-                }
-                self.lines += lyrics
-            } else {
-                let idTagsMatched = Lyrics.idTagRegex.matches(in: line, range: line.range)
-                guard idTagsMatched.count > 0 else {
-                    continue
-                }
-                for result in idTagsMatched {
-                    var tagStr = ((line as NSString).substring(with: result.range)) as String
-                    tagStr.remove(at: tagStr.startIndex)
-                    tagStr.remove(at: tagStr.index(before: tagStr.endIndex))
-                    let components = tagStr.components(separatedBy: ":")
-                    if components.count == 2 {
-                        let key = IDTagKey(components[0])
-                        let value = components[1]
-                        idTags[key] = value
-                    }
+                    return mid
                 }
             }
-        }
-        
-        if lines.count == 0 {
             return nil
         }
         
-        lines = lines.sorted {
-            $0.position < $1.position
-        }.map {
-            var line = $0
-            line.lyrics = self
-            return line
+        for attechment in tempAttechment {
+            guard let index = indexOf(position: attechment.0) else {
+                return nil
+            }
+            lines[index].attachment[attechment.1] = attechment.2
         }
-    }
-    
-    public convenience init?(url: URL) {
-        guard let lrcContent = try? String(contentsOf: url) else {
-            return nil
-        }
-        
-        self.init(lrcContent)
-        metadata.lyricsURL = url
     }
     
     public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {

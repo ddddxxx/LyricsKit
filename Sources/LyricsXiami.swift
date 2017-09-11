@@ -51,10 +51,13 @@ public final class LyricsXiami: MultiResultLyricsProvider {
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,
                 let parseResult = LyricsXiamiXMLParser().parseLrcURL(data: data),
-                let lrc = Lyrics(url: parseResult.lyricsURL) else {
+                // FIXME: async fetch lyrics
+                let lrcStr = try? String(contentsOf: parseResult.lyricsURL),
+                let lrc = Lyrics(lrcStr) else {
                 completionHandler(nil)
                 return
             }
+            lrc.metadata.lyricsURL = parseResult.lyricsURL
             lrc.metadata.source = .Xiami
             lrc.metadata.artworkURL = parseResult.artworkURL
             completionHandler(lrc)
