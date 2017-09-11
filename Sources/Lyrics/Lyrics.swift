@@ -103,7 +103,7 @@ public class Lyrics {
             guard let index = indexOf(position: attechment.0) else {
                 return nil
             }
-            lines[index].attachment[attechment.1] = attechment.2
+            lines[index].attachments[attechment.1] = attechment.2
         }
     }
     

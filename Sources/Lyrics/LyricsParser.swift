@@ -54,7 +54,7 @@ func resolveLyricsLine(_ str: String) -> [LyricsLine]? {
     
     if let translationStr = str[match.rangeAt(3)] {
         let translationAttachment = LyricsLineAttachmentPlainText(string: translationStr)
-        line.attachment[.translation] = translationAttachment
+        line.attachments[.translation] = translationAttachment
     }
     
     return timeTags.map { timeTag in

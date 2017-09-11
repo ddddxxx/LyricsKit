@@ -23,7 +23,7 @@ import Foundation
 public struct LyricsLine {
     
     public var content: String
-    public var attachment: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]
+    public var attachments: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]
     public var position: TimeInterval
     public var enabled: Bool = true
     
@@ -41,18 +41,6 @@ public struct LyricsLine {
     }
 }
 
-extension LyricsLine {
-    
-    public func contentString(withTimeTag: Bool, translation: Bool) -> String {
-        var content = ""
-        if withTimeTag {
-            content += "[" + timeTag + "]"
-        }
-        content += content
-        return content
-    }
-}
-
 extension LyricsLine: Equatable, Hashable {
     
     public var hashValue: Int {
@@ -67,7 +55,9 @@ extension LyricsLine: Equatable, Hashable {
 extension LyricsLine: CustomStringConvertible {
     
     public var description: String {
-        return contentString(withTimeTag: true, translation: true)
+        return ([content] + attachments.map { "[\($0.key)]\($0.value.stringRepresentation)" }).map {
+            "[\(timeTag)]\($0)"
+        }.joined(separator: "\n")
     }
 }
 

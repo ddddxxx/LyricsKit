@@ -94,7 +94,7 @@ extension Lyrics {
                 let transStr = translation.lines[transIndex].content
                 if !transStr.isEmpty {
                     let translation = LyricsLineAttachmentPlainText(string: transStr)
-                    lines[index].attachment[.translation] = translation
+                    lines[index].attachments[.translation] = translation
                 }
                 lines.formIndex(after: &index)
                 translation.lines.formIndex(after: &transIndex)
