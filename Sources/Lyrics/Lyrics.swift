@@ -200,27 +200,6 @@ public class Lyrics {
 
 extension Lyrics {
     
-    public func contentString(withMetadata: Bool, ID3: Bool, timeTag: Bool, translation: Bool) -> String {
-        var content = ""
-        if withMetadata {
-            content += metadata.description
-        }
-        if ID3 {
-            content += idTags.map {
-                return "[\($0.key.rawValue):\($0.value)]\n"
-            }.joined()
-        }
-        
-        content += lines.map {
-            return $0.contentString(withTimeTag: timeTag, translation: translation) + "\n"
-        }.joined()
-        
-        return content
-    }
-}
-
-extension Lyrics {
-    
     public func filtrate(using regex: NSRegularExpression) {
         for (index, lyric) in lines.enumerated() {
             let content = lyric.content.replacingOccurrences(of: " ", with: "")
@@ -387,7 +366,7 @@ extension Lyrics.MetaData.SearchTerm: CustomStringConvertible {
 extension Lyrics.MetaData: CustomStringConvertible {
     
     public var description: String {
-        return Mirror(reflecting: self).children.map { "[\($0!):\($1)]\n" }.joined()
+        return Mirror(reflecting: self).children.map { "[\($0!):\($1)]" }.joined(separator: "\n")
     }
 }
 
@@ -401,6 +380,9 @@ extension Lyrics.IDTagKey: CustomStringConvertible {
 extension Lyrics: CustomStringConvertible {
     
     public var description: String {
-        return contentString(withMetadata: true, ID3: true, timeTag: true, translation: true)
+        var components = [metadata.description]
+        components += idTags.map { "[\($0.key.rawValue):\($0.value)]" }
+        components += lines.map { $0.description }
+        return components.joined(separator: "\n")
     }
 }
