@@ -13,6 +13,8 @@
 		BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */; };
 		BBA7D8E21F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */; };
 		BBA7D8E51F69589300EE9E3E /* NetEaseResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E41F69589300EE9E3E /* NetEaseResponseSingleLyrics.swift */; };
+		BBA7D8E81F69601A00EE9E3E /* QQResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E71F69601A00EE9E3E /* QQResponseSearchResult.swift */; };
+		BBA7D8EA1F6964AF00EE9E3E /* QQResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E91F6964AF00EE9E3E /* QQResponseSingleLyrics.swift */; };
 		BBAB68551F66C9DC005D583F /* LyricsLineAttachmentTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAB68541F66C9DC005D583F /* LyricsLineAttachmentTag.swift */; };
 		BBAB68571F66CA44005D583F /* LyricsLineAttachmentPlainText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAB68561F66CA44005D583F /* LyricsLineAttachmentPlainText.swift */; };
 		BBAB68591F66CA6F005D583F /* LyricsLineAttachmentTimeLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAB68581F66CA6F005D583F /* LyricsLineAttachmentTimeLine.swift */; };
@@ -51,6 +53,8 @@
 		BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconDrawing.swift; sourceTree = "<group>"; };
 		BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseResponseSearchResult.swift; sourceTree = "<group>"; };
 		BBA7D8E41F69589300EE9E3E /* NetEaseResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseResponseSingleLyrics.swift; sourceTree = "<group>"; };
+		BBA7D8E71F69601A00EE9E3E /* QQResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QQResponseSearchResult.swift; sourceTree = "<group>"; };
+		BBA7D8E91F6964AF00EE9E3E /* QQResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QQResponseSingleLyrics.swift; sourceTree = "<group>"; };
 		BBAB68541F66C9DC005D583F /* LyricsLineAttachmentTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineAttachmentTag.swift; sourceTree = "<group>"; };
 		BBAB68561F66CA44005D583F /* LyricsLineAttachmentPlainText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineAttachmentPlainText.swift; sourceTree = "<group>"; };
 		BBAB68581F66CA6F005D583F /* LyricsLineAttachmentTimeLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineAttachmentTimeLine.swift; sourceTree = "<group>"; };
@@ -121,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				BBA7D8E31F69584C00EE9E3E /* NetEase */,
+				BBA7D8E61F695F4100EE9E3E /* QQ */,
 			);
 			name = JSONModel;
 			path = Sources/Provider/JSONModel;
@@ -134,6 +139,16 @@
 			);
 			name = NetEase;
 			path = Sources/Provider/JSONModel/NetEase;
+			sourceTree = SOURCE_ROOT;
+		};
+		BBA7D8E61F695F4100EE9E3E /* QQ */ = {
+			isa = PBXGroup;
+			children = (
+				BBA7D8E71F69601A00EE9E3E /* QQResponseSearchResult.swift */,
+				BBA7D8E91F6964AF00EE9E3E /* QQResponseSingleLyrics.swift */,
+			);
+			name = QQ;
+			path = Sources/Provider/JSONModel/QQ;
 			sourceTree = SOURCE_ROOT;
 		};
 		BBAB684F1F66C7D0005D583F /* Provider */ = {
@@ -324,6 +339,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				BBA7D8EA1F6964AF00EE9E3E /* QQResponseSingleLyrics.swift in Sources */,
 				BBC80B881F665F120052578A /* LyricsLineAttachmentFactory.swift in Sources */,
 				BBAB68551F66C9DC005D583F /* LyricsLineAttachmentTag.swift in Sources */,
 				OBJ_50 /* Lyrics.swift in Sources */,
@@ -345,6 +361,7 @@
 				BBFAF74E1F650FB0001A50C3 /* LyricsLineAttachment.swift in Sources */,
 				BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */,
 				BBC80B861F665AD80052578A /* LyricsParser.swift in Sources */,
+				BBA7D8E81F69601A00EE9E3E /* QQResponseSearchResult.swift in Sources */,
 				OBJ_59 /* ProviderProtocol.swift in Sources */,
 				BB4FBE601F0E39250045A8FA /* Then.swift in Sources */,
 			);
