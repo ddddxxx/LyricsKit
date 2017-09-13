@@ -1,5 +1,5 @@
 //
-//  LyricsLineAttachmentRangeBased.swift
+//  LyricsLineAttachmentRangeAttribute.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,49 +20,52 @@
 
 import Foundation
 
-public struct LyricsLineAttachmentRangeBased: LyricsLineAttachment {
+public struct LyricsLineAttachmentRangeAttribute: LyricsLineAttachment {
     
-    public struct Tag: RawRepresentable {
+    public struct Tag {
         
         public var content: String
         public var range: Range<Int>
-        
-        public var rawValue: String {
-            return "<\(content),\(range.lowerBound),\(range.upperBound)>"
-        }
         
         public init(content: String, range: Range<Int>) {
             self.content = content
             self.range = range
         }
-        
-        public init?(rawValue: String) {
-            let components = rawValue.components(separatedBy: ",")
-            guard components.count == 3,
-                let lb = Int(components[1]),
-                let ub = Int(components[2]),
-                lb < ub else {
-                    return nil
-            }
-            self.content = components[0]
-            self.range = lb..<ub
-        }
     }
     
     public var attachment: [Tag]
     
-    public var stringRepresentation: String {
-        return attachment.map { $0.rawValue }.joined()
+    public var description: String {
+        return attachment.map { $0.description }.joined()
     }
     
     static private let rangeAttachmentPattern = "<([^,]+,\\d+,\\d+)>"
     static private let rangeAttachmentRegex = try! NSRegularExpression(pattern: rangeAttachmentPattern)
     
-    public init?(string: String) {
-        let matchs = LyricsLineAttachmentRangeBased.rangeAttachmentRegex.matches(in: string)
-        attachment = matchs.flatMap { Tag(rawValue: string[$0.rangeAt(1)]!) }
+    public init?(_ description: String) {
+        let matchs = LyricsLineAttachmentRangeAttribute.rangeAttachmentRegex.matches(in: description)
+        attachment = matchs.flatMap { Tag(description[$0.rangeAt(1)]!) }
         guard !attachment.isEmpty else {
             return nil
         }
+    }
+}
+
+extension LyricsLineAttachmentRangeAttribute.Tag: LosslessStringConvertible {
+    
+    public var description: String {
+        return "<\(content),\(range.lowerBound),\(range.upperBound)>"
+    }
+    
+    public init?(_ description: String) {
+        let components = description.components(separatedBy: ",")
+        guard components.count == 3,
+            let lb = Int(components[1]),
+            let ub = Int(components[2]),
+            lb < ub else {
+                return nil
+        }
+        self.content = components[0]
+        self.range = lb..<ub
     }
 }

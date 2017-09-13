@@ -22,7 +22,7 @@ import Foundation
 
 public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     
-    public struct Tag: RawRepresentable {
+    public struct Tag {
         public var index: Int
         public var timeTag: TimeInterval  // since the line begin
         
@@ -31,23 +31,8 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
             set { timeTag = TimeInterval(newValue) / 1000 }
         }
         
-        public var rawValue: String {
-            return "<\(timeTagMSec),\(index)>"
-        }
-        
         public init(timeTag: TimeInterval, index: Int) {
             self.timeTag = timeTag
-            self.index = index
-        }
-        
-        public init?(rawValue: String) {
-            let components = rawValue.components(separatedBy: ",")
-            guard components.count == 2,
-                let msec = Int(components[0]),
-                let index = Int(components[1]) else {
-                    return nil
-            }
-            self.timeTag = TimeInterval(msec) / 1000
             self.index = index
         }
     }
@@ -60,10 +45,8 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
         set { duration = newValue.map { TimeInterval($0) / 1000 } }
     }
     
-    public var stringRepresentation: String {
-        var result = attachment.map {
-            "<\($0.timeTagMSec),\($0.index)>"
-            }.joined()
+    public var description: String {
+        var result = attachment.map { $0.description }.joined()
         if let duration = duration {
             result += "<\(duration)?"
         }
@@ -76,14 +59,32 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     static private let timeLineAttachmentDurationPattern = "<(\\d+)>"
     static private let timeLineAttachmentDurationRegex = try! NSRegularExpression(pattern: timeLineAttachmentDurationPattern)
     
-    public init?(string: String) {
-        let matchs = LyricsLineAttachmentTimeLine.timeLineAttachmentRegex.matches(in: string)
-        attachment = matchs.flatMap { Tag(rawValue: string[$0.rangeAt(1)]!) }
+    public init?(_ description: String) {
+        let matchs = LyricsLineAttachmentTimeLine.timeLineAttachmentRegex.matches(in: description)
+        attachment = matchs.flatMap { Tag(description[$0.rangeAt(1)]!) }
         guard !attachment.isEmpty else {
             return nil
         }
-        if let match = LyricsLineAttachmentTimeLine.timeLineAttachmentDurationRegex.firstMatch(in: string) {
-            durationMSec = Int(string[match.rangeAt(1)]!)
+        if let match = LyricsLineAttachmentTimeLine.timeLineAttachmentDurationRegex.firstMatch(in: description) {
+            durationMSec = Int(description[match.rangeAt(1)]!)
         }
+    }
+}
+
+extension LyricsLineAttachmentTimeLine.Tag: LosslessStringConvertible {
+    
+    public var description: String {
+        return "<\(timeTagMSec),\(index)>"
+    }
+    
+    public init?(_ description: String) {
+        let components = description.components(separatedBy: ",")
+        guard components.count == 2,
+            let msec = Int(components[0]),
+            let index = Int(components[1]) else {
+                return nil
+        }
+        self.timeTag = TimeInterval(msec) / 1000
+        self.index = index
     }
 }

@@ -25,11 +25,11 @@ enum LyricsLineAttachmentFactory {
     static func createAttachment(str: String, tag: LyricsLineAttachmentTag) -> LyricsLineAttachment? {
         switch tag {
         case .timetag:
-            return LyricsLineAttachmentTimeLine(string: str)
+            return LyricsLineAttachmentTimeLine(str)
         case .furigana, .romaji:
-            return LyricsLineAttachmentRangeBased(string: str)
+            return LyricsLineAttachmentRangeAttribute(str)
         default:
-            return LyricsLineAttachmentPlainText(string: str)
+            return LyricsLineAttachmentPlainText(str)
         }
     }
 }

@@ -20,7 +20,4 @@
 
 import Foundation
 
-public protocol LyricsLineAttachment {
-    var stringRepresentation: String { get }
-    init?(string: String)
-}
+public protocol LyricsLineAttachment: LosslessStringConvertible {}

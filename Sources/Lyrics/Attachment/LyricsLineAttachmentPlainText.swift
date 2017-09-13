@@ -24,11 +24,11 @@ public struct LyricsLineAttachmentPlainText: LyricsLineAttachment {
     
     public var text: String
     
-    public var stringRepresentation: String {
+    public var description: String {
         return text
     }
     
-    public init(string: String) {
-        text = string
+    public init(_ description: String) {
+        text = description
     }
 }
