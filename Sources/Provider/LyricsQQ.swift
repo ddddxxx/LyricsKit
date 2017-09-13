@@ -40,10 +40,10 @@ public final class LyricsQQ: MultiResultLyricsProvider {
         let task = session.dataTask(with: req) { data, resp, error in
             let ids = data.map(JSON.init)?["data"]["song"]["list"].array?.flatMap { (item: JSON) -> Int? in
                 guard let f = item["f"].string,
-                    let range = f.range(of: "|") else {
+                    let index = f.index(of: "|") else {
                         return nil
                 }
-                return Int(f.substring(to: range.lowerBound))
+                return Int(f[..<index])
             } ?? []
             completionHandler(ids)
         }
