@@ -64,7 +64,7 @@
 		OBJ_17 /* ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderProtocol.swift; sourceTree = "<group>"; };
 		OBJ_20 /* LyricsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsProviderTests.swift; sourceTree = "<group>"; };
 		OBJ_29 /* LyricsProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LyricsProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_30 /* LyricsProviderTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = LyricsProviderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJ_30 /* LyricsProviderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = LyricsProviderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		OBJ_9 /* Lyrics163.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics163.swift; sourceTree = "<group>"; };
@@ -242,6 +242,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					OBJ_45 = {
+						LastSwiftMigration = 0900;
+					};
+					OBJ_65 = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "LyricsProvider" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -394,6 +402,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
 				TARGET_NAME = LyricsProvider;
 			};
 			name = Debug;
@@ -414,6 +423,7 @@
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
 				TARGET_NAME = LyricsProvider;
 			};
 			name = Release;
@@ -431,6 +441,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_VERSION = 4.0;
 				TARGET_NAME = LyricsProviderTests;
 			};
 			name = Debug;
@@ -448,6 +459,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_VERSION = 4.0;
 				TARGET_NAME = LyricsProviderTests;
 			};
 			name = Release;

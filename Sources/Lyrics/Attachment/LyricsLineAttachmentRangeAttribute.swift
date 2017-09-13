@@ -44,7 +44,7 @@ public struct LyricsLineAttachmentRangeAttribute: LyricsLineAttachment {
     
     public init?(_ description: String) {
         let matchs = LyricsLineAttachmentRangeAttribute.rangeAttachmentRegex.matches(in: description)
-        attachment = matchs.flatMap { Tag(description[$0.rangeAt(1)]!) }
+        attachment = matchs.flatMap { Tag(description[$0.range(at: 1)]!) }
         guard !attachment.isEmpty else {
             return nil
         }

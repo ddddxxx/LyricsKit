@@ -26,13 +26,13 @@ func resolveLyricsLineAttachment(_ str: String) -> [(TimeInterval, LyricsLineAtt
     guard let match = lyricsLineAttachmentRegex.firstMatch(in: str) else {
         return nil
     }
-    let timeTagStr = str[match.rangeAt(1)]!
+    let timeTagStr = str[match.range(at: 1)]!
     let timeTags = resolveTimeTag(timeTagStr)
     
-    let attachmentTagStr = str[match.rangeAt(2)]!
+    let attachmentTagStr = str[match.range(at: 2)]!
     let attachmentTag = LyricsLineAttachmentTag(attachmentTagStr)
     
-    let attachmentStr = str[match.rangeAt(3)] ?? ""
+    let attachmentStr = str[match.range(at: 3)] ?? ""
     guard let attachment = LyricsLineAttachmentFactory.createAttachment(str: attachmentStr, tag: attachmentTag) else {
         return nil
     }
@@ -46,13 +46,13 @@ func resolveLyricsLine(_ str: String) -> [LyricsLine]? {
     guard let match = lyricsLineRegex.firstMatch(in: str) else {
         return nil
     }
-    let timeTagStr = str[match.rangeAt(1)]!
+    let timeTagStr = str[match.range(at: 1)]!
     let timeTags = resolveTimeTag(timeTagStr)
     
-    let lyricsContentStr = str[match.rangeAt(2)]!
+    let lyricsContentStr = str[match.range(at: 2)]!
     var line = LyricsLine(content: lyricsContentStr, position: 0)
     
-    if let translationStr = str[match.rangeAt(3)] {
+    if let translationStr = str[match.range(at: 3)] {
         let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
         line.attachments[.translation] = translationAttachment
     }
@@ -68,8 +68,8 @@ private let id3TagPattern = "^\\[(.+):(.*)\\]$"
 private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern)
 func resolveID3Tag(_ str: String) -> (Lyrics.IDTagKey, String)? {
     guard let match = id3TagRegex.firstMatch(in: str),
-        let key = str[match.rangeAt(1)]?.trimmingCharacters(in: .whitespaces),
-        let value = str[match.rangeAt(2)]?.trimmingCharacters(in: .whitespaces) else {
+        let key = str[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
+        let value = str[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces) else {
             return nil
     }
     let k = Lyrics.IDTagKey(key)
@@ -81,8 +81,8 @@ private let timeTagRegex = try! NSRegularExpression(pattern: timeTagPattern)
 fileprivate func resolveTimeTag(_ str: String) -> [TimeInterval] {
     let matchs = timeTagRegex.matches(in: str)
     return matchs.map { match in
-        let min = Double(str[match.rangeAt(1)]!)!
-        let sec = Double(str[match.rangeAt(2)]!)!
+        let min = Double(str[match.range(at: 1)]!)!
+        let sec = Double(str[match.range(at: 2)]!)!
         return min * 60 + sec
     }
 }

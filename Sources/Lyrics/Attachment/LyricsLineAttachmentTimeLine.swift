@@ -61,12 +61,12 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     
     public init?(_ description: String) {
         let matchs = LyricsLineAttachmentTimeLine.timeLineAttachmentRegex.matches(in: description)
-        attachment = matchs.flatMap { Tag(description[$0.rangeAt(1)]!) }
+        attachment = matchs.flatMap { Tag(description[$0.range(at: 1)]!) }
         guard !attachment.isEmpty else {
             return nil
         }
         if let match = LyricsLineAttachmentTimeLine.timeLineAttachmentDurationRegex.firstMatch(in: description) {
-            durationMSec = Int(description[match.rangeAt(1)]!)
+            durationMSec = Int(description[match.range(at: 1)]!)
         }
     }
 }
