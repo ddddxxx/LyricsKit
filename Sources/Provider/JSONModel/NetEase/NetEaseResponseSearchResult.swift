@@ -133,3 +133,9 @@ struct NetEaseResponseModelMusic: Decodable {
     
     // let name: Any?
 }
+
+extension NetEaseResponseSearchResult {
+    var songs: [Result.Song] {
+        return result.songs
+    }
+}

@@ -21,9 +21,9 @@
 import Foundation
 
 struct NetEaseResponseSingleLyrics: Decodable {
-    let lrc: Lyric
-    let klyric: Lyric
-    let tlyric: Lyric
+    let lrc: Lyric?
+    let klyric: Lyric?
+    let tlyric: Lyric?
     let lyricUser: User?
     
     /*
@@ -35,16 +35,22 @@ struct NetEaseResponseSingleLyrics: Decodable {
      */
     
     struct User: Decodable {
+        let nickname: String
+        
+        /*
         let id: Int
         let status: Int
         let demand: Int
         let userid: Int
-        let nickname: String
         let uptime: Int
+         */
     }
     
     struct Lyric: Decodable {
+        let lyric: String
+        
+        /*
         let version: Int
-        let lyric: String?
+         */
     }
 }

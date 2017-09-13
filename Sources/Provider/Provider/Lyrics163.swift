@@ -49,8 +49,7 @@ public final class Lyrics163: MultiResultLyricsProvider {
                 completionHandler([])
                 return
             }
-            let array = result.result.songs
-            completionHandler(array)
+            completionHandler(result.songs)
         }
         task.resume()
     }
@@ -61,12 +60,12 @@ public final class Lyrics163: MultiResultLyricsProvider {
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,
                 let result = try? JSONDecoder().decode(NetEaseResponseSingleLyrics.self, from: data),
-                let lrcContent = result.lrc.lyric,
+                let lrcContent = result.lrc?.lyric,
                 let lrc = Lyrics(lrcContent) else {
                     completionHandler(nil)
                     return
             }
-            if let transLrcContent = result.tlyric.lyric,
+            if let transLrcContent = result.tlyric?.lyric,
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
                 lrc.metadata.includeTranslation = true
