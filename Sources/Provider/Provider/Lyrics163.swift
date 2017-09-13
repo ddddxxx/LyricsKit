@@ -31,7 +31,7 @@ public final class Lyrics163: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) {
         let keyword = term.description
         let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         let url = URL(string: "http://music.163.com/api/search/pc")!
@@ -44,39 +44,41 @@ public final class Lyrics163: MultiResultLyricsProvider {
             $0.httpBody = body
         }
         let task = session.dataTask(with: req) { data, resp, error in
-            let array = data.map(JSON.init)?["result"]["songs"].array ?? []
+            guard let data = data,
+                let result = try? JSONDecoder().decode(NetEaseResponseSearchResult.self, from: data) else {
+                completionHandler([])
+                return
+            }
+            let array = result.result.songs
             completionHandler(array)
         }
         task.resume()
     }
     
-    func getLyricsWithToken(token: JSON, completionHandler: @escaping (Lyrics?) -> Void) {
-        guard let id = token["id"].number?.intValue else {
-            completionHandler(nil)
-            return
-        }
-        let url = URL(string: "http://music.163.com/api/song/lyric?id=\(id)&lv=1&kv=1&tv=-1")!
+    func getLyricsWithToken(token: NetEaseResponseSearchResult.Result.Song, completionHandler: @escaping (Lyrics?) -> Void) {
+        let url = URL(string: "http://music.163.com/api/song/lyric?id=\(token.id)&lv=1&kv=1&tv=-1")!
         let req = URLRequest(url: url)
         let task = session.dataTask(with: req) { data, resp, error in
-            guard let json = data.map(JSON.init),
-                let lrcContent = json["lrc"]["lyric"].string,
+            guard let data = data,
+                let result = try? JSONDecoder().decode(NetEaseResponseSingleLyrics.self, from: data),
+                let lrcContent = result.lrc.lyric,
                 let lrc = Lyrics(lrcContent) else {
-                completionHandler(nil)
-                return
+                    completionHandler(nil)
+                    return
             }
-            if let transLrcContent = json["tlyric"]["lyric"].string,
+            if let transLrcContent = result.tlyric.lyric,
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
                 lrc.metadata.includeTranslation = true
             }
             
-            lrc.idTags[.title]   = token["name"].string
-            lrc.idTags[.artist]  = token["artists"][0]["name"].string
-            lrc.idTags[.album]   = token["album"]["name"].string
-            lrc.idTags[.lrcBy]   = "163"
+            lrc.idTags[.title]   = token.name
+            lrc.idTags[.artist]  = token.artists.first?.name
+            lrc.idTags[.album]   = token.album.name
+            lrc.idTags[.lrcBy]   = result.lyricUser?.nickname
             
             lrc.metadata.source      = .Music163
-            lrc.metadata.artworkURL  = token["album"]["picUrl"].url
+            lrc.metadata.artworkURL  = token.album.picUrl
             
             completionHandler(lrc)
         }
