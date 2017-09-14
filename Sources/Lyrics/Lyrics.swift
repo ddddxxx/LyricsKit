@@ -22,7 +22,7 @@ import Foundation
 
 public class Lyrics {
     
-    public var lyrics: [LyricsLine]
+    public var lines: [LyricsLine]
     public var idTags: [IDTagKey: String]
     public var metadata: MetaData
     
@@ -48,81 +48,80 @@ public class Lyrics {
     private static let timeTagRegex = try! NSRegularExpression(pattern: "\\[\\d+:\\d+.\\d+\\]|\\[\\d+:\\d+\\]")
     
     public init?(_ lrcContents: String) {
-        lyrics = []
+        lines = []
         idTags = [:]
         metadata = MetaData(source: .Unknown)
         
+        var tempAttechment: [(TimeInterval, LyricsLineAttachmentTag, LyricsLineAttachment)] = []
+        
         let lyricsLines = lrcContents.components(separatedBy: .newlines)
         for line in lyricsLines {
-            let timeTagsMatched = Lyrics.timeTagRegex.matches(in: line, options: [], range: line.range)
-            if timeTagsMatched.count > 0 {
-                let index: Int = timeTagsMatched.last!.range.location + timeTagsMatched.last!.range.length
-                let lyricsSentence: String = line.substring(from: line.characters.index(line.startIndex, offsetBy: index))
-                let components = lyricsSentence.components(separatedBy: "【")
-                let lyricsStr: String
-                let translation: String?
-                if components.count == 2, components[1].characters.last == "】" {
-                    lyricsStr = components[0]
-                    translation = String(components[1].characters.dropLast())
+            if let attechment = resolveLyricsLineAttachment(line) {
+                tempAttechment += attechment
+                continue
+            }
+            if let l = resolveLyricsLine(line) {
+                lines += l
+                continue
+            }
+            if let tag = resolveID3Tag(line) {
+                idTags[tag.0] = tag.1
+                continue
+            }
+            // TODO: unresolved lines
+        }
+        
+        guard !lines.isEmpty else {
+            return nil
+        }
+        
+        lines.sort {
+            $0.position < $1.position
+        }
+        
+        for index in 0..<lines.count {
+            lines[index].lyrics = self
+        }
+        
+        func indexOf(position: TimeInterval) -> Int? {
+            var left = lines.startIndex
+            var right = lines.endIndex - 1
+            while left <= right {
+                let mid = (left + right) / 2
+                if lines[mid].position < position {
+                    left = mid + 1
+                } else if lines[mid].position > position {
+                    right = mid - 1
                 } else {
-                    lyricsStr = lyricsSentence
-                    translation = nil
-                }
-                let lyrics = timeTagsMatched.flatMap { result -> LyricsLine? in
-                    let timeTagStr = (line as NSString).substring(with: result.range) as String
-                    return LyricsLine(sentence: lyricsStr, translation: translation, timeTag: timeTagStr)
-                }
-                self.lyrics += lyrics
-            } else {
-                let idTagsMatched = Lyrics.idTagRegex.matches(in: line, range: line.range)
-                guard idTagsMatched.count > 0 else {
-                    continue
-                }
-                for result in idTagsMatched {
-                    var tagStr = ((line as NSString).substring(with: result.range)) as String
-                    tagStr.remove(at: tagStr.startIndex)
-                    tagStr.remove(at: tagStr.index(before: tagStr.endIndex))
-                    let components = tagStr.components(separatedBy: ":")
-                    if components.count == 2 {
-                        let key = IDTagKey(components[0])
-                        let value = components[1]
-                        idTags[key] = value
-                    }
+                    return mid
                 }
             }
-        }
-        
-        if lyrics.count == 0 {
             return nil
         }
         
-        lyrics.sort() { $0.position < $1.position }
-    }
-    
-    public convenience init?(url: URL) {
-        guard let lrcContent = try? String(contentsOf: url) else {
-            return nil
+        for attechment in tempAttechment {
+            guard let index = indexOf(position: attechment.0) else {
+                return nil
+            }
+            lines[index].attachments[attechment.1] = attechment.2
         }
-        
-        self.init(lrcContent)
-        metadata.lyricsURL = url
     }
     
     public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {
         let position = position + timeDelay
-        var left = lyrics.startIndex
-        var right = lyrics.endIndex - 1
+        var left = lines.startIndex
+        var right = lines.endIndex - 1
         while left <= right {
             let mid = (left + right) / 2
-            if lyrics[mid].position <= position {
+            if lines[mid].position <= position {
                 left = mid + 1
             } else {
                 right = mid - 1
             }
         }
         
-        let current = right < 0 ? nil : lyrics[lyrics.startIndex...right].reversed().first { $0.enabled }
-        let next = lyrics[left..<lyrics.endIndex].first { $0.enabled }
+        let current = right < 0 ? nil : lines[lines.startIndex...right].reversed().first { $0.enabled }
+        let next = lines[left..<lines.endIndex].first { $0.enabled }
         return (current, next)
     }
     
@@ -201,51 +200,30 @@ public class Lyrics {
 
 extension Lyrics {
     
-    public func contentString(withMetadata: Bool, ID3: Bool, timeTag: Bool, translation: Bool) -> String {
-        var content = ""
-        if withMetadata {
-            content += metadata.description
-        }
-        if ID3 {
-            content += idTags.map {
-                return "[\($0.key.rawValue):\($0.value)]\n"
-            }.joined()
-        }
-        
-        content += lyrics.map {
-            return $0.contentString(withTimeTag: timeTag, translation: translation) + "\n"
-        }.joined()
-        
-        return content
-    }
-}
-
-extension Lyrics {
-    
     public func filtrate(using regex: NSRegularExpression) {
-        for (index, lyric) in lyrics.enumerated() {
-            let sentence = lyric.sentence.replacingOccurrences(of: " ", with: "")
-            let numberOfMatches = regex.numberOfMatches(in: sentence, options: [], range: sentence.range)
+        for (index, lyric) in lines.enumerated() {
+            let content = lyric.content.replacingOccurrences(of: " ", with: "")
+            let numberOfMatches = regex.numberOfMatches(in: content, options: [], range: content.range)
             if numberOfMatches > 0 {
-                lyrics[index].enabled = false
+                lines[index].enabled = false
                 continue
             }
         }
     }
     
     public func smartFiltrate() {
-        for (index, lyric) in lyrics.enumerated() {
-            let sentence = lyric.sentence
+        for (index, lyric) in lines.enumerated() {
+            let content = lyric.content
             if let idTagTitle = idTags[.title],
                 let idTagArtist = idTags[.artist],
-                sentence.contains(idTagTitle),
-                sentence.contains(idTagArtist) {
-                lyrics[index].enabled = false
+                content.contains(idTagTitle),
+                content.contains(idTagArtist) {
+                lines[index].enabled = false
             } else if let iTunesTitle = metadata.title,
                 let iTunesArtist = metadata.artist,
-                sentence.contains(iTunesTitle),
-                sentence.contains(iTunesArtist) {
-                lyrics[index].enabled = false
+                content.contains(iTunesTitle),
+                content.contains(iTunesArtist) {
+                lines[index].enabled = false
             }
         }
     }
@@ -388,7 +366,7 @@ extension Lyrics.MetaData.SearchTerm: CustomStringConvertible {
 extension Lyrics.MetaData: CustomStringConvertible {
     
     public var description: String {
-        return Mirror(reflecting: self).children.map { "[\($0!):\($1)]\n" }.joined()
+        return Mirror(reflecting: self).children.map { "[\($0!):\($1)]" }.joined(separator: "\n")
     }
 }
 
@@ -402,6 +380,9 @@ extension Lyrics.IDTagKey: CustomStringConvertible {
 extension Lyrics: CustomStringConvertible {
     
     public var description: String {
-        return contentString(withMetadata: true, ID3: true, timeTag: true, translation: true)
+        var components = [metadata.description]
+        components += idTags.map { "[\($0.key.rawValue):\($0.value)]" }
+        components += lines.map { $0.description }
+        return components.joined(separator: "\n")
     }
 }
