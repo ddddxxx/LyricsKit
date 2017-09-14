@@ -34,7 +34,7 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) {
         guard case let .info(title, artist) = term else {
             // cannot search by keyword
             completionHandler([])
@@ -46,34 +46,35 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
         let url = gecimiLyricsBaseURL.appendingPathComponent("\(encodedTitle)/\(encodedArtist)")
         let req = URLRequest(url: url)
         let task = session.dataTask(with: req) { data, resp, error in
-            let json = data.map(JSON.init)?["result"].array ?? []
-            completionHandler(json)
+            guard let data = data,
+                let result = try? JSONDecoder().decode(GecimiResponseSearchResult.self, from: data) else {
+                    completionHandler([])
+                    return
+            }
+            completionHandler(result.result)
         }
         task.resume()
     }
     
-    func getLyricsWithToken(token: JSON, completionHandler: @escaping (Lyrics?) -> Void) {
-        guard let lrcURL = token["lrc"].url else {
-            completionHandler(nil)
-            return
-        }
-        let task = session.dataTask(with: lrcURL) { data, resp, error in
+    func getLyricsWithToken(token: GecimiResponseSearchResult.Result, completionHandler: @escaping (Lyrics?) -> Void) {
+        let task = session.dataTask(with: token.lrc) { data, resp, error in
             guard let data = data,
                 let lrcContent = String(data: data, encoding: .utf8),
                 let lyrics = Lyrics(lrcContent)else {
                 completionHandler(nil)
                 return
             }
-            lyrics.metadata.lyricsURL = lrcURL
+            lyrics.metadata.lyricsURL = token.lrc
             lyrics.metadata.source = .Gecimi
             
-            if let aid = token["aid"].string {
-                let url = gecimiCoverBaseURL.appendingPathComponent(aid)
-                let task = self.session.dataTask(with: url) { data, resp, error in
-                    lyrics.metadata.artworkURL = data.map(JSON.init)?["result"]["cover"].url
+            let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")
+            let task = self.session.dataTask(with: url) { data, resp, error in
+                if let data = data,
+                    let result = try? JSONDecoder().decode(GecimiResponseCover.self, from: data) {
+                    lyrics.metadata.artworkURL = result.result.cover
                 }
-                task.resume()
             }
+            task.resume()
             
             completionHandler(lyrics)
         }

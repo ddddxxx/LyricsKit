@@ -1,5 +1,5 @@
 //
-//  TTPodResponseSingleLyrics.swift
+//  GecimiResponseSearchResult.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,11 +20,22 @@
 
 import Foundation
 
-struct TTPodResponseSingleLyrics: Decodable {
-    let data: Data
-    let code: Int
+struct GecimiResponseSearchResult: Decodable {
+    let result: [Result]
     
-    struct Data: Decodable {
-        let lrc: String
+    /*
+    let count: Int
+    let code: Int
+     */
+    
+    struct Result: Decodable {
+        let lrc: URL
+        let aid: Int
+        
+        /*
+        let sid: Int
+        let artist_id: Int
+        let song: String
+         */
     }
 }

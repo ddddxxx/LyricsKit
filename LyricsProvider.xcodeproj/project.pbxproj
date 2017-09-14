@@ -11,6 +11,8 @@
 		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
 		BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */; };
+		BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */; };
+		BB558A651F6A66FC00686746 /* GecimiResponseCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */; };
 		BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */; };
 		BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */; };
 		BBA7D8E21F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */; };
@@ -56,6 +58,8 @@
 		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodResponseSingleLyrics.swift; sourceTree = "<group>"; };
+		BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseSearchResult.swift; sourceTree = "<group>"; };
+		BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseCover.swift; sourceTree = "<group>"; };
 		BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconView.swift; sourceTree = "<group>"; };
 		BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconDrawing.swift; sourceTree = "<group>"; };
 		BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -135,6 +139,16 @@
 			path = Sources/Provider/JSONModel/TTPod;
 			sourceTree = SOURCE_ROOT;
 		};
+		BB558A611F6A647500686746 /* Gecimi */ = {
+			isa = PBXGroup;
+			children = (
+				BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */,
+				BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */,
+			);
+			name = Gecimi;
+			path = Sources/Provider/JSONModel/Gecimi;
+			sourceTree = SOURCE_ROOT;
+		};
 		BBA7D8DF1F694EE000EE9E3E /* Provider */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +171,7 @@
 				BBDCA9E81F6A5A30008ECB89 /* Kugou */,
 				BB558A5B1F6A5EC000686746 /* Xiami */,
 				BB558A5E1F6A629D00686746 /* TTPod */,
+				BB558A611F6A647500686746 /* Gecimi */,
 			);
 			name = JSONModel;
 			path = Sources/Provider/JSONModel;
@@ -402,9 +417,11 @@
 				BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */,
 				OBJ_53 /* LyricsKugou.swift in Sources */,
 				OBJ_54 /* LyricsLine.swift in Sources */,
+				BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */,
 				BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */,
 				BBDCA9EC1F6A5B09008ECB89 /* KugouResponseSingleLyrics.swift in Sources */,
 				OBJ_55 /* LyricsProviderManager.swift in Sources */,
+				BB558A651F6A66FC00686746 /* GecimiResponseCover.swift in Sources */,
 				BBAB685B1F66CA8F005D583F /* LyricsLineAttachmentRangeAttribute.swift in Sources */,
 				BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */,
 				BBDCA9E71F6991A1008ECB89 /* URLRequest + HTTPBody.swift in Sources */,
