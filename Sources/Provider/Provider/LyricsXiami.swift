@@ -20,6 +20,9 @@
 
 import Foundation
 
+private let xiamiSearchBaseURLString = "http://www.xiami.com/web/search-songs"
+private let xiamiLyricsBaseURL = URL(string: "http://www.xiami.com/song/playlist/id")!
+
 extension Lyrics.MetaData.Source {
     static let Xiami = Lyrics.MetaData.Source("Xiami")
 }
@@ -32,11 +35,9 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([Int]) -> Void) {
-        let keyword = term.description
-        let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
-        let url = URL(string: "http://www.xiami.com/web/search-songs?key=\(encodedKeyword)")!
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
+        let parameter = ["key": term.description]
+        let url = URL(string: xiamiSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
+        let task = session.dataTask(with: url) { data, resp, error in
             let ids = data.map(JSON.init)?.array?.flatMap {
                 $0["id"].string.flatMap { Int($0) }
             } ?? []
@@ -46,7 +47,7 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     }
     
     func getLyricsWithToken(token: Int, completionHandler: @escaping (Lyrics?) -> Void) {
-        let url = URL(string: "http://www.xiami.com/song/playlist/id/\(token)")!
+        let url = xiamiLyricsBaseURL.appendingPathComponent("\(token)")
         let req = URLRequest(url: url)
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,

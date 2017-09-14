@@ -20,6 +20,9 @@
 
 import Foundation
 
+private let gecimiLyricsBaseURL = URL(string: "http://gecimi.com/api/lyric")!
+private let gecimiCoverBaseURL = URL(string:"http://gecimi.com/api/cover")!
+
 extension Lyrics.MetaData.Source {
     static let Gecimi = Lyrics.MetaData.Source("Gecimi")
 }
@@ -40,7 +43,7 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
         let encodedTitle = title.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         let encodedArtist = artist.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         
-        let url = URL(string: "http://gecimi.com/api/lyric/\(encodedTitle)/\(encodedArtist)")!
+        let url = gecimiLyricsBaseURL.appendingPathComponent("\(encodedTitle)/\(encodedArtist)")
         let req = URLRequest(url: url)
         let task = session.dataTask(with: req) { data, resp, error in
             let json = data.map(JSON.init)?["result"].array ?? []
@@ -64,8 +67,8 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
             lyrics.metadata.lyricsURL = lrcURL
             lyrics.metadata.source = .Gecimi
             
-            if let aid = token["aid"].string,
-                let url = URL(string:"http://gecimi.com/api/cover/\(aid)") {
+            if let aid = token["aid"].string {
+                let url = gecimiCoverBaseURL.appendingPathComponent(aid)
                 let task = self.session.dataTask(with: url) { data, resp, error in
                     lyrics.metadata.artworkURL = data.map(JSON.init)?["result"]["cover"].url
                 }

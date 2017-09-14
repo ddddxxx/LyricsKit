@@ -20,6 +20,9 @@
 
 import Foundation
 
+private let netEaseSearchBaseURL = URL(string: "http://music.163.com/api/search/pc")!
+private let netEaseLyricsBaseURLString = "http://music.163.com/api/song/lyric"
+
 extension Lyrics.MetaData.Source {
     public static let Music163 = Lyrics.MetaData.Source("163")
 }
@@ -32,16 +35,16 @@ public final class Lyrics163: MultiResultLyricsProvider {
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) {
-        let keyword = term.description
-        let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
-        let url = URL(string: "http://music.163.com/api/search/pc")!
-        let body = "s=\(encodedKeyword)&offset=0&limit=10&type=1".data(using: .utf8)!
-        
-        let req = URLRequest(url: url).with {
+        let parameter: [String: Any] = [
+            "s": term.description,
+            "offset": 0,
+            "limit": 10,
+            "type": 1,
+            ]
+        let req = URLRequest(url: netEaseSearchBaseURL).with {
             $0.httpMethod = "POST"
-            $0.setValue("appver=1.5.0.75771", forHTTPHeaderField: "Cookie")
             $0.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
-            $0.httpBody = body
+            $0.httpBody = parameter.stringFromHttpParameters.data(using: .ascii)!
         }
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,
@@ -55,9 +58,14 @@ public final class Lyrics163: MultiResultLyricsProvider {
     }
     
     func getLyricsWithToken(token: NetEaseResponseSearchResult.Result.Song, completionHandler: @escaping (Lyrics?) -> Void) {
-        let url = URL(string: "http://music.163.com/api/song/lyric?id=\(token.id)&lv=1&kv=1&tv=-1")!
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
+        let parameter: [String: Any] = [
+            "id": token.id,
+            "lv": 1,
+            "kv": 1,
+            "tv": -1,
+            ]
+        let url = URL(string: netEaseLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
+        let task = session.dataTask(with: url) { data, resp, error in
             guard let data = data,
                 let result = try? JSONDecoder().decode(NetEaseResponseSingleLyrics.self, from: data),
                 let lrcContent = result.lrc?.lyric,

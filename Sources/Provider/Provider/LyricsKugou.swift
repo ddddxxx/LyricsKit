@@ -20,6 +20,9 @@
 
 import Foundation
 
+private let kugouSearchBaseURLString = "http://lyrics.kugou.com/search"
+private let kugouLyricsBaseURLString = "http://lyrics.kugou.com/download"
+
 extension Lyrics.MetaData.Source {
     static let Kugou = Lyrics.MetaData.Source("Kugou")
 }
@@ -32,13 +35,15 @@ public final class LyricsKugou: MultiResultLyricsProvider {
     let dispatchGroup = DispatchGroup()
     
     func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
-        let keyword = term.description
-        let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
-        let mDuration = Int(duration * 1000)
-        let urlStr = "http://lyrics.kugou.com/search?ver=1&man=yes&client=pc&keyword=\(encodedKeyword)&duration=\(mDuration)"
-        let url = URL(string: urlStr)!
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
+        let parameter: [String: Any] = [
+            "keyword": term.description,
+            "duration": Int(duration * 1000),
+            "client": "pc",
+            "ver": 1,
+            "man": "yes",
+            ]
+        let url = URL(string: kugouSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
+        let task = session.dataTask(with: url) { data, resp, error in
             let json = data.map(JSON.init)?["candidates"].array ?? []
             completionHandler(json)
         }
@@ -50,10 +55,16 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             completionHandler(nil)
             return
         }
-        let urlStr = "http://lyrics.kugou.com/download?ver=1&client=pc&id=\(id)&accesskey=\(accesskey)&fmt=lrc&charset=utf8"
-        let url = URL(string: urlStr)!
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
+        let parameter: [String: Any] = [
+            "id": id,
+            "accesskey": accesskey,
+            "fmt": "lrc",
+            "charset": "utf8",
+            "client": "pc",
+            "ver": 1,
+            ]
+        let url = URL(string: kugouLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
+        let task = session.dataTask(with: url) { data, resp, error in
             guard let lrcDataStr = data.map(JSON.init)?["content"].string,
                 let lrcData = Data(base64Encoded: lrcDataStr),
                 let lrcContent = String(data: lrcData, encoding: .utf8),

@@ -107,19 +107,9 @@ extension SingleResultLyricsProvider {
     }
 }
 
-extension CharacterSet {
-    
-    static var uriComponentAllowed: CharacterSet {
-        let unsafe = CharacterSet(charactersIn: "!*'();:&=+$,[]~")
-        return CharacterSet.urlHostAllowed.subtracting(unsafe)
-    }
-}
-
 extension URLSessionConfiguration {
     
     static let providerConfig = URLSessionConfiguration.default.with {
         $0.timeoutIntervalForRequest = 10
     }
 }
-
-extension URLRequest: Then {}

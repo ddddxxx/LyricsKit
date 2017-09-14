@@ -102,7 +102,7 @@ private extension String {
         "&gt;"      : ">",
     ]
     
-    func htmlDecoded()->String {
+    func htmlDecoded() -> String {
         return String.entities.reduce(self) { str, entitie in
             str.replacingOccurrences(of: entitie.key, with: entitie.value)
         }
