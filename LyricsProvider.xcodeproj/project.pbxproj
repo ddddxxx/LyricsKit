@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		BB4FBE601F0E39250045A8FA /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE5F1F0E39250045A8FA /* Then.swift */; };
 		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
+		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
 		BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */; };
 		BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */; };
 		BBA7D8E21F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */; };
@@ -52,6 +53,7 @@
 /* Begin PBXFileReference section */
 		BB4FBE5F1F0E39250045A8FA /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
 		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconView.swift; sourceTree = "<group>"; };
 		BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconDrawing.swift; sourceTree = "<group>"; };
 		BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -113,6 +115,15 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		BB558A5B1F6A5EC000686746 /* Xiami */ = {
+			isa = PBXGroup;
+			children = (
+				BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */,
+			);
+			name = Xiami;
+			path = Sources/Provider/JSONModel/Xiami;
+			sourceTree = SOURCE_ROOT;
+		};
 		BBA7D8DF1F694EE000EE9E3E /* Provider */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +144,7 @@
 				BBA7D8E31F69584C00EE9E3E /* NetEase */,
 				BBA7D8E61F695F4100EE9E3E /* QQ */,
 				BBDCA9E81F6A5A30008ECB89 /* Kugou */,
+				BB558A5B1F6A5EC000686746 /* Xiami */,
 			);
 			name = JSONModel;
 			path = Sources/Provider/JSONModel;
@@ -381,6 +393,7 @@
 				BBDCA9EC1F6A5B09008ECB89 /* KugouResponseSingleLyrics.swift in Sources */,
 				OBJ_55 /* LyricsProviderManager.swift in Sources */,
 				BBAB685B1F66CA8F005D583F /* LyricsLineAttachmentRangeAttribute.swift in Sources */,
+				BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */,
 				BBDCA9E71F6991A1008ECB89 /* URLRequest + HTTPBody.swift in Sources */,
 				OBJ_56 /* LyricsQQ.swift in Sources */,
 				OBJ_57 /* LyricsTTPod.swift in Sources */,
