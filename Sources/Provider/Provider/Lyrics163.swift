@@ -41,11 +41,10 @@ public final class Lyrics163: MultiResultLyricsProvider {
             "limit": 10,
             "type": 1,
             ]
-        let req = URLRequest(url: netEaseSearchBaseURL).with {
-            $0.httpMethod = "POST"
-            $0.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
-            $0.httpBody = parameter.stringFromHttpParameters.data(using: .ascii)!
-        }
+        var req = URLRequest(url: netEaseSearchBaseURL)
+        req.httpMethod = "POST"
+        req.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
+        req.httpBody = parameter.stringFromHttpParameters.data(using: .ascii)!
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,
                 let result = try? JSONDecoder().decode(NetEaseResponseSearchResult.self, from: data) else {

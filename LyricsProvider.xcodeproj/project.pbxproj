@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB4FBE601F0E39250045A8FA /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE5F1F0E39250045A8FA /* Then.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
 		BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */; };
 		BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */; };
@@ -53,7 +52,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BB4FBE5F1F0E39250045A8FA /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
 		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodResponseSingleLyrics.swift; sourceTree = "<group>"; };
 		BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -109,15 +107,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BB4FBE611F0E39280045A8FA /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				BB4FBE5F1F0E39250045A8FA /* Then.swift */,
-			);
-			name = Frameworks;
-			path = Sources;
-			sourceTree = "<group>";
-		};
 		BB558A5B1F6A5EC000686746 /* Xiami */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,7 +281,6 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
-				BB4FBE611F0E39280045A8FA /* Frameworks */,
 				OBJ_7 /* Sources */,
 				OBJ_18 /* Tests */,
 				OBJ_26 /* Products */,
@@ -432,7 +420,6 @@
 				BBA7D8E81F69601A00EE9E3E /* QQResponseSearchResult.swift in Sources */,
 				BBDCA9EA1F6A5A70008ECB89 /* KugouResponseSearchResult.swift in Sources */,
 				OBJ_59 /* ProviderProtocol.swift in Sources */,
-				BB4FBE601F0E39250045A8FA /* Then.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,10 +20,6 @@
 
 import Foundation
 
-extension URL: Then {}
-
-extension URLRequest: Then {}
-
 extension Dictionary where Key == String {
     
     var stringFromHttpParameters: String {

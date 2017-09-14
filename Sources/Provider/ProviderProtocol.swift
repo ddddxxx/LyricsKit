@@ -109,7 +109,9 @@ extension SingleResultLyricsProvider {
 
 extension URLSessionConfiguration {
     
-    static let providerConfig = URLSessionConfiguration.default.with {
-        $0.timeoutIntervalForRequest = 10
-    }
+    static let providerConfig: URLSessionConfiguration = {
+        var config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = 10
+        return config
+    }()
 }
