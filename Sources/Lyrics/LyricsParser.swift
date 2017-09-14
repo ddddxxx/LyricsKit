@@ -76,7 +76,7 @@ func resolveID3Tag(_ str: String) -> (Lyrics.IDTagKey, String)? {
     return (k, value)
 }
 
-private let timeTagPattern = "\\[([-+]?\\d+):(\\d+(?:.\\d+)?)\\]"
+private let timeTagPattern = "\\[([-+]?\\d+):(\\d+(?:\\.\\d+)?)\\]"
 private let timeTagRegex = try! NSRegularExpression(pattern: timeTagPattern)
 fileprivate func resolveTimeTag(_ str: String) -> [TimeInterval] {
     let matchs = timeTagRegex.matches(in: str)

@@ -113,9 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_9 /* Lyrics163.swift */,
+				OBJ_14 /* LyricsQQ.swift */,
 				OBJ_10 /* LyricsGecimi.swift */,
 				OBJ_11 /* LyricsKugou.swift */,
-				OBJ_14 /* LyricsQQ.swift */,
 				OBJ_15 /* LyricsTTPod.swift */,
 				OBJ_16 /* LyricsXiami.swift */,
 			);
