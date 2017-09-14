@@ -34,7 +34,7 @@ public final class LyricsKugou: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([JSON]) -> Void) {
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) {
         let parameter: [String: Any] = [
             "keyword": term.description,
             "duration": Int(duration * 1000),
@@ -44,20 +44,20 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             ]
         let url = URL(string: kugouSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
         let task = session.dataTask(with: url) { data, resp, error in
-            let json = data.map(JSON.init)?["candidates"].array ?? []
-            completionHandler(json)
+            guard let data = data,
+                let result = try? JSONDecoder().decode(KugouResponseSearchResult.self, from: data) else {
+                    completionHandler([])
+                    return
+            }
+            completionHandler(result.candidates)
         }
         task.resume()
     }
     
-    func getLyricsWithToken(token: JSON, completionHandler: @escaping (Lyrics?) -> Void) {
-        guard let id = token["id"].string, let accesskey = token["accesskey"].string else {
-            completionHandler(nil)
-            return
-        }
+    func getLyricsWithToken(token: KugouResponseSearchResult.Item, completionHandler: @escaping (Lyrics?) -> Void) {
         let parameter: [String: Any] = [
-            "id": id,
-            "accesskey": accesskey,
+            "id": token.id,
+            "accesskey": token.accesskey,
             "fmt": "lrc",
             "charset": "utf8",
             "client": "pc",
@@ -72,8 +72,8 @@ public final class LyricsKugou: MultiResultLyricsProvider {
                 completionHandler(nil)
                 return
             }
-            lrc.idTags[.title] = token["song"].string
-            lrc.idTags[.artist] = token["singer"].string
+            lrc.idTags[.title] = token.song
+            lrc.idTags[.artist] = token.singer
             lrc.idTags[.lrcBy] = "Kugou"
             
             lrc.metadata.source = .Kugou

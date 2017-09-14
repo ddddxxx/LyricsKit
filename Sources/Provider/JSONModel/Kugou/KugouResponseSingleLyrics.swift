@@ -1,5 +1,5 @@
 //
-//  QQResponseSingleLyrics.swift
+//  KugouResponseSingleLyrics.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,10 +20,17 @@
 
 import Foundation
 
-struct QQResponseSingleLyrics: Decodable {
-    let retcode: Int
-    let code: Int
-    let subcode: Int
-    let lyric: Data
-    let trans: Data?
+struct KugouResponseSingleLyrics: Decodable {
+    let content: Data
+    let fmt: Format
+    
+    /*
+    let info: String
+    let status: Int
+    let charset: String
+     */
+    
+    enum Format: String, Decodable {
+        case lrc, krc
+    }
 }
