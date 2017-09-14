@@ -20,6 +20,8 @@
 
 import Foundation
 
+let ttpodLyricsBaseURLString = "http://lp.music.ttpod.com/lrc/down"
+
 extension Lyrics.MetaData.Source {
     static let TTPod = Lyrics.MetaData.Source("TTPod")
 }
@@ -36,16 +38,15 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
             completionHandler(nil)
             return
         }
-        let encodedTitle = title.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
-        let encodedArtist = artist.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
-        
-        let urlStr = "http://lp.music.ttpod.com/lrc/down?lrcid=&artist=\(encodedArtist)&title=\(encodedTitle)"
-        let url = URL(string: urlStr)!
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
+        let parameter: [String: Any] = [
+            "artist": artist,
+            "title": title,
+            ]
+        let url = URL(string: ttpodLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
+        let task = session.dataTask(with: url) { data, resp, error in
             guard let data = data,
-                let lrcContent = JSON(data)["data"]["lrc"].string,
-                let lrc = Lyrics(lrcContent) else {
+                let result = try? JSONDecoder().decode(TTPodResponseSingleLyrics.self, from: data),
+                let lrc = Lyrics(result.data.lrc) else {
                     completionHandler(nil)
                     return
             }

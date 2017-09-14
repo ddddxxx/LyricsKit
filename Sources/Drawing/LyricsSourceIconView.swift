@@ -54,12 +54,11 @@
     @IBDesignable
     public class LyricsSourceIconView: NSView {
         
-        @IBInspectable
         public var source: Lyrics.MetaData.Source = .Unknown
         
         public override func draw(_ dirtyRect: NSRect) {
             super.draw(dirtyRect)
-            if let context = NSGraphicsContext.current()?.cgContext {
+            if let context = NSGraphicsContext.current?.cgContext {
                 context.translateBy(x: 0, y: frame.height)
                 context.scaleBy(x: 1, y: -1)
             }

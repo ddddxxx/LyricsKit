@@ -20,6 +20,9 @@
 
 import Foundation
 
+private let xiamiSearchBaseURLString = "http://www.xiami.com/web/search-songs"
+private let xiamiLyricsBaseURL = URL(string: "http://www.xiami.com/song/playlist/id")!
+
 extension Lyrics.MetaData.Source {
     static let Xiami = Lyrics.MetaData.Source("Xiami")
 }
@@ -31,30 +34,33 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([Int]) -> Void) {
-        let keyword = term.description
-        let encodedKeyword = keyword.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
-        let url = URL(string: "http://www.xiami.com/web/search-songs?key=\(encodedKeyword)")!
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
-            let ids = data.map(JSON.init)?.array?.flatMap {
-                $0["id"].string.flatMap { Int($0) }
-            } ?? []
-            completionHandler(ids)
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([XiamiResponseSearchResultItem]) -> Void) {
+        let parameter = ["key": term.description]
+        let url = URL(string: xiamiSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
+        let task = session.dataTask(with: url) { data, resp, error in
+            guard let data = data,
+                let result = try? JSONDecoder().decode(XiamiResponseSearchResult.self, from: data) else {
+                    completionHandler([])
+                    return
+            }
+            completionHandler(result)
         }
         task.resume()
     }
     
-    func getLyricsWithToken(token: Int, completionHandler: @escaping (Lyrics?) -> Void) {
-        let url = URL(string: "http://www.xiami.com/song/playlist/id/\(token)")!
+    func getLyricsWithToken(token: XiamiResponseSearchResultItem, completionHandler: @escaping (Lyrics?) -> Void) {
+        let url = xiamiLyricsBaseURL.appendingPathComponent("\(token.id)")
         let req = URLRequest(url: url)
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data,
                 let parseResult = LyricsXiamiXMLParser().parseLrcURL(data: data),
-                let lrc = Lyrics(url: parseResult.lyricsURL) else {
+                // FIXME: async fetch lyrics
+                let lrcStr = try? String(contentsOf: parseResult.lyricsURL),
+                let lrc = Lyrics(lrcStr) else {
                 completionHandler(nil)
                 return
             }
+            lrc.metadata.lyricsURL = parseResult.lyricsURL
             lrc.metadata.source = .Xiami
             lrc.metadata.artworkURL = parseResult.artworkURL
             completionHandler(lrc)
