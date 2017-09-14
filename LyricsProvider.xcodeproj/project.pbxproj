@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BB4FBE601F0E39250045A8FA /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE5F1F0E39250045A8FA /* Then.swift */; };
-		BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
 		BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */; };
 		BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */; };
@@ -55,7 +54,6 @@
 
 /* Begin PBXFileReference section */
 		BB4FBE5F1F0E39250045A8FA /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
-		BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodResponseSingleLyrics.swift; sourceTree = "<group>"; };
 		BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 		BB4FBE611F0E39280045A8FA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BB4FBE621F0E3D660045A8FA /* SwiftyJSON.swift */,
 				BB4FBE5F1F0E39250045A8FA /* Then.swift */,
 			);
 			name = Frameworks;
@@ -414,7 +411,6 @@
 				OBJ_51 /* Lyrics163.swift in Sources */,
 				OBJ_52 /* LyricsGecimi.swift in Sources */,
 				BBAB68571F66CA44005D583F /* LyricsLineAttachmentPlainText.swift in Sources */,
-				BB4FBE631F0E3D660045A8FA /* SwiftyJSON.swift in Sources */,
 				OBJ_53 /* LyricsKugou.swift in Sources */,
 				OBJ_54 /* LyricsLine.swift in Sources */,
 				BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */,

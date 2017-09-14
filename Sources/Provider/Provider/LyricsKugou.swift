@@ -65,12 +65,12 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             ]
         let url = URL(string: kugouLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
         let task = session.dataTask(with: url) { data, resp, error in
-            guard let lrcDataStr = data.map(JSON.init)?["content"].string,
-                let lrcData = Data(base64Encoded: lrcDataStr),
-                let lrcContent = String(data: lrcData, encoding: .utf8),
+            guard let data = data,
+                let result = try? JSONDecoder().decode(KugouResponseSingleLyrics.self, from: data),
+                let lrcContent = String(data: result.content, encoding: .utf8),
                 let lrc = Lyrics(lrcContent) else {
-                completionHandler(nil)
-                return
+                    completionHandler(nil)
+                    return
             }
             lrc.idTags[.title] = token.song
             lrc.idTags[.artist] = token.singer
