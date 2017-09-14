@@ -28,7 +28,7 @@ struct QQResponseSearchResult: Decodable {
          */
         
         struct Song: Decodable {
-            let list: Item
+            let list: [Item]
             
             /*
             let curnum: Int
@@ -110,5 +110,12 @@ struct QQResponseSearchResult: Decodable {
                 }
             }
         }
+    }
+}
+
+extension QQResponseSearchResult {
+    
+    var songs: [Data.Song.Item] {
+        return data.song.list
     }
 }

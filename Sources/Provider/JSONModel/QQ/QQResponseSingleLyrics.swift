@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct QQResponseSingleLyrics {
+struct QQResponseSingleLyrics: Decodable {
     let retcode: Int
     let code: Int
     let subcode: Int
     let lyric: Data // base64 encoded
-    let trans: Data // base64 encoded
+    let trans: Data? // base64 encoded
 }

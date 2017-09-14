@@ -95,7 +95,7 @@ public final class Lyrics163: MultiResultLyricsProvider {
 
 extension Lyrics {
     
-    fileprivate func merge(translation: Lyrics) {
+    func merge(translation: Lyrics) {
         var index = lines.startIndex
         var transIndex = translation.lines.startIndex
         while index < lines.endIndex, transIndex < translation.lines.endIndex {
