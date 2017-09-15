@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB2AC1AF1F6B86F700BE765A /* Data+Gzip.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
 		BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */; };
 		BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */; };
@@ -53,6 +54,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Gzip.swift"; sourceTree = "<group>"; };
+		BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KugouKrcDecrypter.swift; sourceTree = "<group>"; };
 		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodResponseSingleLyrics.swift; sourceTree = "<group>"; };
 		BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -109,6 +112,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BB2AC1B01F6B871B00BE765A /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */,
+			);
+			name = Parser;
+			path = Sources/Provider/Parser;
+			sourceTree = SOURCE_ROOT;
+		};
 		BB558A5B1F6A5EC000686746 /* Xiami */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +204,7 @@
 				OBJ_17 /* ProviderProtocol.swift */,
 				BBA7D8DF1F694EE000EE9E3E /* Provider */,
 				BBA7D8E01F694F0700EE9E3E /* JSONModel */,
+				BB2AC1B01F6B871B00BE765A /* Parser */,
 				BBDCA9E51F699133008ECB89 /* Utilities */,
 			);
 			name = Provider;
@@ -239,6 +252,7 @@
 			children = (
 				BBDCA9E61F6991A1008ECB89 /* URLRequest+HTTPBody.swift */,
 				BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */,
+				BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */,
 			);
 			name = Utilities;
 			path = Sources/Provider/Utilities;
@@ -402,6 +416,7 @@
 				OBJ_51 /* Lyrics163.swift in Sources */,
 				OBJ_52 /* LyricsGecimi.swift in Sources */,
 				BBAB68571F66CA44005D583F /* LyricsLineAttachmentPlainText.swift in Sources */,
+				BB2AC1AF1F6B86F700BE765A /* Data+Gzip.swift in Sources */,
 				OBJ_53 /* LyricsKugou.swift in Sources */,
 				OBJ_54 /* LyricsLine.swift in Sources */,
 				BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */,
