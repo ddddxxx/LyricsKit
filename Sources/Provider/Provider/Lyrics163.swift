@@ -92,26 +92,3 @@ public final class Lyrics163: MultiResultLyricsProvider {
         task.resume()
     }
 }
-
-extension Lyrics {
-    
-    func merge(translation: Lyrics) {
-        var index = lines.startIndex
-        var transIndex = translation.lines.startIndex
-        while index < lines.endIndex, transIndex < translation.lines.endIndex {
-            if lines[index].position == translation.lines[transIndex].position {
-                let transStr = translation.lines[transIndex].content
-                if !transStr.isEmpty {
-                    let translation = LyricsLineAttachmentPlainText(transStr)
-                    lines[index].attachments[.translation] = translation
-                }
-                lines.formIndex(after: &index)
-                translation.lines.formIndex(after: &transIndex)
-            } else if lines[index].position > translation.lines[transIndex].position {
-                translation.lines.formIndex(after: &transIndex)
-            } else {
-                lines.formIndex(after: &index)
-            }
-        }
-    }
-}

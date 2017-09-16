@@ -57,6 +57,13 @@ extension LyricsLineAttachmentTag: Equatable, Hashable {
     }
 }
 
+extension LyricsLineAttachmentTag: CustomStringConvertible {
+    
+    public var description: String {
+        return rawValue
+    }
+}
+
 extension LyricsLineAttachmentTag: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
