@@ -61,7 +61,8 @@ public final class LyricsQQ: MultiResultLyricsProvider {
                     completionHandler(nil)
                     return
             }
-            if let transLrcContent = String(data: model.lyric, encoding: .utf8),
+            if let transLrcData = model.trans,
+                let transLrcContent = String(data: transLrcData, encoding: .utf8),
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
             }
