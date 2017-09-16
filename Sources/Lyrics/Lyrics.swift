@@ -380,9 +380,8 @@ extension Lyrics.IDTagKey: CustomStringConvertible {
 extension Lyrics: CustomStringConvertible {
     
     public var description: String {
-        var components = [metadata.description]
-        components += idTags.map { "[\($0.key.rawValue):\($0.value)]" }
-        components += lines.map { $0.description }
+        let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" }
+                       + lines.map { $0.description }
         return components.joined(separator: "\n")
     }
 }

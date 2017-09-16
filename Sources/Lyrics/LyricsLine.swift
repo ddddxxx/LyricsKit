@@ -55,7 +55,7 @@ extension LyricsLine: Equatable, Hashable {
 extension LyricsLine: CustomStringConvertible {
     
     public var description: String {
-        return ([content] + attachments.map { "[\($0.key)]\($0.value.description)" }).map {
+        return ([content] + attachments.map { "[\($0.key)]\($0.value)" }).map {
             "[\(timeTag)]\($0)"
         }.joined(separator: "\n")
     }
