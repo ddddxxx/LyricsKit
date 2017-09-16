@@ -49,7 +49,10 @@ public final class LyricsQQ: MultiResultLyricsProvider {
     }
     
     func getLyricsWithToken(token: QQResponseSearchResult.Data.Song.Item, completionHandler: @escaping (Lyrics?) -> Void) {
-        let parameter = ["songmid": token.songmid]
+        let parameter: [String: Any] = [
+            "songmid": token.songmid,
+            "g_tk": 5381
+        ]
         let url = URL(string: qqLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
         var req = URLRequest(url: url)
         req.setValue("y.qq.com/portal/player.html", forHTTPHeaderField: "Referer")
