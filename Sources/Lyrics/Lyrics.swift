@@ -20,7 +20,7 @@
 
 import Foundation
 
-public class Lyrics {
+final public class Lyrics: LosslessStringConvertible {
     
     public var lines: [LyricsLine]
     public var idTags: [IDTagKey: String]
@@ -44,17 +44,14 @@ public class Lyrics {
         }
     }
     
-    private static let idTagRegex = try! NSRegularExpression(pattern: "\\[[^\\]]+:[^\\]]+\\]")
-    private static let timeTagRegex = try! NSRegularExpression(pattern: "\\[\\d+:\\d+.\\d+\\]|\\[\\d+:\\d+\\]")
-    
-    public init?(_ lrcContents: String) {
+    public init?(_ description: String) {
         lines = []
         idTags = [:]
         metadata = MetaData(source: .Unknown)
         
         var tempAttechment: [(TimeInterval, LyricsLineAttachmentTag, LyricsLineAttachment)] = []
         
-        let lyricsLines = lrcContents.components(separatedBy: .newlines)
+        let lyricsLines = description.components(separatedBy: .newlines)
         for line in lyricsLines {
             if let attechment = resolveLyricsLineAttachment(line) {
                 tempAttechment += attechment
