@@ -76,7 +76,6 @@ public final class Lyrics163: MultiResultLyricsProvider {
             if let transLrcContent = result.tlyric?.lyric,
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
-                lrc.metadata.includeTranslation = true
             }
             
             lrc.idTags[.title]   = token.name

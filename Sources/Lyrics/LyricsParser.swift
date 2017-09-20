@@ -20,65 +20,9 @@
 
 import Foundation
 
-private let lyricsLineAttachmentPattern = "^((?:\\[[-+]?\\d+:\\d+(?:.\\d+)?\\])+)\\[(.+?)\\](.*)$"
-private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern)
-func resolveLyricsLineAttachment(_ str: String) -> [(TimeInterval, LyricsLineAttachmentTag, LyricsLineAttachment)]? {
-    guard let match = lyricsLineAttachmentRegex.firstMatch(in: str) else {
-        return nil
-    }
-    let timeTagStr = str[match.range(at: 1)]!
-    let timeTags = resolveTimeTag(timeTagStr)
-    
-    let attachmentTagStr = str[match.range(at: 2)]!
-    let attachmentTag = LyricsLineAttachmentTag(attachmentTagStr)
-    
-    let attachmentStr = str[match.range(at: 3)] ?? ""
-    guard let attachment = LyricsLineAttachmentFactory.createAttachment(str: attachmentStr, tag: attachmentTag) else {
-        return nil
-    }
-    
-    return timeTags.map { ($0, attachmentTag, attachment) }
-}
-
-private let lyricsLinePattern = "^(\\[[-+]?\\d+:\\d+(?:.\\d+)?\\])+([^【]*)(?:【(.*)】)?$"
-private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern)
-func resolveLyricsLine(_ str: String) -> [LyricsLine]? {
-    guard let match = lyricsLineRegex.firstMatch(in: str) else {
-        return nil
-    }
-    let timeTagStr = str[match.range(at: 1)]!
-    let timeTags = resolveTimeTag(timeTagStr)
-    
-    let lyricsContentStr = str[match.range(at: 2)]!
-    var line = LyricsLine(content: lyricsContentStr, position: 0)
-    
-    if let translationStr = str[match.range(at: 3)] {
-        let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
-        line.attachments[.translation] = translationAttachment
-    }
-    
-    return timeTags.map { timeTag in
-        var l = line
-        l.position = timeTag
-        return l
-    }
-}
-
-private let id3TagPattern = "^\\[(.+):(.*)\\]$"
-private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern)
-func resolveID3Tag(_ str: String) -> (Lyrics.IDTagKey, String)? {
-    guard let match = id3TagRegex.firstMatch(in: str),
-        let key = str[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-        let value = str[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces) else {
-            return nil
-    }
-    let k = Lyrics.IDTagKey(key)
-    return (k, value)
-}
-
 private let timeTagPattern = "\\[([-+]?\\d+):(\\d+(?:\\.\\d+)?)\\]"
 private let timeTagRegex = try! NSRegularExpression(pattern: timeTagPattern)
-fileprivate func resolveTimeTag(_ str: String) -> [TimeInterval] {
+func resolveTimeTag(_ str: String) -> [TimeInterval] {
     let matchs = timeTagRegex.matches(in: str)
     return matchs.map { match in
         let min = Double(str[match.range(at: 1)]!)!

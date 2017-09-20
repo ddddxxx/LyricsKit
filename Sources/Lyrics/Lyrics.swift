@@ -20,11 +20,20 @@
 
 import Foundation
 
+private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+(?!\\[)([^【\\n]*)(?:【(.*)】)?"
+private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern)
+
+private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+\\[(.+?)\\](.*)"
+private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern)
+
+private let id3TagPattern = "^\\[(.+):(.*)\\](?=\\n)"
+private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern)
+
 final public class Lyrics: LosslessStringConvertible {
     
-    public var lines: [LyricsLine]
-    public var idTags: [IDTagKey: String]
-    public var metadata: MetaData
+    public var lines: [LyricsLine] = []
+    public var idTags: [IDTagKey: String] = [:]
+    public var metadata: MetaData = MetaData()
     
     public var offset: Int {
         get {
@@ -45,39 +54,33 @@ final public class Lyrics: LosslessStringConvertible {
     }
     
     public init?(_ description: String) {
-        lines = []
-        idTags = [:]
-        metadata = MetaData(source: .Unknown)
-        
-        var tempAttechment: [(TimeInterval, LyricsLineAttachmentTag, LyricsLineAttachment)] = []
-        
-        let lyricsLines = description.components(separatedBy: .newlines)
-        for line in lyricsLines {
-            if let attechment = resolveLyricsLineAttachment(line) {
-                tempAttechment += attechment
-                continue
+        id3TagRegex.matches(in: description).forEach { match in
+            if let key = description[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
+                let value = description[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces) {
+                idTags[.init(key)] = value
             }
-            if let l = resolveLyricsLine(line) {
-                lines += l
-                continue
-            }
-            if let tag = resolveID3Tag(line) {
-                idTags[tag.0] = tag.1
-                continue
-            }
-            // TODO: unresolved lines
         }
         
-        guard !lines.isEmpty else {
-            return nil
-        }
-        
-        lines.sort {
+        lines = lyricsLineRegex.matches(in: description).flatMap { match -> [LyricsLine] in
+            let timeTagStr = description[match.range(at: 1)]!
+            let timeTags = resolveTimeTag(timeTagStr)
+            
+            let lyricsContentStr = description[match.range(at: 2)]!
+            var line = LyricsLine(content: lyricsContentStr, position: 0)
+            
+            if let translationStr = description[match.range(at: 3)] {
+                let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
+                line.attachments[.translation] = translationAttachment
+            }
+            
+            return timeTags.map { timeTag in
+                var l = line
+                l.position = timeTag
+                l.lyrics = self
+                return l
+            }
+        }.sorted {
             $0.position < $1.position
-        }
-        
-        for index in 0..<lines.count {
-            lines[index].lyrics = self
         }
         
         func indexOf(position: TimeInterval) -> Int? {
@@ -96,12 +99,36 @@ final public class Lyrics: LosslessStringConvertible {
             return nil
         }
         
-        for attechment in tempAttechment {
-            guard let index = indexOf(position: attechment.0) else {
-                return nil
+        lyricsLineAttachmentRegex.matches(in: description).forEach { match in
+            let timeTagStr = description[match.range(at: 1)]!
+            let timeTags = resolveTimeTag(timeTagStr)
+            
+            let attachmentTagStr = description[match.range(at: 2)]!
+            let attachmentTag = LyricsLineAttachmentTag(attachmentTagStr)
+            
+            let attachmentStr = description[match.range(at: 3)] ?? ""
+            guard let attachment = LyricsLineAttachmentFactory.createAttachment(str: attachmentStr, tag: attachmentTag) else {
+                return
             }
-            lines[index].attachments[attechment.1] = attechment.2
+            
+            for timeTag in timeTags {
+                guard let index = indexOf(position: timeTag) else {
+                    continue
+                }
+                lines[index].attachments[attachmentTag] = attachment
+            }
+            metadata.attachmentTags.insert(attachmentTag)
         }
+        
+        guard !lines.isEmpty else {
+            return nil
+        }
+    }
+    
+    public var description: String {
+        let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" }
+            + lines.map { $0.description }
+        return components.joined(separator: "\n")
     }
     
     public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {
@@ -150,25 +177,14 @@ final public class Lyrics: LosslessStringConvertible {
     
     public struct MetaData {
         
-        public var source: Source
-        public var title: String?
-        public var artist: String?
-        public var searchBy: SearchTerm?
-        public var searchIndex: Int
-        public var lyricsURL: URL?
-        public var artworkURL: URL?
-        public var includeTranslation: Bool
-        
-        public init(source: Source, title: String? = nil, artist: String? = nil, searchBy: SearchTerm? = nil, searchIndex: Int = 0, lyricsURL: URL? = nil, artworkURL: URL? = nil, includeTranslation: Bool = false) {
-            self.source = source
-            self.title = title
-            self.artist = artist
-            self.searchBy = searchBy
-            self.searchIndex = searchIndex
-            self.lyricsURL = lyricsURL
-            self.artworkURL = artworkURL
-            self.includeTranslation = includeTranslation
-        }
+        public var source: Source = .Unknown
+        public var title: String? = nil
+        public var artist: String? = nil
+        public var searchBy: SearchTerm? = nil
+        public var searchIndex: Int = 0
+        public var lyricsURL: URL? = nil
+        public var artworkURL: URL? = nil
+        public var attachmentTags: Set<LyricsLineAttachmentTag> = []
         
         public struct Source: RawRepresentable {
             
@@ -197,32 +213,32 @@ final public class Lyrics: LosslessStringConvertible {
 
 extension Lyrics {
     
-    public func filtrate(using regex: NSRegularExpression) {
+    public func filtrate(isIncluded predicate: NSPredicate) {
         for (index, lyric) in lines.enumerated() {
-            let content = lyric.content.replacingOccurrences(of: " ", with: "")
-            let numberOfMatches = regex.numberOfMatches(in: content, options: [], range: content.range)
-            if numberOfMatches > 0 {
-                lines[index].enabled = false
-                continue
-            }
+            lines[index].enabled = !predicate.evaluate(with: lyric)
         }
     }
     
     public func smartFiltrate() {
-        for (index, lyric) in lines.enumerated() {
-            let content = lyric.content
-            if let idTagTitle = idTags[.title],
-                let idTagArtist = idTags[.artist],
+        let predicate = NSPredicate { (object, _) -> Bool in
+            guard let object = object as? LyricsLine else {
+                return false
+            }
+            let content = object.content
+            if let idTagTitle = self.idTags[.title],
+                let idTagArtist = self.idTags[.artist],
                 content.contains(idTagTitle),
                 content.contains(idTagArtist) {
-                lines[index].enabled = false
-            } else if let iTunesTitle = metadata.title,
-                let iTunesArtist = metadata.artist,
+                return false
+            } else if let iTunesTitle = self.metadata.title,
+                let iTunesArtist = self.metadata.artist,
                 content.contains(iTunesTitle),
                 content.contains(iTunesArtist) {
-                lines[index].enabled = false
+                return false
             }
+            return true
         }
+        filtrate(isIncluded: predicate)
     }
 }
 
@@ -263,7 +279,7 @@ extension Lyrics {
             return titleComparison
         }
         
-        if let translationComparison = lhs.metadata.includeTranslation ?> rhs.metadata.includeTranslation {
+        if let translationComparison = lhs.metadata.attachmentTags.contains(.translation) ?> rhs.metadata.attachmentTags.contains(.translation) {
             return translationComparison
         }
         
@@ -371,14 +387,5 @@ extension Lyrics.IDTagKey: CustomStringConvertible {
     
     public var description: String {
         return rawValue
-    }
-}
-
-extension Lyrics: CustomStringConvertible {
-    
-    public var description: String {
-        let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" }
-                       + lines.map { $0.description }
-        return components.joined(separator: "\n")
     }
 }
