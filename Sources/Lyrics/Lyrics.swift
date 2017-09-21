@@ -26,7 +26,7 @@ private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePatter
 private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+\\[(.+?)\\](.*)"
 private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern)
 
-private let id3TagPattern = "^\\[(.+):(.*)\\](?=\\n)"
+private let id3TagPattern = "^\\[(.+?):(.*)\\](?=\\n)"
 private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern)
 
 final public class Lyrics: LosslessStringConvertible {
