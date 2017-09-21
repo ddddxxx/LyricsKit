@@ -35,24 +35,6 @@ final public class Lyrics: LosslessStringConvertible {
     public var idTags: [IDTagKey: String] = [:]
     public var metadata: MetaData = MetaData()
     
-    public var offset: Int {
-        get {
-            return idTags[.offset].flatMap { Int($0) } ?? 0
-        }
-        set {
-            idTags[.offset] = "\(newValue)"
-        }
-    }
-    
-    public var timeDelay: TimeInterval {
-        get {
-            return TimeInterval(offset) / 1000
-        }
-        set {
-            offset = Int(newValue * 1000)
-        }
-    }
-    
     public init?(_ description: String) {
         id3TagRegex.matches(in: description).forEach { match in
             if let key = description[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
@@ -131,24 +113,6 @@ final public class Lyrics: LosslessStringConvertible {
         return components.joined(separator: "\n")
     }
     
-    public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {
-        let position = position + timeDelay
-        var left = lines.startIndex
-        var right = lines.endIndex - 1
-        while left <= right {
-            let mid = (left + right) / 2
-            if lines[mid].position <= position {
-                left = mid + 1
-            } else {
-                right = mid - 1
-            }
-        }
-        
-        let current = right < 0 ? nil : lines[lines.startIndex...right].reversed().first { $0.enabled }
-        let next = lines[left..<lines.endIndex].first { $0.enabled }
-        return (current, next)
-    }
-    
     public struct IDTagKey: RawRepresentable, Hashable {
         
         public var rawValue: String
@@ -213,6 +177,45 @@ final public class Lyrics: LosslessStringConvertible {
 
 extension Lyrics {
     
+    public var offset: Int {
+        get {
+            return idTags[.offset].flatMap { Int($0) } ?? 0
+        }
+        set {
+            idTags[.offset] = "\(newValue)"
+        }
+    }
+    
+    public var timeDelay: TimeInterval {
+        get {
+            return TimeInterval(offset) / 1000
+        }
+        set {
+            offset = Int(newValue * 1000)
+        }
+    }
+    
+    public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {
+        let position = position + timeDelay
+        var left = lines.startIndex
+        var right = lines.endIndex - 1
+        while left <= right {
+            let mid = (left + right) / 2
+            if lines[mid].position <= position {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+        }
+        
+        let current = right < 0 ? nil : lines[lines.startIndex...right].reversed().first { $0.enabled }
+        let next = lines[left..<lines.endIndex].first { $0.enabled }
+        return (current, next)
+    }
+}
+
+extension Lyrics {
+    
     public func filtrate(isIncluded predicate: NSPredicate) {
         for (index, lyric) in lines.enumerated() {
             lines[index].enabled = !predicate.evaluate(with: lyric)
@@ -239,105 +242,6 @@ extension Lyrics {
             return true
         }
         filtrate(isIncluded: predicate)
-    }
-}
-
-infix operator ?>
-private func ?>(lhs: Bool?, rhs: Bool?) -> Bool? {
-    switch (lhs, rhs) {
-    case (true?, true?), (false?, false?):
-        return nil
-    case (true?, _), (_, false?):
-        return true
-    case (_, true?), (false?, _):
-        return false
-    default:
-        return nil
-    }
-}
-
-extension Lyrics {
-    
-    public static func >(lhs: Lyrics, rhs: Lyrics) -> Bool {
-        if lhs.metadata.source == rhs.metadata.source  {
-            return lhs.metadata.searchIndex < rhs.metadata.searchIndex
-        }
-        
-        if let artistComparison = lhs.isFitArtist ?> rhs.isFitArtist {
-            return artistComparison
-        }
-        
-        if let artistComparison = lhs.isApproachArtise ?> rhs.isApproachArtise {
-            return artistComparison
-        }
-        
-        if let titleComparison = lhs.isFitTitle ?> rhs.isFitTitle {
-            return titleComparison
-        }
-        
-        if let titleComparison = lhs.isApproachTitle ?> rhs.isApproachTitle {
-            return titleComparison
-        }
-        
-        if let translationComparison = lhs.metadata.attachmentTags.contains(.translation) ?> rhs.metadata.attachmentTags.contains(.translation) {
-            return translationComparison
-        }
-        
-        return false
-    }
-    
-    public static func <(lhs: Lyrics, rhs: Lyrics) -> Bool {
-        return rhs > lhs
-    }
-    
-    public static func >=(lhs: Lyrics, rhs: Lyrics) -> Bool {
-        return !(lhs < rhs)
-    }
-    
-    public static func <=(lhs: Lyrics, rhs: Lyrics) -> Bool {
-        return !(lhs > rhs)
-    }
-    
-    private var isFitArtist: Bool? {
-        guard case let .info(_, searchArtist)? = metadata.searchBy,
-            let artist = idTags[.artist] else {
-            return nil
-        }
-        
-        return searchArtist == artist
-    }
-    
-    private var isApproachArtise: Bool? {
-        guard case let .info(_, searchArtist)? = metadata.searchBy,
-            let artist = idTags[.artist] else {
-                return nil
-        }
-        
-        let s1 = searchArtist.lowercased().replacingOccurrences(of: " ", with: "")
-        let s2 = artist.lowercased().replacingOccurrences(of: " ", with: "")
-        
-        return s1.contains(s2) || s2.contains(s1)
-    }
-    
-    private var isFitTitle: Bool? {
-        guard case let .info(searchTitle, _)? = metadata.searchBy,
-            let title = idTags[.title] else {
-                return nil
-        }
-        
-        return searchTitle == title
-    }
-    
-    private var isApproachTitle: Bool? {
-        guard case let .info(searchTitle, _)? = metadata.searchBy,
-            let title = idTags[.title] else {
-                return nil
-        }
-        
-        let s1 = searchTitle.lowercased().replacingOccurrences(of: " ", with: "")
-        let s2 = title.lowercased().replacingOccurrences(of: " ", with: "")
-        
-        return s1.contains(s2) || s2.contains(s1)
     }
 }
 

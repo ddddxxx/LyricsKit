@@ -60,10 +60,3 @@ extension LyricsLine: CustomStringConvertible {
         }.joined(separator: "\n")
     }
 }
-
-extension String {
-    
-    var range: NSRange {
-        return NSRange(location: 0, length: characters.count)
-    }
-}
