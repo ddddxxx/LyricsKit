@@ -65,22 +65,6 @@ final public class Lyrics: LosslessStringConvertible {
             $0.position < $1.position
         }
         
-        func indexOf(position: TimeInterval) -> Int? {
-            var left = lines.startIndex
-            var right = lines.endIndex - 1
-            while left <= right {
-                let mid = (left + right) / 2
-                if lines[mid].position < position {
-                    left = mid + 1
-                } else if lines[mid].position > position {
-                    right = mid - 1
-                } else {
-                    return mid
-                }
-            }
-            return nil
-        }
-        
         lyricsLineAttachmentRegex.matches(in: description).forEach { match in
             let timeTagStr = description[match.range(at: 1)]!
             let timeTags = resolveTimeTag(timeTagStr)
@@ -94,10 +78,9 @@ final public class Lyrics: LosslessStringConvertible {
             }
             
             for timeTag in timeTags {
-                guard let index = indexOf(position: timeTag) else {
-                    continue
+                if case let .found(at: index) = lineIndex(of: timeTag) {
+                    lines[index].attachments[attachmentTag] = attachment
                 }
-                lines[index].attachments[attachmentTag] = attachment
             }
             metadata.attachmentTags.insert(attachmentTag)
         }
@@ -195,21 +178,37 @@ extension Lyrics {
         }
     }
     
-    public subscript(_ position: TimeInterval) -> (current:LyricsLine?, next:LyricsLine?) {
-        let position = position + timeDelay
-        var left = lines.startIndex
-        var right = lines.endIndex - 1
+    fileprivate enum Match {
+        case found(at: Int)
+        case notFound(insertAt: Int)
+    }
+    
+    fileprivate func lineIndex(of position: TimeInterval) -> Match {
+        var left = 0
+        var right = lines.count - 1
+        
         while left <= right {
             let mid = (left + right) / 2
-            if lines[mid].position <= position {
+            let candidate = lines[mid]
+            if candidate.position < position {
                 left = mid + 1
-            } else {
+            } else if position < candidate.position {
                 right = mid - 1
+            } else {
+                return .found(at: mid)
             }
         }
-        
-        let current = right < 0 ? nil : lines[lines.startIndex...right].reversed().first { $0.enabled }
-        let next = lines[left..<lines.endIndex].first { $0.enabled }
+        return .notFound(insertAt: left)
+    }
+    
+    public subscript(_ position: TimeInterval) -> (currentLineIndex:Int?, nextLineIndex:Int?) {
+        let index: Int
+        switch lineIndex(of: position) {
+        case let .found(at: i): index = i + 1
+        case let .notFound(insertAt: i): index = i
+        }
+        let current = (0..<index).reversed().first { lines[$0].enabled }
+        let next = lines[index...].index { $0.enabled }
         return (current, next)
     }
 }
