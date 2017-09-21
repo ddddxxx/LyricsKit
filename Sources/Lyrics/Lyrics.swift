@@ -20,20 +20,22 @@
 
 import Foundation
 
-private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+(?!\\[)([^【\\n]*)(?:【(.*)】)?"
-private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern)
+private let id3TagPattern = "^\\[(.+?):(.*)\\](?=\\n)"
+private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern, options: .anchorsMatchLines)
+
+private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+(?!\\[)([^【\\n\\r]*)(?:【(.*)】)?"
+private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern, options: .anchorsMatchLines)
 
 private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+\\[(.+?)\\](.*)"
-private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern)
-
-private let id3TagPattern = "^\\[(.+?):(.*)\\](?=\\n)"
-private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern)
+private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern, options: .anchorsMatchLines)
 
 final public class Lyrics: LosslessStringConvertible {
     
     public var lines: [LyricsLine] = []
     public var idTags: [IDTagKey: String] = [:]
     public var metadata: MetaData = MetaData()
+    
+    public init() {}
     
     public init?(_ description: String) {
         id3TagRegex.matches(in: description).forEach { match in

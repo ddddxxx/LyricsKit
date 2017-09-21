@@ -20,6 +20,12 @@
 
 import Foundation
 
+private let timeLineAttachmentPattern = "<(\\d+,\\d+)>"
+private let timeLineAttachmentRegex = try! NSRegularExpression(pattern: timeLineAttachmentPattern)
+
+private let timeLineAttachmentDurationPattern = "<(\\d+)>"
+private let timeLineAttachmentDurationRegex = try! NSRegularExpression(pattern: timeLineAttachmentDurationPattern)
+
 public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     
     public struct Tag {
@@ -37,7 +43,7 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
         }
     }
     
-    public var attachment: [Tag]
+    public var tags: [Tag]
     public var duration: TimeInterval?
     
     public var durationMSec: Int? {
@@ -46,26 +52,25 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     }
     
     public var description: String {
-        var result = attachment.map { $0.description }.joined()
-        if let duration = duration {
-            result += "<\(duration)?"
+        var result = tags.map { $0.description }.joined()
+        if let durationMSec = durationMSec {
+            result += "<\(durationMSec)>"
         }
         return result
     }
     
-    static private let timeLineAttachmentPattern = "<(\\d+,\\d+)>"
-    static private let timeLineAttachmentRegex = try! NSRegularExpression(pattern: timeLineAttachmentPattern)
-    
-    static private let timeLineAttachmentDurationPattern = "<(\\d+)>"
-    static private let timeLineAttachmentDurationRegex = try! NSRegularExpression(pattern: timeLineAttachmentDurationPattern)
+    public init(tags: [Tag] = [], duration: TimeInterval? = nil) {
+        self.tags = tags
+        self.duration = duration
+    }
     
     public init?(_ description: String) {
-        let matchs = LyricsLineAttachmentTimeLine.timeLineAttachmentRegex.matches(in: description)
-        attachment = matchs.flatMap { Tag(description[$0.range(at: 1)]!) }
-        guard !attachment.isEmpty else {
+        let matchs = timeLineAttachmentRegex.matches(in: description)
+        tags = matchs.flatMap { Tag(description[$0.range(at: 1)]!) }
+        guard !tags.isEmpty else {
             return nil
         }
-        if let match = LyricsLineAttachmentTimeLine.timeLineAttachmentDurationRegex.firstMatch(in: description) {
+        if let match = timeLineAttachmentDurationRegex.firstMatch(in: description) {
             durationMSec = Int(description[match.range(at: 1)]!)
         }
     }

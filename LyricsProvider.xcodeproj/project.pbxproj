@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB0897FA1F73A86C00E29748 /* NetEaseKLyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0897F91F73A86C00E29748 /* NetEaseKLyricParser.swift */; };
 		BB2AC1AF1F6B86F700BE765A /* Data+Gzip.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
 		BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BB0897F91F73A86C00E29748 /* NetEaseKLyricParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseKLyricParser.swift; sourceTree = "<group>"; };
 		BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Gzip.swift"; sourceTree = "<group>"; };
 		BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KugouKrcDecrypter.swift; sourceTree = "<group>"; };
 		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */,
+				BB0897F91F73A86C00E29748 /* NetEaseKLyricParser.swift */,
 			);
 			name = Parser;
 			path = Sources/Provider/Parser;
@@ -418,6 +421,7 @@
 				BBAB68591F66CA6F005D583F /* LyricsLineAttachmentTimeLine.swift in Sources */,
 				OBJ_51 /* Lyrics163.swift in Sources */,
 				OBJ_52 /* LyricsGecimi.swift in Sources */,
+				BB0897FA1F73A86C00E29748 /* NetEaseKLyricParser.swift in Sources */,
 				BBAB68571F66CA44005D583F /* LyricsLineAttachmentPlainText.swift in Sources */,
 				BB2AC1AF1F6B86F700BE765A /* Data+Gzip.swift in Sources */,
 				OBJ_53 /* LyricsKugou.swift in Sources */,
