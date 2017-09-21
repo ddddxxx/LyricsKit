@@ -38,7 +38,8 @@ final public class Lyrics: LosslessStringConvertible {
     public init?(_ description: String) {
         id3TagRegex.matches(in: description).forEach { match in
             if let key = description[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-                let value = description[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces) {
+                let value = description[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
+                !value.isEmpty {
                 idTags[.init(key)] = value
             }
         }
