@@ -29,5 +29,5 @@ let krcLineRegex = try! NSRegularExpression(pattern: krcLinePattern, options: .a
 private let netEaseInlineTagPattern = "\\(0,(\\d+)\\)([^(]+)(\\(0,1\\) )?"
 let netEaseInlineTagRegex = try! NSRegularExpression(pattern: netEaseInlineTagPattern)
 
-private let kugouInlineTagPattern = "\\(0,(\\d+)\\)([^(]+)(\\(0,1\\) )?"
+private let kugouInlineTagPattern = "<(\\d+),(\\d+),0>([^<]*)"
 let kugouInlineTagRegex = try! NSRegularExpression(pattern: kugouInlineTagPattern)
