@@ -24,10 +24,10 @@ typealias XiamiResponseSearchResult = [XiamiResponseSearchResultItem]
 
 struct XiamiResponseSearchResultItem: Decodable {
     let id: String // number
-    
-    /*
     let title: String
     let author: String // artist
+    
+    /*
     let cover: URL?
     let src: URL?
      */
