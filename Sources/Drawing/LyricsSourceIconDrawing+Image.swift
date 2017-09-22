@@ -1,5 +1,5 @@
 //
-//  LyricsSourceIconView.swift
+//  LyricsSourceIconDrawing+Image.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -25,18 +25,17 @@
         
         var drawingMethod: ((CGRect) -> Void)? {
             switch self {
-            // cannot infer type. Xcode sucks.
-            case Lyrics.MetaData.Source.Music163:
-                return LyricsSourceIconDrawing.draw_163Music
-            case Lyrics.MetaData.Source.Gecimi:
+            case .Music163:
+                return LyricsSourceIconDrawing.drawNetEaseMusic
+            case .Gecimi:
                 return LyricsSourceIconDrawing.drawGecimi
-            case Lyrics.MetaData.Source.Kugou:
+            case .Kugou:
                 return LyricsSourceIconDrawing.drawKugou
-            case Lyrics.MetaData.Source.QQMusic:
+            case .QQMusic:
                 return LyricsSourceIconDrawing.drawQQMusic
-            case Lyrics.MetaData.Source.TTPod:
+            case .TTPod:
                 return LyricsSourceIconDrawing.drawTTPod
-            case Lyrics.MetaData.Source.Xiami:
+            case .Xiami:
                 return LyricsSourceIconDrawing.drawXiami
             default:
                 return nil
@@ -51,34 +50,33 @@
     
     import Cocoa
     
-    public class LyricsSourceIconView: NSView {
+    extension LyricsSourceIconDrawing {
         
-        public var source: Lyrics.MetaData.Source = .Unknown
+        public static let defaultSize = CGSize(width: 48, height: 48)
         
-        public override func draw(_ dirtyRect: NSRect) {
-            super.draw(dirtyRect)
-            if let context = NSGraphicsContext.current?.cgContext {
-                context.translateBy(x: 0, y: frame.height)
-                context.scaleBy(x: 1, y: -1)
+        public static func icon(of source: Lyrics.MetaData.Source, size: CGSize = defaultSize) -> NSImage {
+            return NSImage(size: size, flipped: false) { (NSRect) -> Bool in
+                source.drawingMethod?(CGRect(origin: .zero, size: size))
+                return true
             }
-            source.drawingMethod?(frame)
         }
-        
     }
     
 #elseif os(iOS) || os(tvOS)
     
     import UIKit
     
-    public class LyricsSourceIconView: UIView {
+    extension LyricsSourceIconDrawing {
         
-        public var source: Lyrics.MetaData.Source = .Unknown
+        public static let defaultSize = CGSize(width: 48, height: 48)
         
-        public override func draw(_ rect: CGRect) {
-            super.draw(rect)
-            source.drawingMethod?(frame)
+        public static func icon(of source: Lyrics.MetaData.Source, size: CGSize = defaultSize) -> UIImage {
+            UIGraphicsBeginImageContextWithOptions(size, false, 0)
+            source.drawingMethod?(CGRect(origin: .zero, size: size))
+            let image = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+            UIGraphicsEndImageContext()
+            return image ?? UIImage()
         }
-        
     }
 
 #endif

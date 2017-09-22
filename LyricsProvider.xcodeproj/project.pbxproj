@@ -16,7 +16,7 @@
 		BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */; };
 		BB558A651F6A66FC00686746 /* GecimiResponseCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */; };
 		BB6B507A1F6AB9E700D4A818 /* Lyrics+Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */; };
-		BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */; };
+		BB6C57BE1F34442100F26C26 /* LyricsSourceIconDrawing+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BD1F34442100F26C26 /* LyricsSourceIconDrawing+Image.swift */; };
 		BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */; };
 		BB9D96931F729D2600852A1C /* Lyrics+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9D96921F729D2600852A1C /* Lyrics+Compare.swift */; };
 		BBA7D8E21F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */; };
@@ -70,7 +70,7 @@
 		BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseCover.swift; sourceTree = "<group>"; };
 		BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lyrics+Merge.swift"; sourceTree = "<group>"; };
-		BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconView.swift; sourceTree = "<group>"; };
+		BB6C57BD1F34442100F26C26 /* LyricsSourceIconDrawing+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LyricsSourceIconDrawing+Image.swift"; sourceTree = "<group>"; };
 		BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsSourceIconDrawing.swift; sourceTree = "<group>"; };
 		BB9D96921F729D2600852A1C /* Lyrics+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lyrics+Compare.swift"; sourceTree = "<group>"; };
 		BBA7D8E11F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseResponseSearchResult.swift; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 		BBAB68511F66C846005D583F /* Drawing */ = {
 			isa = PBXGroup;
 			children = (
-				BB6C57BD1F34442100F26C26 /* LyricsSourceIconView.swift */,
+				BB6C57BD1F34442100F26C26 /* LyricsSourceIconDrawing+Image.swift */,
 				BB6C57BF1F34468400F26C26 /* LyricsSourceIconDrawing.swift */,
 			);
 			name = Drawing;
@@ -453,7 +453,7 @@
 				OBJ_58 /* LyricsXiami.swift in Sources */,
 				BBA7D8E51F69589300EE9E3E /* NetEaseResponseSingleLyrics.swift in Sources */,
 				BBFAF74E1F650FB0001A50C3 /* LyricsLineAttachment.swift in Sources */,
-				BB6C57BE1F34442100F26C26 /* LyricsSourceIconView.swift in Sources */,
+				BB6C57BE1F34442100F26C26 /* LyricsSourceIconDrawing+Image.swift in Sources */,
 				BBC80B861F665AD80052578A /* Utilities.swift in Sources */,
 				BB6B507A1F6AB9E700D4A818 /* Lyrics+Merge.swift in Sources */,
 				BBA7D8E81F69601A00EE9E3E /* QQResponseSearchResult.swift in Sources */,
