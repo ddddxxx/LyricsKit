@@ -1,5 +1,5 @@
 //
-//  NetEaseKLyricParser.swift
+//  KugouKrcParser.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -22,13 +22,25 @@ import Foundation
 
 extension Lyrics {
     
-    convenience init?(netEaseKLyricContent content: String) {
+    convenience init?(kugouKrcContent content: String) {
         self.init()
+        var languageHeader: KugouKrcHeaderFieldLanguage?
         id3TagRegex.matches(in: content).forEach { match in
-            if let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
+            guard let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
                 let value = content[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
-                !value.isEmpty {
+                !value.isEmpty else {
+                    return
+            }
+            if key == "language" {
+                if let data = Data(base64Encoded: value) {
+                    // TODO: error handler
+                    languageHeader = try? JSONDecoder().decode(KugouKrcHeaderFieldLanguage.self, from: data)
+//                    let content = languageHeader.content.first {
+//                    // TODO: multiple translation
+//                    translation = content.lyricContent.map { $0.first ?? "" }
+                }
+            } else {
                 idTags[.init(key)] = value
             }
         }
@@ -42,21 +54,20 @@ extension Lyrics {
             
             var lineContent = ""
             var attachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)], duration: duration)
-            var dt = 0.0
-            netEaseInlineTagRegex.matches(in: content, range: match.range(at: 3)).forEach { m in
-                let timeTagStr = content[m.range(at: 1)]!
-                var timeTag = TimeInterval(timeTagStr)! / 1000
-                var fragment = content[m.range(at: 2)]!
-                if m.range(at: 3).location != NSNotFound {
-                    timeTag += 0.001
-                    fragment += " "
-                }
+            kugouInlineTagRegex.matches(in: content, range: match.range(at: 3)).forEach { m in
+                let t1 = Int(content[m.range(at: 1)]!)!
+                let t2 = Int(content[m.range(at: 2)]!)!
+                let t = TimeInterval(t1 + t2) / 1000
+                let fragment = content[m.range(at: 3)]!
                 lineContent += fragment
-                dt += timeTag
-                attachment.tags.append(.init(timeTag: dt, index: lineContent.count))
+                attachment.tags.append(.init(timeTag: t, index: lineContent.count))
             }
             
             return LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
+        }
+        
+        languageHeader?.content.first?.lyricContent.prefix(lines.count).map { $0.first ?? "" }.map(LyricsLineAttachmentPlainText.init).enumerated().forEach { index, trans in
+            lines[index].attachments[.translation] = trans
         }
         
         guard !lines.isEmpty else {
