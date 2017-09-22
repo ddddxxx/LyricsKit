@@ -23,8 +23,8 @@ import Foundation
 public struct LyricsLine {
     
     public var content: String
-    public var attachments: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]
     public var position: TimeInterval
+    public var attachments: [LyricsLineAttachmentTag: LyricsLineAttachment]
     public var enabled: Bool = true
     
     public weak var lyrics: Lyrics?
@@ -35,9 +35,10 @@ public struct LyricsLine {
         return String(format: "%02d:%06.3f", min, sec)
     }
     
-    public init(content: String, position: TimeInterval) {
+    public init(content: String, position: TimeInterval, attachments: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]) {
         self.content = content
         self.position = position
+        self.attachments = attachments
     }
 }
 
@@ -58,12 +59,5 @@ extension LyricsLine: CustomStringConvertible {
         return ([content] + attachments.map { "[\($0.key)]\($0.value)" }).map {
             "[\(timeTag)]\($0)"
         }.joined(separator: "\n")
-    }
-}
-
-extension String {
-    
-    var range: NSRange {
-        return NSRange(location: 0, length: characters.count)
     }
 }

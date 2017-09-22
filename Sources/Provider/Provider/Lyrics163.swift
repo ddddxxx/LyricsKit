@@ -67,16 +67,14 @@ public final class Lyrics163: MultiResultLyricsProvider {
         let task = session.dataTask(with: url) { data, resp, error in
             guard let data = data,
                 let result = try? JSONDecoder().decode(NetEaseResponseSingleLyrics.self, from: data),
-                // TODO: resolve klyric
-                let lrcContent = result.lrc?.lyric,
-                let lrc = Lyrics(lrcContent) else {
+                let lrc = (result.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
+                    ?? (result.lrc?.lyric).flatMap(Lyrics.init) else {
                     completionHandler(nil)
                     return
             }
             if let transLrcContent = result.tlyric?.lyric,
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
-                lrc.metadata.includeTranslation = true
             }
             
             lrc.idTags[.title]   = token.name

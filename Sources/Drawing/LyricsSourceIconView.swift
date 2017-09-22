@@ -51,7 +51,6 @@
     
     import Cocoa
     
-    @IBDesignable
     public class LyricsSourceIconView: NSView {
         
         public var source: Lyrics.MetaData.Source = .Unknown
@@ -71,10 +70,8 @@
     
     import UIKit
     
-    @IBDesignable
     public class LyricsSourceIconView: UIView {
         
-        @IBInspectable
         public var source: Lyrics.MetaData.Source = .Unknown
         
         public override func draw(_ rect: CGRect) {

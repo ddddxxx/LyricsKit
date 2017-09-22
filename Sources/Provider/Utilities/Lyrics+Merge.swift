@@ -40,5 +40,6 @@ extension Lyrics {
                 lines.formIndex(after: &index)
             }
         }
+        metadata.attachmentTags.insert(.translation)
     }
 }

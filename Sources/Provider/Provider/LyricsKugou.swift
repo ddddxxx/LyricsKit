@@ -58,7 +58,7 @@ public final class LyricsKugou: MultiResultLyricsProvider {
         let parameter: [String: Any] = [
             "id": token.id,
             "accesskey": token.accesskey,
-            "fmt": "lrc",
+            "fmt": "krc",
             "charset": "utf8",
             "client": "pc",
             "ver": 1,
@@ -67,8 +67,8 @@ public final class LyricsKugou: MultiResultLyricsProvider {
         let task = session.dataTask(with: url) { data, resp, error in
             guard let data = data,
                 let result = try? JSONDecoder().decode(KugouResponseSingleLyrics.self, from: data),
-                let lrcContent = String(data: result.content, encoding: .utf8),
-                let lrc = Lyrics(lrcContent) else {
+                let lrcContent = decryptKugouKrc(result.content),
+                let lrc = Lyrics(kugouKrcContent: lrcContent) else {
                     completionHandler(nil)
                     return
             }
