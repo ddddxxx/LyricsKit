@@ -50,8 +50,7 @@ class LyricsProviderTests: XCTestCase {
         lyricsProviders.forEach { provider in
             var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
             let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: 0, using: { lrc in
-                print(lrc)
+            provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: 0, using: { _ in
                 searchResultEx?.fulfill()
                 searchResultEx = nil
             }, completionHandler: {

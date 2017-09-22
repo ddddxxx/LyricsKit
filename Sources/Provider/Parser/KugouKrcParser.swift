@@ -36,9 +36,6 @@ extension Lyrics {
                 if let data = Data(base64Encoded: value) {
                     // TODO: error handler
                     languageHeader = try? JSONDecoder().decode(KugouKrcHeaderFieldLanguage.self, from: data)
-//                    let content = languageHeader.content.first {
-//                    // TODO: multiple translation
-//                    translation = content.lyricContent.map { $0.first ?? "" }
                 }
             } else {
                 idTags[.init(key)] = value
@@ -66,6 +63,7 @@ extension Lyrics {
             return LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
         }
         
+        // TODO: multiple translation
         languageHeader?.content.first?.lyricContent.prefix(lines.count).map { $0.first ?? "" }.map(LyricsLineAttachmentPlainText.init).enumerated().forEach { index, trans in
             lines[index].attachments[.translation] = trans
         }
