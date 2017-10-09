@@ -1,10 +1,31 @@
+//
+//  ProviderTests.swift
+//
+//  This file is part of LyricsX
+//  Copyright (C) 2017  Xander Deng
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+
 import XCTest
 @testable import LyricsProvider
 
-class LyricsProviderTests: XCTestCase {
+class ProviderTests: XCTestCase {
     
     let testSong = "Uprising"
     let testArtist = "Muse"
+    let duration = 305.0
     
     func testSearchLyricsPerformance() {
         let src = LyricsProviderManager()
@@ -27,10 +48,11 @@ class LyricsProviderTests: XCTestCase {
             LyricsTTPod(),
             Lyrics163(),
             LyricsQQ(),
+            LyricsKugou()
             ]
         lyricsProviders.forEach { provider in
             let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.iFeelLucky(term: .info(title: testSong, artist: testArtist), duration: 0) {
+            provider.iFeelLucky(term: .info(title: testSong, artist: testArtist), duration: duration) {
                 if $0 != nil {
                     searchCompleteEx.fulfill()
                 }
@@ -46,11 +68,12 @@ class LyricsProviderTests: XCTestCase {
             LyricsTTPod(),
             Lyrics163(),
             LyricsQQ(),
+            LyricsKugou()
             ]
         lyricsProviders.forEach { provider in
             var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
             let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: 0, using: { _ in
+            provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: duration, using: { _ in
                 searchResultEx?.fulfill()
                 searchResultEx = nil
             }, completionHandler: {
