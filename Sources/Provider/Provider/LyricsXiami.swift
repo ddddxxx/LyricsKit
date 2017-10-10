@@ -60,6 +60,9 @@ public final class LyricsXiami: MultiResultLyricsProvider {
                 completionHandler(nil)
                 return
             }
+            lrc.idTags[.title] = token.title
+            lrc.idTags[.artist] = token.author
+            
             lrc.metadata.lyricsURL = parseResult.lyricsURL
             lrc.metadata.source = .Xiami
             lrc.metadata.artworkURL = parseResult.artworkURL

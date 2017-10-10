@@ -57,12 +57,12 @@
     
 #endif
 
-class LyricsSourceIconDrawing {
+public class LyricsSourceIconDrawing {
 
     //// Cache
 
     private struct Cache {
-        static let _163red: Color = Color(red: 0.861, green: 0.000, blue: 0.100, alpha: 1.000)
+        static let netEaseRed: Color = Color(red: 0.861, green: 0.000, blue: 0.100, alpha: 1.000)
         static let white: Color = Color(red: 1.000, green: 1.000, blue: 1.000, alpha: 1.000)
         static let qqMusicYellow: Color = Color(red: 0.942, green: 0.765, blue: 0.165, alpha: 1.000)
         static let qqMusicGreen: Color = Color(red: 0.185, green: 0.661, blue: 0.383, alpha: 1.000)
@@ -79,7 +79,7 @@ class LyricsSourceIconDrawing {
 
     //// Colors
 
-    class var _163red: Color { return Cache._163red }
+    class var netEaseRed: Color { return Cache.netEaseRed }
     class var white: Color { return Cache.white }
     class var qqMusicYellow: Color { return Cache.qqMusicYellow }
     class var qqMusicGreen: Color { return Cache.qqMusicGreen }
@@ -95,7 +95,7 @@ class LyricsSourceIconDrawing {
 
     //// Drawing Methods
 
-    class func draw_163Music(frame: CGRect = CGRect(x: 0, y: 0, width: 48, height: 48)) {
+    class func drawNetEaseMusic(frame: CGRect = CGRect(x: 0, y: 0, width: 48, height: 48)) {
 
         //// bg Drawing
         let bgPath = BezierPath()
@@ -107,7 +107,7 @@ class LyricsSourceIconDrawing {
         bgPath.close()
         bgPath.usesEvenOddFillRule = true;
 
-        LyricsSourceIconDrawing._163red.setFill()
+        LyricsSourceIconDrawing.netEaseRed.setFill()
         bgPath.fill()
 
 
