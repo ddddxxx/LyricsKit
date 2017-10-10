@@ -220,30 +220,10 @@ extension Lyrics {
     
     public func filtrate(isIncluded predicate: NSPredicate) {
         for (index, lyric) in lines.enumerated() {
-            lines[index].enabled = !predicate.evaluate(with: lyric)
-        }
-    }
-    
-    public func smartFiltrate() {
-        let predicate = NSPredicate { (object, _) -> Bool in
-            guard let object = object as? LyricsLine else {
-                return false
+            if !predicate.evaluate(with: lyric) {
+                lines[index].enabled = false
             }
-            let content = object.content
-            if let idTagTitle = self.idTags[.title],
-                let idTagArtist = self.idTags[.artist],
-                content.contains(idTagTitle),
-                content.contains(idTagArtist) {
-                return false
-            } else if let iTunesTitle = self.metadata.title,
-                let iTunesArtist = self.metadata.artist,
-                content.contains(iTunesTitle),
-                content.contains(iTunesArtist) {
-                return false
-            }
-            return true
         }
-        filtrate(isIncluded: predicate)
     }
 }
 
