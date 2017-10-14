@@ -42,6 +42,13 @@ public struct LyricsLine {
     }
 }
 
+extension LyricsLine {
+    
+    public var translation: String? {
+        return attachments[.translation]?.description
+    }
+}
+
 extension LyricsLine: Equatable, Hashable {
     
     public var hashValue: Int {
