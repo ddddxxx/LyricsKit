@@ -27,6 +27,42 @@ class ProviderTests: XCTestCase {
     let testArtist = "Muse"
     let duration = 305.0
     
+    func _test(provider: LyricsProvider) {
+        var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
+        let searchCompleteEx = expectation(description: "Search complete: \(provider)")
+        provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: duration, using: { _ in
+            searchResultEx?.fulfill()
+            searchResultEx = nil
+        }, completionHandler: {
+            searchCompleteEx.fulfill()
+        })
+        waitForExpectations(timeout: 10)
+    }
+    
+    func testNetEase() {
+        _test(provider: Lyrics163())
+    }
+    
+    func testQQ() {
+        _test(provider: LyricsQQ())
+    }
+    
+    func testKugou() {
+        _test(provider: LyricsKugou())
+    }
+    
+    func testXiami() {
+        _test(provider: LyricsXiami())
+    }
+    
+    func testTTPod() {
+        _test(provider: LyricsTTPod())
+    }
+    
+    func testGecimi() {
+        _test(provider: LyricsGecimi())
+    }
+    
     func testSearchLyricsPerformance() {
         let src = LyricsProviderManager()
         
@@ -40,54 +76,6 @@ class ProviderTests: XCTestCase {
             self.waitForExpectations(timeout: 10)
         }
     }
-    
-    func testIfeelLucky() {
-        let lyricsProviders: [LyricsProvider] = [
-            LyricsXiami(),
-            LyricsGecimi(),
-            LyricsTTPod(),
-            Lyrics163(),
-            LyricsQQ(),
-            LyricsKugou()
-            ]
-        lyricsProviders.forEach { provider in
-            let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.iFeelLucky(term: .info(title: testSong, artist: testArtist), duration: duration) {
-                if $0 != nil {
-                    searchCompleteEx.fulfill()
-                }
-            }
-        }
-        waitForExpectations(timeout: 10)
-    }
-    
-    func testLyricsProviderAvailability() {
-        let lyricsProviders: [LyricsProvider] = [
-            LyricsXiami(),
-            LyricsGecimi(),
-            LyricsTTPod(),
-            Lyrics163(),
-            LyricsQQ(),
-            LyricsKugou()
-            ]
-        lyricsProviders.forEach { provider in
-            var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
-            let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-            provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: duration, using: { _ in
-                searchResultEx?.fulfill()
-                searchResultEx = nil
-            }, completionHandler: {
-                searchCompleteEx.fulfill()
-            })
-        }
-        waitForExpectations(timeout: 10)
-    }
-
-
-    static var allTests = [
-        ("testFetchLyricsPerformance", testSearchLyricsPerformance),
-        ("testLyricsSourceAvailability", testLyricsProviderAvailability),
-    ]
 }
 
 class TestConsumer: LyricsConsuming {
