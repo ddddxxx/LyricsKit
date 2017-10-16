@@ -99,6 +99,11 @@ final public class Lyrics: LosslessStringConvertible {
         return components.joined(separator: "\n")
     }
     
+    public var legacyDescription: String {
+        let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" } + lines.map { "[\($0.timeTag)]\($0.content)" + ($0.translation.map { "【\($0)】" } ?? "") }
+        return components.joined(separator: "\n")
+    }
+    
     public struct IDTagKey: RawRepresentable, Hashable {
         
         public var rawValue: String

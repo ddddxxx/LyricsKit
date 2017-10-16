@@ -20,7 +20,7 @@
 
 import Foundation
 
-private let id3TagPattern = "^\\[(.+?):(.*)\\](?=\\n)"
+private let id3TagPattern = "^(?!\\[[+-]?\\d+:\\d+(.\\d+)?\\])\\[(.+?):(.*)\\](?=\\n|$)"
 let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern, options: .anchorsMatchLines)
 
 private let krcLinePattern = "^\\[(\\d+),(\\d+)\\](.*)"
