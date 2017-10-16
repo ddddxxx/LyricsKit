@@ -82,7 +82,7 @@ extension Lyrics {
                 return nil
         }
         
-        return searchArtist == artist
+        return searchArtist.lowercased() == artist.lowercased()
     }
     
     private var isApproachArtise: Bool? {
@@ -103,7 +103,7 @@ extension Lyrics {
                 return nil
         }
         
-        return searchTitle == title
+        return searchTitle.lowercased() == title.lowercased()
     }
     
     private var isApproachTitle: Bool? {
