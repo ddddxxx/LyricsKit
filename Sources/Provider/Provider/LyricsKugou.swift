@@ -43,13 +43,8 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             "man": "yes",
             ]
         let url = URL(string: kugouSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(KugouResponseSearchResult.self, from: data) else {
-                    completionHandler([])
-                    return
-            }
-            completionHandler(result.candidates)
+        let task = session.dataTask(with: url, type: KugouResponseSearchResult.self) { model, error in
+            completionHandler(model?.candidates ?? [])
         }
         task.resume()
     }
@@ -64,10 +59,9 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             "ver": 1,
             ]
         let url = URL(string: kugouLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(KugouResponseSingleLyrics.self, from: data),
-                let lrcContent = decryptKugouKrc(result.content),
+        let task = session.dataTask(with: url, type: KugouResponseSingleLyrics.self) { model, error in
+            guard let model = model,
+                let lrcContent = decryptKugouKrc(model.content),
                 let lrc = Lyrics(kugouKrcContent: lrcContent) else {
                     completionHandler(nil)
                     return

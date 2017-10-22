@@ -45,13 +45,8 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
         
         let url = gecimiLyricsBaseURL.appendingPathComponent("\(encodedTitle)/\(encodedArtist)")
         let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(GecimiResponseSearchResult.self, from: data) else {
-                    completionHandler([])
-                    return
-            }
-            completionHandler(result.result)
+        let task = session.dataTask(with: req, type: GecimiResponseSearchResult.self) { model, error in
+            completionHandler(model?.result ?? [])
         }
         task.resume()
     }
@@ -68,10 +63,9 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
             lyrics.metadata.source = .Gecimi
             
             let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")
-            let task = self.session.dataTask(with: url) { data, resp, error in
-                if let data = data,
-                    let result = try? JSONDecoder().decode(GecimiResponseCover.self, from: data) {
-                    lyrics.metadata.artworkURL = result.result.cover
+            let task = self.session.dataTask(with: url, type: GecimiResponseCover.self) { model, error in
+                if let model = model {
+                    lyrics.metadata.artworkURL = model.result.cover
                 }
             }
             task.resume()

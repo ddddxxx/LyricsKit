@@ -37,13 +37,8 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([XiamiResponseSearchResultItem]) -> Void) {
         let parameter = ["key": term.description]
         let url = URL(string: xiamiSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(XiamiResponseSearchResult.self, from: data) else {
-                    completionHandler([])
-                    return
-            }
-            completionHandler(result)
+        let task = session.dataTask(with: url, type: XiamiResponseSearchResult.self) { model, error in
+            completionHandler(model ?? [])
         }
         task.resume()
     }
