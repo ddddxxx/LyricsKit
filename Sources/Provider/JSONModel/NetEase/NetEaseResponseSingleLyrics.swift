@@ -47,7 +47,7 @@ struct NetEaseResponseSingleLyrics: Decodable {
     }
     
     struct Lyric: Decodable {
-        let lyric: String
+        let lyric: String?
         
         /*
         let version: Int

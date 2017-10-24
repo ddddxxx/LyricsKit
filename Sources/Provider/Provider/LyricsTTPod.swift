@@ -43,10 +43,9 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
             "title": title,
             ]
         let url = URL(string: ttpodLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(TTPodResponseSingleLyrics.self, from: data),
-                let lrc = Lyrics(result.data.lrc) else {
+        let task = session.dataTask(with: url, type: TTPodResponseSingleLyrics.self) { model, error in
+            guard let model = model,
+                let lrc = Lyrics(model.data.lrc) else {
                     completionHandler(nil)
                     return
             }

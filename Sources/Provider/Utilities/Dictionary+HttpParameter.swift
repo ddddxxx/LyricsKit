@@ -1,5 +1,5 @@
 //
-//  URLRequest+HTTPBody.swift
+//  Dictionary+HttpParameter.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng

@@ -45,13 +45,8 @@ public final class Lyrics163: MultiResultLyricsProvider {
         req.httpMethod = "POST"
         req.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
         req.httpBody = parameter.stringFromHttpParameters.data(using: .ascii)!
-        let task = session.dataTask(with: req) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(NetEaseResponseSearchResult.self, from: data) else {
-                completionHandler([])
-                return
-            }
-            completionHandler(result.songs)
+        let task = session.dataTask(with: req, type: NetEaseResponseSearchResult.self) { model, error in
+            completionHandler(model?.songs ?? [])
         }
         task.resume()
     }
@@ -64,15 +59,14 @@ public final class Lyrics163: MultiResultLyricsProvider {
             "tv": -1,
             ]
         let url = URL(string: netEaseLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
-            guard let data = data,
-                let result = try? JSONDecoder().decode(NetEaseResponseSingleLyrics.self, from: data),
-                let lrc = (result.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
-                    ?? (result.lrc?.lyric).flatMap(Lyrics.init) else {
+        let task = session.dataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
+            guard let model = model,
+                let lrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
+                ?? (model.lrc?.lyric).flatMap(Lyrics.init) else {
                     completionHandler(nil)
                     return
             }
-            if let transLrcContent = result.tlyric?.lyric,
+            if let transLrcContent = model.tlyric?.lyric,
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
             }
@@ -80,7 +74,7 @@ public final class Lyrics163: MultiResultLyricsProvider {
             lrc.idTags[.title]   = token.name
             lrc.idTags[.artist]  = token.artists.first?.name
             lrc.idTags[.album]   = token.album.name
-            lrc.idTags[.lrcBy]   = result.lyricUser?.nickname
+            lrc.idTags[.lrcBy]   = model.lyricUser?.nickname
             
             lrc.metadata.source      = .Music163
             lrc.metadata.artworkURL  = token.album.picUrl
