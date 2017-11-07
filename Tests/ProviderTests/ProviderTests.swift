@@ -40,7 +40,7 @@ class ProviderTests: XCTestCase {
     }
     
     func testNetEase() {
-        _test(provider: Lyrics163())
+        _test(provider: LyricsNetEase())
     }
     
     func testQQ() {

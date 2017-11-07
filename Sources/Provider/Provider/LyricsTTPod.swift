@@ -23,12 +23,12 @@ import Foundation
 let ttpodLyricsBaseURLString = "http://lp.music.ttpod.com/lrc/down"
 
 extension Lyrics.MetaData.Source {
-    static let TTPod = Lyrics.MetaData.Source("TTPod")
+    static let ttpod = Lyrics.MetaData.Source("TTPod")
 }
 
 public final class LyricsTTPod: SingleResultLyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .TTPod
+    public static let source: Lyrics.MetaData.Source = .ttpod
     
     let session = URLSession(configuration: .providerConfig)
     
@@ -49,7 +49,7 @@ public final class LyricsTTPod: SingleResultLyricsProvider {
                     completionHandler(nil)
                     return
             }
-            lrc.metadata.source = .TTPod
+            lrc.metadata.source = .ttpod
             lrc.metadata.searchBy = term
             lrc.metadata.searchIndex = 0
             completionHandler(lrc)

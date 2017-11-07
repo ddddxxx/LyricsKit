@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F6B5B419084F7E6E483DB66D669D4DCCBC1B09C5",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3" : 9223372036854775807,
+    "AAB75E8C3BB3D27CB6BAA34060B1D74CE0885C17" : 9223372036854775807,
+    "F6B5B419084F7E6E483DB66D669D4DCCBC1B09C5" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6CBE2B22-1F29-4FB1-9E77-BBC5CFD18500",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3" : "LyricsProvider\/.build\/checkouts\/SwiftyJSON.git-3043514560129222422\/",
+    "AAB75E8C3BB3D27CB6BAA34060B1D74CE0885C17" : "LyricsProvider\/.build\/checkouts\/Then-9147344704269568239\/",
+    "F6B5B419084F7E6E483DB66D669D4DCCBC1B09C5" : "LyricsProvider\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "LyricsProvider",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "LyricsProvider.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "\/Users\/Dengxiang\/Documents\/Program\/LyricsProvider\/.build\/repositories\/Then-9147344704269568239",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "AAB75E8C3BB3D27CB6BAA34060B1D74CE0885C17"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "\/Users\/Dengxiang\/Documents\/Program\/LyricsProvider\/.build\/repositories\/SwiftyJSON.git-3043514560129222422",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/XQS6LB3A\/lyrics-module.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F6B5B419084F7E6E483DB66D669D4DCCBC1B09C5"
+    }
+  ]
+}

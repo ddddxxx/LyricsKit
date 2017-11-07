@@ -60,12 +60,20 @@ extension Lyrics {
                 attachment.tags.append(.init(timeTag: t, index: lineContent.count))
             }
             
-            return LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
+            var line = LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
+            line.lyrics = self
+            return line
         }
+        metadata.attachmentTags.insert(.timetag)
         
         // TODO: multiple translation
-        languageHeader?.content.first?.lyricContent.prefix(lines.count).map { $0.first ?? "" }.map(LyricsLineAttachmentPlainText.init).enumerated().forEach { index, trans in
-            lines[index].attachments[.translation] = trans
+        if let transContent = languageHeader?.content.first?.lyricContent {
+            transContent.prefix(lines.count).enumerated().forEach { index, item in
+                if let str = item.first {
+                    lines[index].attachments[.translation] = LyricsLineAttachmentPlainText(str)
+                }
+            }
+            metadata.attachmentTags.insert(.translation)
         }
         
         guard !lines.isEmpty else {

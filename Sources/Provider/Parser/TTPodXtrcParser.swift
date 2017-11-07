@@ -1,5 +1,5 @@
 //
-//  NetEaseKLyricParser.swift
+//  TTPodXtrcParser.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -22,7 +22,7 @@ import Foundation
 
 extension Lyrics {
     
-    convenience init?(netEaseKLyricContent content: String) {
+    convenience init?(ttpodXtrcContent content: String) {
         self.init()
         id3TagRegex.matches(in: content).forEach { match in
             if let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
@@ -33,32 +33,38 @@ extension Lyrics {
             }
         }
         
-        lines = krcLineRegex.matches(in: content).map { match in
+        lines = ttpodXtrcLineRegex.matches(in: content).flatMap { match -> [LyricsLine] in
             let timeTagStr = content[match.range(at: 1)]!
-            let timeTag = TimeInterval(timeTagStr)! / 1000
-            
-            let durationStr = content[match.range(at: 2)]!
-            let duration = TimeInterval(durationStr)! / 1000
+            let timeTags = resolveTimeTag(timeTagStr)
             
             var lineContent = ""
-            var attachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)], duration: duration)
+            var timetagAttachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)])
             var dt = 0.0
-            netEaseInlineTagRegex.matches(in: content, range: match.range(at: 3)).forEach { m in
+            ttpodXtrcInlineTagRegex.matches(in: content, range: match.range(at: 2)).forEach { m in
                 let timeTagStr = content[m.range(at: 1)]!
-                var timeTag = TimeInterval(timeTagStr)! / 1000
-                var fragment = content[m.range(at: 2)]!
-                if m.range(at: 3).location != NSNotFound {
-                    timeTag += 0.001
-                    fragment += " "
-                }
+                let timeTag = TimeInterval(timeTagStr)! / 1000
+                let fragment = content[m.range(at: 2)]!
                 lineContent += fragment
                 dt += timeTag
-                attachment.tags.append(.init(timeTag: dt, index: lineContent.count))
+                timetagAttachment.tags.append(.init(timeTag: dt, index: lineContent.count))
             }
             
-            var line = LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
-            line.lyrics = self
-            return line
+            var line = LyricsLine(content: lineContent, position: 0, attachments: [.timetag: timetagAttachment])
+            
+            if let translationStr = content[match.range(at: 3)] {
+                let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
+                line.attachments[.translation] = translationAttachment
+                metadata.attachmentTags.insert(.translation)
+            }
+            
+            return timeTags.map { timeTag in
+                var l = line
+                l.position = timeTag
+                l.lyrics = self
+                return l
+            }
+        }.sorted {
+            $0.position < $1.position
         }
         metadata.attachmentTags.insert(.timetag)
         

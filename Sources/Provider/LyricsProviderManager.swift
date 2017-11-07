@@ -36,7 +36,7 @@ public class LyricsProviderManager {
         LyricsXiami(),
         LyricsGecimi(),
         LyricsTTPod(),
-        Lyrics163(),
+        LyricsNetEase(),
         LyricsQQ(),
         LyricsKugou(),
     ]

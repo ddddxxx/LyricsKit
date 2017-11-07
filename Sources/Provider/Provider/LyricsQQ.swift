@@ -24,12 +24,12 @@ private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_sea
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
 
 extension Lyrics.MetaData.Source {
-    static let QQMusic = Lyrics.MetaData.Source("QQMusic")
+    static let qq = Lyrics.MetaData.Source("QQMusic")
 }
 
 public final class LyricsQQ: MultiResultLyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .QQMusic
+    public static let source: Lyrics.MetaData.Source = .qq
     
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
@@ -70,8 +70,14 @@ public final class LyricsQQ: MultiResultLyricsProvider {
                 lrc.merge(translation: transLrc)
             }
             
-            lrc.metadata.source = .QQMusic
-//            lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(token % 100)/\(token).jpg")
+            lrc.idTags[.title] = token.songname
+            lrc.idTags[.artist] = token.singer.first?.name
+            lrc.idTags[.album] = token.albumname
+            
+            lrc.metadata.source = .qq
+            if let id = Int(token.songmid) {
+                lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
+            }
             completionHandler(lrc)
         }
         task.resume()
