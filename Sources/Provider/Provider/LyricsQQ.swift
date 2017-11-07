@@ -70,8 +70,14 @@ public final class LyricsQQ: MultiResultLyricsProvider {
                 lrc.merge(translation: transLrc)
             }
             
+            lrc.idTags[.title] = token.songname
+            lrc.idTags[.artist] = token.singer.first?.name
+            lrc.idTags[.album] = token.albumname
+            
             lrc.metadata.source = .QQMusic
-//            lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(token % 100)/\(token).jpg")
+            if let id = Int(token.songmid) {
+                lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
+            }
             completionHandler(lrc)
         }
         task.resume()
