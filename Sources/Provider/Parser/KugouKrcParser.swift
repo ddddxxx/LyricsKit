@@ -60,7 +60,9 @@ extension Lyrics {
                 attachment.tags.append(.init(timeTag: t, index: lineContent.count))
             }
             
-            return LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
+            var line = LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
+            line.lyrics = self
+            return line
         }
         
         // TODO: multiple translation
