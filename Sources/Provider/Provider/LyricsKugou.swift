@@ -24,12 +24,12 @@ private let kugouSearchBaseURLString = "http://lyrics.kugou.com/search"
 private let kugouLyricsBaseURLString = "http://lyrics.kugou.com/download"
 
 extension Lyrics.MetaData.Source {
-    static let Kugou = Lyrics.MetaData.Source("Kugou")
+    static let kugou = Lyrics.MetaData.Source("Kugou")
 }
 
 public final class LyricsKugou: MultiResultLyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .Kugou
+    public static let source: Lyrics.MetaData.Source = .kugou
     
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
@@ -70,7 +70,7 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             lrc.idTags[.artist] = token.singer
             lrc.idTags[.lrcBy] = "Kugou"
             
-            lrc.metadata.source = .Kugou
+            lrc.metadata.source = .kugou
             
             completionHandler(lrc)
         }

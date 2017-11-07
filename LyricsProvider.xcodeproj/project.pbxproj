@@ -39,7 +39,7 @@
 		BBDCA9EC1F6A5B09008ECB89 /* KugouResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDCA9EB1F6A5B09008ECB89 /* KugouResponseSingleLyrics.swift */; };
 		BBFAF74E1F650FB0001A50C3 /* LyricsLineAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFAF74D1F650FB0001A50C3 /* LyricsLineAttachment.swift */; };
 		OBJ_50 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_8 /* Lyrics.swift */; };
-		OBJ_51 /* Lyrics163.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Lyrics163.swift */; };
+		OBJ_51 /* LyricsNetEase.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* LyricsNetEase.swift */; };
 		OBJ_52 /* LyricsGecimi.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* LyricsGecimi.swift */; };
 		OBJ_53 /* LyricsKugou.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* LyricsKugou.swift */; };
 		OBJ_54 /* LyricsLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* LyricsLine.swift */; };
@@ -107,7 +107,7 @@
 		OBJ_30 /* LyricsProviderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = LyricsProviderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
-		OBJ_9 /* Lyrics163.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics163.swift; sourceTree = "<group>"; };
+		OBJ_9 /* LyricsNetEase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsNetEase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,7 +172,7 @@
 		BBA7D8DF1F694EE000EE9E3E /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* Lyrics163.swift */,
+				OBJ_9 /* LyricsNetEase.swift */,
 				OBJ_14 /* LyricsQQ.swift */,
 				OBJ_11 /* LyricsKugou.swift */,
 				OBJ_16 /* LyricsXiami.swift */,
@@ -450,7 +450,7 @@
 				BB0897FE1F74ED1600E29748 /* Regex.swift in Sources */,
 				BBAB68591F66CA6F005D583F /* LyricsLineAttachmentTimeLine.swift in Sources */,
 				BBD517AD1FB14C6C0056084A /* TTPodXtrcParser.swift in Sources */,
-				OBJ_51 /* Lyrics163.swift in Sources */,
+				OBJ_51 /* LyricsNetEase.swift in Sources */,
 				OBJ_52 /* LyricsGecimi.swift in Sources */,
 				BB0897FA1F73A86C00E29748 /* NetEaseKLyricParser.swift in Sources */,
 				BBAB68571F66CA44005D583F /* LyricsLineAttachmentPlainText.swift in Sources */,

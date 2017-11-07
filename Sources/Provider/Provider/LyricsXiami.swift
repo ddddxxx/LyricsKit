@@ -23,12 +23,12 @@ import Foundation
 private let xiamiSearchBaseURLString = "http://api.xiami.com/web?"
 
 extension Lyrics.MetaData.Source {
-    static let Xiami = Lyrics.MetaData.Source("Xiami")
+    static let xiami = Lyrics.MetaData.Source("Xiami")
 }
 
 public final class LyricsXiami: MultiResultLyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .Xiami
+    public static let source: Lyrics.MetaData.Source = .xiami
     
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
@@ -79,7 +79,7 @@ public final class LyricsXiami: MultiResultLyricsProvider {
             lrc.idTags[.artist] = token.artist_name
             
             lrc.metadata.lyricsURL = lrcURL
-            lrc.metadata.source = .Xiami
+            lrc.metadata.source = .xiami
             lrc.metadata.artworkURL = token.album_logo
             completionHandler(lrc)
         }

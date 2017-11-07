@@ -24,12 +24,12 @@ private let gecimiLyricsBaseURL = URL(string: "http://gecimi.com/api/lyric")!
 private let gecimiCoverBaseURL = URL(string:"http://gecimi.com/api/cover")!
 
 extension Lyrics.MetaData.Source {
-    static let Gecimi = Lyrics.MetaData.Source("Gecimi")
+    static let gecimi = Lyrics.MetaData.Source("Gecimi")
 }
 
 public final class LyricsGecimi: MultiResultLyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .Gecimi
+    public static let source: Lyrics.MetaData.Source = .gecimi
     
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
@@ -60,7 +60,7 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
                 return
             }
             lyrics.metadata.lyricsURL = token.lrc
-            lyrics.metadata.source = .Gecimi
+            lyrics.metadata.source = .gecimi
             
             let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")
             let task = self.session.dataTask(with: url, type: GecimiResponseCover.self) { model, error in

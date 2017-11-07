@@ -25,17 +25,17 @@
         
         var drawingMethod: ((CGRect) -> Void)? {
             switch self {
-            case .Music163:
+            case .netease:
                 return LyricsSourceIconDrawing.drawNetEaseMusic
-            case .Gecimi:
+            case .gecimi:
                 return LyricsSourceIconDrawing.drawGecimi
-            case .Kugou:
+            case .kugou:
                 return LyricsSourceIconDrawing.drawKugou
-            case .QQMusic:
+            case .qq:
                 return LyricsSourceIconDrawing.drawQQMusic
-            case .TTPod:
+            case .ttpod:
                 return LyricsSourceIconDrawing.drawTTPod
-            case .Xiami:
+            case .xiami:
                 return LyricsSourceIconDrawing.drawXiami
             default:
                 return nil
