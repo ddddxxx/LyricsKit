@@ -31,3 +31,9 @@ let netEaseInlineTagRegex = try! NSRegularExpression(pattern: netEaseInlineTagPa
 
 private let kugouInlineTagPattern = "<(\\d+),(\\d+),0>([^<]*)"
 let kugouInlineTagRegex = try! NSRegularExpression(pattern: kugouInlineTagPattern)
+
+private let ttpodXtrcLinePattern = "^((?:\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+)((?:<\\d+>[^<\\r\\n]+)*)(?:[\\r\\n]+\\[x\\-trans\\](.*))?"
+let ttpodXtrcLineRegex = try! NSRegularExpression(pattern: ttpodXtrcLinePattern, options: .anchorsMatchLines)
+
+private let ttpodXtrcInlineTagPattern = "<(\\d+)>([^<\\r\\n]+)"
+let ttpodXtrcInlineTagRegex = try! NSRegularExpression(pattern: ttpodXtrcInlineTagPattern)

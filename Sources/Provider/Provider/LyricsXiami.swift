@@ -20,8 +20,7 @@
 
 import Foundation
 
-private let xiamiSearchBaseURLString = "http://www.xiami.com/web/search-songs"
-private let xiamiLyricsBaseURL = URL(string: "http://www.xiami.com/song/playlist/id")!
+private let xiamiSearchBaseURLString = "http://api.xiami.com/web?"
 
 extension Lyrics.MetaData.Source {
     static let Xiami = Lyrics.MetaData.Source("Xiami")
@@ -34,73 +33,56 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([XiamiResponseSearchResultItem]) -> Void) {
-        let parameter = ["key": term.description]
-        let url = URL(string: xiamiSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url, type: XiamiResponseSearchResult.self) { model, error in
-            completionHandler(model ?? [])
+    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) {
+        let parameter: [String : Any] = [
+            "key": term.description,
+            "limit": 10,
+            "r": "search/songs",
+            "v": "2.0",
+            "app_key": 1,
+        ]
+        let url = URL(string: xiamiSearchBaseURLString + parameter.stringFromHttpParameters)!
+        var req = URLRequest(url: url)
+        req.httpMethod = "POST"
+        req.setValue("http://h.xiami.com/", forHTTPHeaderField: "Referer")
+        let task = session.dataTask(with: req, type: XiamiResponseSearchResult.self) { model, error in
+            let songs = model?.data.songs.filter { $0.lyric != nil } ?? []
+            completionHandler(songs)
         }
         task.resume()
     }
     
-    func getLyricsWithToken(token: XiamiResponseSearchResultItem, completionHandler: @escaping (Lyrics?) -> Void) {
-        let url = xiamiLyricsBaseURL.appendingPathComponent("\(token.id)")
-        let req = URLRequest(url: url)
-        let task = session.dataTask(with: req) { data, resp, error in
+    func getLyricsWithToken(token: XiamiResponseSearchResult.Data.Song, completionHandler: @escaping (Lyrics?) -> Void) {
+        guard let lrcURLStr = token.lyric,
+            let lrcURL = URL(string: lrcURLStr) else {
+            completionHandler(nil)
+            return
+        }
+        let task = session.dataTask(with: lrcURL) { data, resp, error in
+            let parser: (String) -> Lyrics?
+            switch lrcURL.pathExtension.lowercased() {
+            case "lrc":
+                parser = Lyrics.init
+            case "trc", "xtrc":
+                parser = Lyrics.init(ttpodXtrcContent:)
+            default:
+                // TODO: unknown format
+                parser = { _ in nil }
+            }
             guard let data = data,
-                let parseResult = LyricsXiamiXMLParser().parseLrcURL(data: data),
-                // FIXME: async fetch lyrics
-                let lrcStr = try? String(contentsOf: parseResult.lyricsURL),
-                let lrc = Lyrics(lrcStr) else {
+                let lrcStr = String.init(data: data, encoding: .utf8),
+                let lrc = parser(lrcStr) else {
                 completionHandler(nil)
                 return
             }
-            lrc.idTags[.title] = token.title
-            lrc.idTags[.artist] = token.author
+            lrc.idTags[.title] = token.song_name
+            lrc.idTags[.artist] = token.artist_name
             
-            lrc.metadata.lyricsURL = parseResult.lyricsURL
+            lrc.metadata.lyricsURL = lrcURL
             lrc.metadata.source = .Xiami
-            lrc.metadata.artworkURL = parseResult.artworkURL
+            lrc.metadata.artworkURL = token.album_logo
             completionHandler(lrc)
         }
         task.resume()
-    }
-}
-
-// MARK: - XMLParser
-
-private class LyricsXiamiXMLParser: NSObject, XMLParserDelegate {
-    
-    var XMLContent: String?
-    
-    var lyricsURL: URL?
-    var artworkURL: URL?
-    
-    func parseLrcURL(data: Data) -> (lyricsURL: URL, artworkURL: URL?)? {
-        let parser = XMLParser(data: data)
-        parser.delegate = self
-        parser.parse()
-        guard let lyricsURL = lyricsURL else {
-            return nil
-        }
-        
-        return (lyricsURL, artworkURL)
-    }
-    
-    // MARK: XMLParserDelegate
-    
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        switch elementName {
-        case "lyric":
-            lyricsURL = XMLContent.flatMap { URL(string: $0) }
-        case "pic":
-            artworkURL = XMLContent.flatMap { URL(string: $0) }
-        default:
-            return
-        }
-    }
-    
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-        XMLContent = string
     }
 }
