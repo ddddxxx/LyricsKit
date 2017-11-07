@@ -60,6 +60,7 @@ extension Lyrics {
             line.lyrics = self
             return line
         }
+        metadata.attachmentTags.insert(.timetag)
         
         guard !lines.isEmpty else {
             return nil

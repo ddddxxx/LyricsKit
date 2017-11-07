@@ -54,6 +54,7 @@ extension Lyrics {
             if let translationStr = content[match.range(at: 3)] {
                 let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
                 line.attachments[.translation] = translationAttachment
+                metadata.attachmentTags.insert(.translation)
             }
             
             return timeTags.map { timeTag in
@@ -65,6 +66,7 @@ extension Lyrics {
         }.sorted {
             $0.position < $1.position
         }
+        metadata.attachmentTags.insert(.timetag)
         
         guard !lines.isEmpty else {
             return nil
