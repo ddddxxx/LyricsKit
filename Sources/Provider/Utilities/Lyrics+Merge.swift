@@ -20,13 +20,15 @@
 
 import Foundation
 
+private let mergeTimetagThreshold = 0.02
+
 extension Lyrics {
     
     func merge(translation: Lyrics) {
         var index = lines.startIndex
         var transIndex = translation.lines.startIndex
         while index < lines.endIndex, transIndex < translation.lines.endIndex {
-            if lines[index].position == translation.lines[transIndex].position {
+            if abs(lines[index].position - translation.lines[transIndex].position) < mergeTimetagThreshold {
                 let transStr = translation.lines[transIndex].content
                 if !transStr.isEmpty {
                     let translation = LyricsLineAttachmentPlainText(transStr)
