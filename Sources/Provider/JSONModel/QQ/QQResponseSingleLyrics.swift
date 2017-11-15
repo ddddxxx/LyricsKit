@@ -27,3 +27,21 @@ struct QQResponseSingleLyrics: Decodable {
     let lyric: Data
     let trans: Data?
 }
+
+extension QQResponseSingleLyrics {
+    
+    var lyricString: String? {
+        guard let string = String(data: lyric, encoding: .utf8) else {
+            return nil
+        }
+        return CFXMLCreateStringByUnescapingEntities(nil, string as CFString, nil) as String
+    }
+    
+    var transString: String? {
+        guard let data = trans,
+            let string = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        return CFXMLCreateStringByUnescapingEntities(nil, string as CFString, nil) as String
+    }
+}
