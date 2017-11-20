@@ -59,13 +59,12 @@ public final class LyricsQQ: MultiResultLyricsProvider {
         let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data?.dropFirst(18).dropLast(),
                 let model = try? JSONDecoder().decode(QQResponseSingleLyrics.self, from: data),
-                let lrcContent = String(data: model.lyric, encoding: .utf8),
+                let lrcContent = model.lyricString,
                 let lrc = Lyrics(lrcContent) else {
                     completionHandler(nil)
                     return
             }
-            if let transLrcData = model.trans,
-                let transLrcContent = String(data: transLrcData, encoding: .utf8),
+            if let transLrcContent = model.transString,
                 let transLrc = Lyrics(transLrcContent) {
                 lrc.merge(translation: transLrc)
             }
