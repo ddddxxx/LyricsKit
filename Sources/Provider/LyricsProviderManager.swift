@@ -35,7 +35,6 @@ public class LyricsProviderManager {
     let providers: [LyricsProvider] = [
         LyricsXiami(),
         LyricsGecimi(),
-        LyricsTTPod(),
         LyricsNetEase(),
         LyricsQQ(),
         LyricsKugou(),

@@ -13,7 +13,6 @@
 		BB2AC1AF1F6B86F700BE765A /* Data+Gzip.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */; };
 		BB2B4E991F9C55C700C01C4F /* URLSession+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B4E981F9C55C700C01C4F /* URLSession+Task.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
-		BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */; };
 		BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */; };
 		BB558A651F6A66FC00686746 /* GecimiResponseCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */; };
 		BB6B507A1F6AB9E700D4A818 /* Lyrics+Merge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */; };
@@ -45,7 +44,6 @@
 		OBJ_54 /* LyricsLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* LyricsLine.swift */; };
 		OBJ_55 /* LyricsProviderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* LyricsProviderManager.swift */; };
 		OBJ_56 /* LyricsQQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_14 /* LyricsQQ.swift */; };
-		OBJ_57 /* LyricsTTPod.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* LyricsTTPod.swift */; };
 		OBJ_58 /* LyricsXiami.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* LyricsXiami.swift */; };
 		OBJ_59 /* ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* ProviderProtocol.swift */; };
 		OBJ_70 /* ProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* ProviderTests.swift */; };
@@ -70,7 +68,6 @@
 		BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KugouKrcDecrypter.swift; sourceTree = "<group>"; };
 		BB2B4E981F9C55C700C01C4F /* URLSession+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Task.swift"; sourceTree = "<group>"; };
 		BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XiamiResponseSearchResult.swift; sourceTree = "<group>"; };
-		BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodResponseSingleLyrics.swift; sourceTree = "<group>"; };
 		BB558A621F6A64E200686746 /* GecimiResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseSearchResult.swift; sourceTree = "<group>"; };
 		BB558A641F6A66FC00686746 /* GecimiResponseCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GecimiResponseCover.swift; sourceTree = "<group>"; };
 		BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Lyrics+Merge.swift"; sourceTree = "<group>"; };
@@ -99,7 +96,6 @@
 		OBJ_12 /* LyricsLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLine.swift; sourceTree = "<group>"; };
 		OBJ_13 /* LyricsProviderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsProviderManager.swift; sourceTree = "<group>"; };
 		OBJ_14 /* LyricsQQ.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsQQ.swift; sourceTree = "<group>"; };
-		OBJ_15 /* LyricsTTPod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsTTPod.swift; sourceTree = "<group>"; };
 		OBJ_16 /* LyricsXiami.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsXiami.swift; sourceTree = "<group>"; };
 		OBJ_17 /* ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderProtocol.swift; sourceTree = "<group>"; };
 		OBJ_20 /* ProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderTests.swift; sourceTree = "<group>"; };
@@ -150,15 +146,6 @@
 			path = Sources/Provider/JSONModel/Xiami;
 			sourceTree = SOURCE_ROOT;
 		};
-		BB558A5E1F6A629D00686746 /* TTPod */ = {
-			isa = PBXGroup;
-			children = (
-				BB558A5F1F6A62EA00686746 /* TTPodResponseSingleLyrics.swift */,
-			);
-			name = TTPod;
-			path = Sources/Provider/JSONModel/TTPod;
-			sourceTree = SOURCE_ROOT;
-		};
 		BB558A611F6A647500686746 /* Gecimi */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,7 +163,6 @@
 				OBJ_14 /* LyricsQQ.swift */,
 				OBJ_11 /* LyricsKugou.swift */,
 				OBJ_16 /* LyricsXiami.swift */,
-				OBJ_15 /* LyricsTTPod.swift */,
 				OBJ_10 /* LyricsGecimi.swift */,
 			);
 			name = Provider;
@@ -190,7 +176,6 @@
 				BBA7D8E61F695F4100EE9E3E /* QQ */,
 				BBDCA9E81F6A5A30008ECB89 /* Kugou */,
 				BB558A5B1F6A5EC000686746 /* Xiami */,
-				BB558A5E1F6A629D00686746 /* TTPod */,
 				BB558A611F6A647500686746 /* Gecimi */,
 				BBBEE4B41F74F48300119E9D /* KugouKrcHeaderFieldLanguage.swift */,
 			);
@@ -460,7 +445,6 @@
 				BB0897FC1F74EC9500E29748 /* KugouKrcParser.swift in Sources */,
 				OBJ_54 /* LyricsLine.swift in Sources */,
 				BB558A631F6A64E200686746 /* GecimiResponseSearchResult.swift in Sources */,
-				BB558A601F6A62EA00686746 /* TTPodResponseSingleLyrics.swift in Sources */,
 				BBDCA9EC1F6A5B09008ECB89 /* KugouResponseSingleLyrics.swift in Sources */,
 				OBJ_55 /* LyricsProviderManager.swift in Sources */,
 				BB558A651F6A66FC00686746 /* GecimiResponseCover.swift in Sources */,
@@ -468,7 +452,6 @@
 				BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */,
 				BBDCA9E71F6991A1008ECB89 /* Dictionary+HttpParameter.swift in Sources */,
 				OBJ_56 /* LyricsQQ.swift in Sources */,
-				OBJ_57 /* LyricsTTPod.swift in Sources */,
 				BB6C57C01F34468400F26C26 /* LyricsSourceIconDrawing.swift in Sources */,
 				OBJ_58 /* LyricsXiami.swift in Sources */,
 				BBA7D8E51F69589300EE9E3E /* NetEaseResponseSingleLyrics.swift in Sources */,

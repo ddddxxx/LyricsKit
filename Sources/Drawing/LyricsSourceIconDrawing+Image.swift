@@ -33,8 +33,6 @@
                 return LyricsSourceIconDrawing.drawKugou
             case .qq:
                 return LyricsSourceIconDrawing.drawQQMusic
-            case .ttpod:
-                return LyricsSourceIconDrawing.drawTTPod
             case .xiami:
                 return LyricsSourceIconDrawing.drawXiami
             default:

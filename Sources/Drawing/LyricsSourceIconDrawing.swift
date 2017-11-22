@@ -68,9 +68,6 @@ public class LyricsSourceIconDrawing {
         static let qqMusicGreen: Color = Color(red: 0.185, green: 0.661, blue: 0.383, alpha: 1.000)
         static let xiamiOrange: Color = Color(red: 0.963, green: 0.272, blue: 0.101, alpha: 1.000)
         static let kugouBlue: Color = Color(red: 0.108, green: 0.484, blue: 0.801, alpha: 1.000)
-        static let ttpodBlack: Color = Color(red: 0.000, green: 0.000, blue: 0.000, alpha: 1.000)
-        static let ttpodBlue: Color = Color(red: 0.229, green: 0.646, blue: 0.834, alpha: 1.000)
-        static let ttpodGray: Color = Color(red: 0.811, green: 0.811, blue: 0.811, alpha: 1.000)
         static let gecimiRed: Color = Color(red: 0.805, green: 0.000, blue: 0.159, alpha: 1.000)
         static let gecimiGreen: Color = Color(red: 0.096, green: 0.515, blue: 0.094, alpha: 1.000)
         static let gecimiBlue: Color = Color(red: 0.081, green: 0.186, blue: 0.881, alpha: 1.000)
@@ -85,9 +82,6 @@ public class LyricsSourceIconDrawing {
     class var qqMusicGreen: Color { return Cache.qqMusicGreen }
     class var xiamiOrange: Color { return Cache.xiamiOrange }
     class var kugouBlue: Color { return Cache.kugouBlue }
-    class var ttpodBlack: Color { return Cache.ttpodBlack }
-    class var ttpodBlue: Color { return Cache.ttpodBlue }
-    class var ttpodGray: Color { return Cache.ttpodGray }
     class var gecimiRed: Color { return Cache.gecimiRed }
     class var gecimiGreen: Color { return Cache.gecimiGreen }
     class var gecimiBlue: Color { return Cache.gecimiBlue }
@@ -359,71 +353,6 @@ public class LyricsSourceIconDrawing {
         kPath.close()
         LyricsSourceIconDrawing.kugouBlue.setFill()
         kPath.fill()
-    }
-
-    class func drawTTPod(frame: CGRect = CGRect(x: 0, y: 0, width: 48, height: 48)) {
-
-        //// bg Drawing
-        let bgPath = BezierPath()
-        bgPath.move(to: CGPoint(x: frame.minX + 0.00000 * frame.width, y: frame.minY + 0.20842 * frame.height))
-        bgPath.addCurve(to: CGPoint(x: frame.minX + 0.20842 * frame.width, y: frame.minY + 0.00000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.00000 * frame.width, y: frame.minY + 0.09331 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.09318 * frame.width, y: frame.minY + 0.00000 * frame.height))
-        bgPath.addLine(to: CGPoint(x: frame.minX + 0.79158 * frame.width, y: frame.minY + 0.00000 * frame.height))
-        bgPath.addCurve(to: CGPoint(x: frame.minX + 1.00000 * frame.width, y: frame.minY + 0.20842 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.90669 * frame.width, y: frame.minY + 0.00000 * frame.height), controlPoint2: CGPoint(x: frame.minX + 1.00000 * frame.width, y: frame.minY + 0.09318 * frame.height))
-        bgPath.addLine(to: CGPoint(x: frame.minX + 1.00000 * frame.width, y: frame.minY + 0.79158 * frame.height))
-        bgPath.addCurve(to: CGPoint(x: frame.minX + 0.79158 * frame.width, y: frame.minY + 1.00000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 1.00000 * frame.width, y: frame.minY + 0.90669 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.90682 * frame.width, y: frame.minY + 1.00000 * frame.height))
-        bgPath.addLine(to: CGPoint(x: frame.minX + 0.20842 * frame.width, y: frame.minY + 1.00000 * frame.height))
-        bgPath.addCurve(to: CGPoint(x: frame.minX + 0.00000 * frame.width, y: frame.minY + 0.79158 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.09331 * frame.width, y: frame.minY + 1.00000 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.00000 * frame.width, y: frame.minY + 0.90682 * frame.height))
-        bgPath.addLine(to: CGPoint(x: frame.minX + 0.00000 * frame.width, y: frame.minY + 0.20842 * frame.height))
-        bgPath.close()
-        bgPath.usesEvenOddFillRule = true;
-
-        LyricsSourceIconDrawing.ttpodBlue.setFill()
-        bgPath.fill()
-
-
-        //// black Drawing
-        let blackPath = BezierPath(ovalIn: CGRect(x: frame.minX + floor(frame.width * 0.31250 + 0.5), y: frame.minY + floor(frame.height * 0.31250 + 0.5), width: floor(frame.width * 0.68750 + 0.5) - floor(frame.width * 0.31250 + 0.5), height: floor(frame.height * 0.68750 + 0.5) - floor(frame.height * 0.31250 + 0.5)))
-        LyricsSourceIconDrawing.ttpodBlack.setFill()
-        blackPath.fill()
-
-
-        //// gray Drawing
-        let grayPath = BezierPath(ovalIn: CGRect(x: frame.minX + floor(frame.width * 0.35417 + 0.5), y: frame.minY + floor(frame.height * 0.37500 + 0.5), width: floor(frame.width * 0.64583 + 0.5) - floor(frame.width * 0.35417 + 0.5), height: floor(frame.height * 0.58333 + 0.5) - floor(frame.height * 0.37500 + 0.5)))
-        LyricsSourceIconDrawing.ttpodGray.setFill()
-        grayPath.fill()
-
-
-        //// shape Drawing
-        let shapePath = BezierPath()
-        shapePath.move(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.88542 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.11458 * frame.width, y: frame.minY + 0.50000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.28714 * frame.width, y: frame.minY + 0.88542 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.11458 * frame.width, y: frame.minY + 0.71286 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.11458 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.11458 * frame.width, y: frame.minY + 0.28714 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.28714 * frame.width, y: frame.minY + 0.11458 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.88542 * frame.width, y: frame.minY + 0.50000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.71286 * frame.width, y: frame.minY + 0.11458 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.88542 * frame.width, y: frame.minY + 0.28714 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.88542 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.88542 * frame.width, y: frame.minY + 0.71286 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.71286 * frame.width, y: frame.minY + 0.88542 * frame.height))
-        shapePath.close()
-        shapePath.move(to: CGPoint(x: frame.minX + 0.42708 * frame.width, y: frame.minY + 0.79322 * frame.height))
-        shapePath.addLine(to: CGPoint(x: frame.minX + 0.42708 * frame.width, y: frame.minY + 0.79322 * frame.height))
-        shapePath.addLine(to: CGPoint(x: frame.minX + 0.42708 * frame.width, y: frame.minY + 0.53840 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.37500 * frame.width, y: frame.minY + 0.47917 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.39554 * frame.width, y: frame.minY + 0.52516 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.37500 * frame.width, y: frame.minY + 0.50356 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.40625 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.37500 * frame.width, y: frame.minY + 0.43890 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.43096 * frame.width, y: frame.minY + 0.40625 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.62500 * frame.width, y: frame.minY + 0.47917 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.56904 * frame.width, y: frame.minY + 0.40625 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.62500 * frame.width, y: frame.minY + 0.43890 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.57292 * frame.width, y: frame.minY + 0.53840 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.62500 * frame.width, y: frame.minY + 0.50356 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.60446 * frame.width, y: frame.minY + 0.52516 * frame.height))
-        shapePath.addLine(to: CGPoint(x: frame.minX + 0.57292 * frame.width, y: frame.minY + 0.79322 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.80208 * frame.width, y: frame.minY + 0.50000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.70453 * frame.width, y: frame.minY + 0.76060 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.80208 * frame.width, y: frame.minY + 0.64169 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.19792 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.80208 * frame.width, y: frame.minY + 0.33316 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.66684 * frame.width, y: frame.minY + 0.19792 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.19792 * frame.width, y: frame.minY + 0.50000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.33316 * frame.width, y: frame.minY + 0.19792 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.19792 * frame.width, y: frame.minY + 0.33316 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.42708 * frame.width, y: frame.minY + 0.79322 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.19792 * frame.width, y: frame.minY + 0.64169 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.29547 * frame.width, y: frame.minY + 0.76060 * frame.height))
-        shapePath.close()
-        shapePath.move(to: CGPoint(x: frame.minX + 0.43750 * frame.width, y: frame.minY + 0.43750 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.50000 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.43750 * frame.width, y: frame.minY + 0.43750 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.47917 * frame.width, y: frame.minY + 0.50000 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.56250 * frame.width, y: frame.minY + 0.43750 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.52083 * frame.width, y: frame.minY + 0.50000 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.56250 * frame.width, y: frame.minY + 0.43750 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.50000 * frame.width, y: frame.minY + 0.45833 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.56250 * frame.width, y: frame.minY + 0.43750 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.52076 * frame.width, y: frame.minY + 0.45833 * frame.height))
-        shapePath.addCurve(to: CGPoint(x: frame.minX + 0.43750 * frame.width, y: frame.minY + 0.43750 * frame.height), controlPoint1: CGPoint(x: frame.minX + 0.47924 * frame.width, y: frame.minY + 0.45833 * frame.height), controlPoint2: CGPoint(x: frame.minX + 0.43750 * frame.width, y: frame.minY + 0.43750 * frame.height))
-        shapePath.close()
-        shapePath.usesEvenOddFillRule = true;
-
-        LyricsSourceIconDrawing.white.setFill()
-        shapePath.fill()
     }
 
     class func drawGecimi(frame: CGRect = CGRect(x: 0, y: 0, width: 48, height: 48)) {
