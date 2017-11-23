@@ -43,11 +43,6 @@ protocol MultiResultLyricsProvider: class, LyricsProvider {
     func getLyricsWithToken(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void)
 }
 
-protocol SingleResultLyricsProvider: LyricsProvider {
-    
-    var session: URLSession { get }
-}
-
 extension MultiResultLyricsProvider {
     
     public func searchLyrics(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
@@ -75,26 +70,6 @@ extension MultiResultLyricsProvider {
                 return
             }
             self.getLyricsWithToken(token: token, completionHandler: completionHandler)
-        }
-    }
-    
-    public func cancelSearch() {
-        session.getTasksWithCompletionHandler() { dataTasks, _, _ in
-            dataTasks.forEach {
-                $0.cancel()
-            }
-        }
-    }
-}
-
-extension SingleResultLyricsProvider {
-    
-    public func searchLyrics(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
-        iFeelLucky(term: term, duration: duration) {
-            if let lyrics = $0 {
-                using(lyrics)
-            }
-            completionHandler()
         }
     }
     
