@@ -34,9 +34,9 @@ public final class LyricsNetEase: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) {
+    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) {
         let parameter: [String: Any] = [
-            "s": term.description,
+            "s": request.searchTerm.description,
             "offset": 0,
             "limit": 10,
             "type": 1,

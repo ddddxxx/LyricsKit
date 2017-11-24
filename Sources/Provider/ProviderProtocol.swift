@@ -20,34 +20,34 @@
 
 import Foundation
 
-public protocol LyricsProvider {
+public protocol LyricsProvider: class {
     
     static var source: Lyrics.MetaData.Source { get }
     
-    func searchLyrics(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void)
+    func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void)
     
-    func iFeelLucky(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void)
+    func iFeelLucky(request: LyricsSearchRequest, completionHandler: @escaping (Lyrics?) -> Void)
     
     func cancelSearch()
 }
 
-protocol MultiResultLyricsProvider: class, LyricsProvider {
+protocol MultiResultLyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     
     var session: URLSession { get }
     var dispatchGroup: DispatchGroup { get }
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([LyricsToken]) -> Void)
+    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void)
     
     func getLyricsWithToken(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void)
 }
 
 extension MultiResultLyricsProvider {
     
-    public func searchLyrics(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
+    public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
         dispatchGroup.enter()
-        searchLyricsToken(term: term, duration: duration) { tokens in
+        searchLyricsToken(request: request) { tokens in
             tokens.enumerated().forEach { index, token in
                 self.dispatchGroup.enter()
                 self.getLyricsWithToken(token: token) { lyrics in
@@ -63,8 +63,8 @@ extension MultiResultLyricsProvider {
         dispatchGroup.notify(queue: .global(),execute: completionHandler)
     }
     
-    public func iFeelLucky(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping (Lyrics?) -> Void) {
-        searchLyricsToken(term: term, duration: duration) { tokens in
+    public func iFeelLucky(request: LyricsSearchRequest, completionHandler: @escaping (Lyrics?) -> Void) {
+        searchLyricsToken(request: request) { tokens in
             guard let token = tokens.first else {
                 completionHandler(nil)
                 return

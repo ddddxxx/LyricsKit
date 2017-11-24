@@ -77,7 +77,7 @@ extension Lyrics {
     }
     
     private var isFitArtist: Bool? {
-        guard case let .info(_, searchArtist)? = metadata.searchBy,
+        guard case let .info(_, searchArtist)? = metadata.request?.searchTerm,
             let artist = idTags[.artist] else {
                 return nil
         }
@@ -86,7 +86,7 @@ extension Lyrics {
     }
     
     private var isApproachArtise: Bool? {
-        guard case let .info(_, searchArtist)? = metadata.searchBy,
+        guard case let .info(_, searchArtist)? = metadata.request?.searchTerm,
             let artist = idTags[.artist] else {
                 return nil
         }
@@ -98,7 +98,7 @@ extension Lyrics {
     }
     
     private var isFitTitle: Bool? {
-        guard case let .info(searchTitle, _)? = metadata.searchBy,
+        guard case let .info(searchTitle, _)? = metadata.request?.searchTerm,
             let title = idTags[.title] else {
                 return nil
         }
@@ -107,7 +107,7 @@ extension Lyrics {
     }
     
     private var isApproachTitle: Bool? {
-        guard case let .info(searchTitle, _)? = metadata.searchBy,
+        guard case let .info(searchTitle, _)? = metadata.request?.searchTerm,
             let title = idTags[.title] else {
                 return nil
         }

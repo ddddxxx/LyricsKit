@@ -34,8 +34,8 @@ public final class LyricsQQ: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) {
-        let parameter = ["w": term.description]
+    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) {
+        let parameter = ["w": request.searchTerm.description]
         let url = URL(string: qqSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
         let task = session.dataTask(with: url) { data, resp, error in
             guard let data = data?.dropFirst(9).dropLast(),

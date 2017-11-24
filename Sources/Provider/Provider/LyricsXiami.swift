@@ -33,9 +33,9 @@ public final class LyricsXiami: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) {
+    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) {
         let parameter: [String : Any] = [
-            "key": term.description,
+            "key": request.searchTerm.description,
             "limit": 10,
             "r": "search/songs",
             "v": "2.0",

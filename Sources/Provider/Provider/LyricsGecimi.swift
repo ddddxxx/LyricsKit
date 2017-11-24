@@ -34,8 +34,8 @@ public final class LyricsGecimi: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) {
-        guard case let .info(title, artist) = term else {
+    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) {
+        guard case let .info(title, artist) = request.searchTerm else {
             // cannot search by keyword
             completionHandler([])
             return

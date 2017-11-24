@@ -34,10 +34,10 @@ public final class LyricsKugou: MultiResultLyricsProvider {
     let session = URLSession(configuration: .providerConfig)
     let dispatchGroup = DispatchGroup()
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) {
+    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) {
         let parameter: [String: Any] = [
-            "keyword": term.description,
-            "duration": Int(duration * 1000),
+            "keyword": request.searchTerm.description,
+            "duration": Int(request.duration * 1000),
             "client": "pc",
             "ver": 1,
             "man": "yes",

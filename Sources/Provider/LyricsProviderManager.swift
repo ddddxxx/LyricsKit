@@ -40,25 +40,23 @@ public class LyricsProviderManager {
         LyricsKugou(),
     ]
     
-    public var term: Lyrics.MetaData.SearchTerm?
+    public var request: LyricsSearchRequest?
     
     public var lyrics: [Lyrics] = []
     
     public init() {}
     
-    fileprivate func searchLyrics(term: Lyrics.MetaData.SearchTerm, title: String?, artist: String?, duration: TimeInterval) {
-        self.term = term
+    fileprivate func searchLyrics(request: LyricsSearchRequest) {
+        self.request = request
         lyrics = []
         providers.forEach { $0.cancelSearch() }
         providers.forEach { source in
             dispatchGroup.enter()
-            source.searchLyrics(term: term, duration: duration, using: { lrc in
-                guard self.term == term else {
-                    return
-                }
+            source.searchLyrics(request: request, using: { lrc in
+                guard request == self.request else { return }
                 
-                lrc.metadata.title = title
-                lrc.metadata.artist = artist
+                lrc.metadata.title = request.title
+                lrc.metadata.artist = request.artist
                 lrc.idTags[.recreater] = "LyricsX"
                 lrc.idTags[.version] = "1"
                 
@@ -74,22 +72,21 @@ public class LyricsProviderManager {
         }
     }
     
-    fileprivate func iFeelLucky(term: Lyrics.MetaData.SearchTerm, title: String?, artist: String?, duration: TimeInterval) {
-        self.term = term
+    fileprivate func iFeelLucky(request: LyricsSearchRequest) {
+        self.request = request
         lyrics = []
         providers.forEach { $0.cancelSearch() }
         providers.forEach { source in
             dispatchGroup.enter()
-            source.iFeelLucky(term: term, duration: duration) {
+            source.iFeelLucky(request: request) {
                 defer {
                     self.dispatchGroup.leave()
                 }
                 if let lrc = $0 {
-                    guard self.term == term else {
-                        return
-                    }
-                    lrc.metadata.title = title
-                    lrc.metadata.artist = artist
+                    guard self.request == request else { return }
+                    
+                    lrc.metadata.title = request.title
+                    lrc.metadata.artist = request.artist
                     lrc.idTags[.recreater] = "LyricsX"
                     lrc.idTags[.version] = "1"
                     
@@ -105,31 +102,9 @@ public class LyricsProviderManager {
     }
     
     public func cancelSearching() {
-        self.term = nil
+        self.request = nil
         lyrics = []
         providers.forEach { $0.cancelSearch() }
     }
-}
-
-extension LyricsProviderManager {
-    
-    public func searchLyrics(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchTitle ?? title)
-        searchLyrics(term: term, title: title, artist: artist, duration: duration)
-    }
-    
-    public func iFeelLucky(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchTitle ?? title)
-        iFeelLucky(term: term, title: title, artist: artist, duration: duration)
-    }
-    
-    public func searchLyrics(keyword: String, title: String, artist: String, duration: TimeInterval) {
-        searchLyrics(term: .keyword(keyword), title: title, artist: artist, duration: duration)
-    }
-    
-    public func iFeelLucky(keyword: String, title: String, artist: String, duration: TimeInterval) {
-        iFeelLucky(term: .keyword(keyword), title: title, artist: artist, duration: duration)
-    }
-    
 }
 
