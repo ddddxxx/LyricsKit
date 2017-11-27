@@ -115,12 +115,12 @@ public class LyricsProviderManager {
 extension LyricsProviderManager {
     
     public func searchLyrics(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchTitle ?? title)
+        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchArtist ?? artist)
         searchLyrics(term: term, title: title, artist: artist, duration: duration)
     }
     
     public func iFeelLucky(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchTitle ?? title)
+        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchArtist ?? artist)
         iFeelLucky(term: term, title: title, artist: artist, duration: duration)
     }
     
