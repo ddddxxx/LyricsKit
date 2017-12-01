@@ -20,73 +20,23 @@
 
 import Foundation
 
-public protocol LyricsProvider: class {
+protocol LyricsProvider {
     
-    static var source: Lyrics.MetaData.Source { get }
-    
-    func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void)
-    
-    func iFeelLucky(request: LyricsSearchRequest, completionHandler: @escaping (Lyrics?) -> Void)
-    
-    func cancelSearch()
+    func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> DistributedLyricsSearchTask
 }
 
-protocol MultiResultLyricsProvider: LyricsProvider {
+protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     
-    var session: URLSession { get }
-    var dispatchGroup: DispatchGroup { get }
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void) -> URLSessionTask?
     
-    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void)
-    
-    func getLyricsWithToken(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void)
+    func fetchTask(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask?
 }
 
-extension MultiResultLyricsProvider {
+extension _LyricsProvider {
     
-    public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void, completionHandler: @escaping () -> Void) {
-        dispatchGroup.enter()
-        searchLyricsToken(request: request) { tokens in
-            tokens.enumerated().forEach { index, token in
-                self.dispatchGroup.enter()
-                self.getLyricsWithToken(token: token) { lyrics in
-                    if let lyrics = lyrics {
-                        lyrics.metadata.searchIndex = index
-                        using(lyrics)
-                    }
-                    self.dispatchGroup.leave()
-                }
-            }
-            self.dispatchGroup.leave()
-        }
-        dispatchGroup.notify(queue: .global(),execute: completionHandler)
+    public func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> DistributedLyricsSearchTask {
+        return DistributedLyricsSearchTask(request: request, provider: _AnyLyricsProvider(self), handler: using)
     }
-    
-    public func iFeelLucky(request: LyricsSearchRequest, completionHandler: @escaping (Lyrics?) -> Void) {
-        searchLyricsToken(request: request) { tokens in
-            guard let token = tokens.first else {
-                completionHandler(nil)
-                return
-            }
-            self.getLyricsWithToken(token: token, completionHandler: completionHandler)
-        }
-    }
-    
-    public func cancelSearch() {
-        session.getTasksWithCompletionHandler() { dataTasks, _, _ in
-            dataTasks.forEach {
-                $0.cancel()
-            }
-        }
-    }
-}
-
-extension URLSessionConfiguration {
-    
-    static let providerConfig: URLSessionConfiguration = {
-        var config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 10
-        return config
-    }()
 }

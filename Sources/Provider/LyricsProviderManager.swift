@@ -20,18 +20,8 @@
 
 import Foundation
 
-public protocol LyricsConsuming: class {
-    
-    func lyricsReceived(lyrics: Lyrics)
-    
-    func fetchCompleted(result: [Lyrics])
-}
-
 public class LyricsProviderManager {
     
-    public weak var consumer: LyricsConsuming?
-    
-    private var dispatchGroup = DispatchGroup()
     let providers: [LyricsProvider] = [
         LyricsXiami(),
         LyricsGecimi(),
@@ -40,71 +30,12 @@ public class LyricsProviderManager {
         LyricsKugou(),
     ]
     
-    public var request: LyricsSearchRequest?
-    
-    public var lyrics: [Lyrics] = []
-    
     public init() {}
     
-    fileprivate func searchLyrics(request: LyricsSearchRequest) {
-        self.request = request
-        lyrics = []
-        providers.forEach { $0.cancelSearch() }
-        providers.forEach { source in
-            dispatchGroup.enter()
-            source.searchLyrics(request: request, using: { lrc in
-                guard request == self.request else { return }
-                
-                lrc.metadata.title = request.title
-                lrc.metadata.artist = request.artist
-                lrc.idTags[.recreater] = "LyricsX"
-                lrc.idTags[.version] = "1"
-                
-                let index = self.lyrics.index(where: {$0 < lrc}) ?? self.lyrics.count
-                self.lyrics.insert(lrc, at: index)
-                self.consumer?.lyricsReceived(lyrics: lrc)
-            }, completionHandler: {
-                self.dispatchGroup.leave()
-            })
+    fileprivate func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {
+        let subTasks = providers.map {
+            $0.lyricsTask(request: request, using: using)
         }
-        dispatchGroup.notify(queue: .global()) {
-            self.consumer?.fetchCompleted(result: self.lyrics)
-        }
-    }
-    
-    fileprivate func iFeelLucky(request: LyricsSearchRequest) {
-        self.request = request
-        lyrics = []
-        providers.forEach { $0.cancelSearch() }
-        providers.forEach { source in
-            dispatchGroup.enter()
-            source.iFeelLucky(request: request) {
-                defer {
-                    self.dispatchGroup.leave()
-                }
-                if let lrc = $0 {
-                    guard self.request == request else { return }
-                    
-                    lrc.metadata.title = request.title
-                    lrc.metadata.artist = request.artist
-                    lrc.idTags[.recreater] = "LyricsX"
-                    lrc.idTags[.version] = "1"
-                    
-                    let index = self.lyrics.index(where: {$0 < lrc}) ?? self.lyrics.count
-                    self.lyrics.insert(lrc, at: index)
-                    self.consumer?.lyricsReceived(lyrics: lrc)
-                }
-            }
-        }
-        dispatchGroup.notify(queue: .global()) {
-            self.consumer?.fetchCompleted(result: self.lyrics)
-        }
-    }
-    
-    public func cancelSearching() {
-        self.request = nil
-        lyrics = []
-        providers.forEach { $0.cancelSearch() }
+        return LyricsSearchTask(request: request, subTasks: subTasks)
     }
 }
-

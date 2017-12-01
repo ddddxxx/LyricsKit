@@ -26,6 +26,8 @@ public struct LyricsSearchRequest {
     public var title: String
     public var artist: String
     public var duration: TimeInterval
+    public var limit: Int
+    public var timeout: TimeInterval
     
     public enum SearchTerm {
         
@@ -40,7 +42,9 @@ extension LyricsSearchRequest: Equatable {
         return lhs.searchTerm == rhs.searchTerm &&
             lhs.title == rhs.title &&
             lhs.artist == rhs.artist &&
-            lhs.duration == rhs.duration
+            lhs.duration == rhs.duration &&
+            lhs.limit == rhs.limit &&
+            lhs.timeout == rhs.timeout
     }
 }
 

@@ -26,14 +26,13 @@ extension Lyrics.MetaData.Source {
     static let xiami = Lyrics.MetaData.Source("Xiami")
 }
 
-public final class LyricsXiami: MultiResultLyricsProvider {
+public final class LyricsXiami: _LyricsProvider {
     
     public static let source: Lyrics.MetaData.Source = .xiami
     
-    let session = URLSession(configuration: .providerConfig)
-    let dispatchGroup = DispatchGroup()
+    let session = URLSession()
     
-    func searchLyricsToken(request: LyricsSearchRequest, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) -> URLSessionTask? {
         let parameter: [String : Any] = [
             "key": request.searchTerm.description,
             "limit": 10,
@@ -45,20 +44,18 @@ public final class LyricsXiami: MultiResultLyricsProvider {
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
         req.setValue("http://h.xiami.com/", forHTTPHeaderField: "Referer")
-        let task = session.dataTask(with: req, type: XiamiResponseSearchResult.self) { model, error in
+        return session.dataTask(with: req, type: XiamiResponseSearchResult.self) { model, error in
             let songs = model?.data.songs.filter { $0.lyric != nil } ?? []
             completionHandler(songs)
         }
-        task.resume()
     }
     
-    func getLyricsWithToken(token: XiamiResponseSearchResult.Data.Song, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: XiamiResponseSearchResult.Data.Song, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
         guard let lrcURLStr = token.lyric,
             let lrcURL = URL(string: lrcURLStr) else {
-            completionHandler(nil)
-            return
+            return nil
         }
-        let task = session.dataTask(with: lrcURL) { data, resp, error in
+        return session.dataTask(with: lrcURL) { data, resp, error in
             let parser: (String) -> Lyrics?
             switch lrcURL.pathExtension.lowercased() {
             case "lrc":
@@ -83,6 +80,5 @@ public final class LyricsXiami: MultiResultLyricsProvider {
             lrc.metadata.artworkURL = token.album_logo
             completionHandler(lrc)
         }
-        task.resume()
     }
 }
