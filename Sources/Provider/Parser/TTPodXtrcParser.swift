@@ -23,6 +23,11 @@ import Foundation
 extension Lyrics {
     
     convenience init?(ttpodXtrcContent content: String) {
+        let lineMatchs = ttpodXtrcLineRegex.matches(in: content)
+        guard !lineMatchs.filter({$0.range(at: 2).length > 0}).isEmpty else {
+            self.init(content)
+            return
+        }
         self.init()
         id3TagRegex.matches(in: content).forEach { match in
             if let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
@@ -33,7 +38,7 @@ extension Lyrics {
             }
         }
         
-        lines = ttpodXtrcLineRegex.matches(in: content).flatMap { match -> [LyricsLine] in
+        lines = lineMatchs.flatMap { match -> [LyricsLine] in
             let timeTagStr = content[match.range(at: 1)]!
             let timeTags = resolveTimeTag(timeTagStr)
             
