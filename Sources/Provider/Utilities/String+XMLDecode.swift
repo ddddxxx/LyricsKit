@@ -1,5 +1,5 @@
 //
-//  QQResponseSingleLyrics.swift
+//  String+XMLDecode.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,25 +20,22 @@
 
 import Foundation
 
-struct QQResponseSingleLyrics: Decodable {
-    let retcode: Int
-    let code: Int
-    let subcode: Int
-    let lyric: Data
-    let trans: Data?
-}
-
-extension QQResponseSingleLyrics {
+extension String {
     
-    var lyricString: String? {
-        return String(data: lyric, encoding: .utf8)?.decodingXMLEntities()
+    func decodingXMLEntities() -> String {
+        #if os(macOS)
+            return CFXMLCreateStringByUnescapingEntities(nil, self as CFString, nil) as String
+        #else
+            // FIXME: low performance
+            return String.xmlEntities.reduce(self) { $0.replacingOccurrences(of: $1.0, with: $1.1) }
+        #endif
     }
     
-    var transString: String? {
-        guard let data = trans,
-            let string = String(data: data, encoding: .utf8) else {
-            return nil
-        }
-        return string.decodingXMLEntities()
-    }
+    static let xmlEntities = [
+        "&quot;":   "\"",
+        "&apos;":   "'",
+        "&lt;":     "<",
+        "&gt;":     ">",
+        "&amp;":    "&",
+        ]
 }

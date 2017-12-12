@@ -56,19 +56,9 @@ public final class LyricsXiami: _LyricsProvider {
             return nil
         }
         return session.dataTask(with: lrcURL) { data, resp, error in
-            let parser: (String) -> Lyrics?
-            switch lrcURL.pathExtension.lowercased() {
-            case "lrc":
-                parser = Lyrics.init
-            case "trc", "xtrc":
-                parser = Lyrics.init(ttpodXtrcContent:)
-            default:
-                // TODO: unknown format
-                parser = { _ in nil }
-            }
             guard let data = data,
                 let lrcStr = String.init(data: data, encoding: .utf8),
-                let lrc = parser(lrcStr) else {
+                let lrc = Lyrics(ttpodXtrcContent:lrcStr) else {
                 completionHandler(nil)
                 return
             }
