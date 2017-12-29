@@ -20,13 +20,13 @@
 
 import Foundation
 
-//private let id3TagPattern = "^\\[(.+?):(.*)\\](?=\\n)"
+//private let id3TagPattern = "^(?!\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])\\[(.+?):(.+)\\]$"
 //private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern, options: .anchorsMatchLines)
 
-private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+(?!\\[)([^【\\n\\r]*)(?:【(.*)】)?"
+private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+(?!\\[)([^【\\n\\r]*)(?:【(.*)】)?"
 private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern, options: .anchorsMatchLines)
 
-private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+\\[(.+?)\\](.*)"
+private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+\\[(.+?)\\](.*)"
 private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern, options: .anchorsMatchLines)
 
 final public class Lyrics: LosslessStringConvertible {

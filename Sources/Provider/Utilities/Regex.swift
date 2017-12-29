@@ -20,7 +20,7 @@
 
 import Foundation
 
-private let id3TagPattern = "^(?!\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])\\[(.+?):(.+)\\](?=[\\n\\r]|$)"
+private let id3TagPattern = "^(?!\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])\\[(.+?):(.+)\\]$"
 let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern, options: .anchorsMatchLines)
 
 private let krcLinePattern = "^\\[(\\d+),(\\d+)\\](.*)"
@@ -32,7 +32,7 @@ let netEaseInlineTagRegex = try! NSRegularExpression(pattern: netEaseInlineTagPa
 private let kugouInlineTagPattern = "<(\\d+),(\\d+),0>([^<]*)"
 let kugouInlineTagRegex = try! NSRegularExpression(pattern: kugouInlineTagPattern)
 
-private let ttpodXtrcLinePattern = "^((?:\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+)((?:<\\d+>[^<\\r\\n]+)*)(?:[\\r\\n]+\\[x\\-trans\\](.*))?"
+private let ttpodXtrcLinePattern = "^((?:\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+)((?:<\\d+>[^<\\r\\n]+)*)(?:[\\r\\n]+\\[x\\-trans\\](.*))?"
 let ttpodXtrcLineRegex = try! NSRegularExpression(pattern: ttpodXtrcLinePattern, options: .anchorsMatchLines)
 
 private let ttpodXtrcInlineTagPattern = "<(\\d+)>([^<\\r\\n]+)"
