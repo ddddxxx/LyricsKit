@@ -27,16 +27,15 @@ extension Lyrics.MetaData.Source {
     public static let netease = Lyrics.MetaData.Source("163")
 }
 
-public final class LyricsNetEase: MultiResultLyricsProvider {
+public final class LyricsNetEase: _LyricsProvider {
     
     public static let source: Lyrics.MetaData.Source = .netease
     
-    let session = URLSession(configuration: .providerConfig)
-    let dispatchGroup = DispatchGroup()
+    let session = sharedSession
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [
-            "s": term.description,
+            "s": request.searchTerm.description,
             "offset": 0,
             "limit": 10,
             "type": 1,
@@ -45,13 +44,12 @@ public final class LyricsNetEase: MultiResultLyricsProvider {
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
         req.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
-        let task = session.dataTask(with: req, type: NetEaseResponseSearchResult.self) { model, error in
+        return session.dataTask(with: req, type: NetEaseResponseSearchResult.self) { model, error in
             completionHandler(model?.songs ?? [])
         }
-        task.resume()
     }
     
-    func getLyricsWithToken(token: NetEaseResponseSearchResult.Result.Song, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: NetEaseResponseSearchResult.Result.Song, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [
             "id": token.id,
             "lv": 1,
@@ -59,7 +57,7 @@ public final class LyricsNetEase: MultiResultLyricsProvider {
             "tv": -1,
             ]
         let url = URL(string: netEaseLyricsBaseURLString + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
+        return session.dataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
             guard let model = model,
                 let lrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
                 ?? (model.lrc?.lyric).flatMap(Lyrics.init) else {
@@ -81,6 +79,5 @@ public final class LyricsNetEase: MultiResultLyricsProvider {
             
             completionHandler(lrc)
         }
-        task.resume()
     }
 }

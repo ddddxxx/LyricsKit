@@ -68,6 +68,7 @@ final public class Lyrics: LosslessStringConvertible {
             $0.position < $1.position
         }
         
+        var tags: Set<LyricsLineAttachmentTag> = []
         lyricsLineAttachmentRegex.matches(in: description).forEach { match in
             let timeTagStr = description[match.range(at: 1)]!
             let timeTags = resolveTimeTag(timeTagStr)
@@ -85,8 +86,9 @@ final public class Lyrics: LosslessStringConvertible {
                     lines[index].attachments[attachmentTag] = attachment
                 }
             }
-            metadata.attachmentTags.insert(attachmentTag)
+            tags.insert(attachmentTag)
         }
+        metadata.data[.attachmentTags] = tags
         
         guard !lines.isEmpty else {
             return nil
@@ -132,14 +134,24 @@ final public class Lyrics: LosslessStringConvertible {
     
     public struct MetaData {
         
-        public var source: Source = .Unknown
-        public var title: String? = nil
-        public var artist: String? = nil
-        public var searchBy: SearchTerm? = nil
-        public var searchIndex: Int = 0
-        public var lyricsURL: URL? = nil
-        public var artworkURL: URL? = nil
-        public var attachmentTags: Set<LyricsLineAttachmentTag> = []
+        public var data: [Key: Any] = [:]
+        
+        public struct Key: RawRepresentable, Hashable {
+            
+            public var rawValue: String
+            
+            public init(_ rawValue: String) {
+                self.rawValue = rawValue
+            }
+            
+            public init(rawValue: String) {
+                self.rawValue = rawValue
+            }
+            
+            public var hashValue: Int {
+                return rawValue.hash
+            }
+        }
         
         public struct Source: RawRepresentable {
             
@@ -156,12 +168,6 @@ final public class Lyrics: LosslessStringConvertible {
             public static let Unknown = Source("Unknown")
             public static let Local = Source("Local")
             public static let Import = Source("Import")
-        }
-        
-        public enum SearchTerm {
-            
-            case keyword(String)
-            case info(title: String, artist: String)
         }
     }
 }
@@ -240,32 +246,7 @@ extension Lyrics.MetaData.Source: Equatable {
     }
 }
 
-extension Lyrics.MetaData.SearchTerm: Equatable {
-    public static func ==(lhs: Lyrics.MetaData.SearchTerm, rhs: Lyrics.MetaData.SearchTerm) -> Bool {
-        switch (lhs, rhs) {
-        case (.keyword, .info), (.info, .keyword):
-            return false
-        case (let .keyword(l), let .keyword(r)):
-            return l == r
-        case (let .info(l1, l2), let .info(r1, r2)):
-            return (l1 == r1) && (l2 == r2)
-        }
-    }
-}
-
 // MARK: CustomStringConvertible
-
-extension Lyrics.MetaData.SearchTerm: CustomStringConvertible {
-    
-    public var description: String {
-        switch self {
-        case let .keyword(keyword):
-            return keyword
-        case let .info(title: title, artist: artist):
-            return title + " " + artist
-        }
-    }
-}
 
 extension Lyrics.MetaData: CustomStringConvertible {
     
