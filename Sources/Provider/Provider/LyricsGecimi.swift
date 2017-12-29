@@ -57,7 +57,7 @@ public final class LyricsGecimi: _LyricsProvider {
                 completionHandler(nil)
                 return
             }
-            lyrics.metadata.lyricsURL = token.lrc
+            lyrics.metadata.remoteURL = token.lrc
             lyrics.metadata.source = .gecimi
             
 //            let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")

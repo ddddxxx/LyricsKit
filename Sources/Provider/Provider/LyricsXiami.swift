@@ -65,7 +65,7 @@ public final class LyricsXiami: _LyricsProvider {
             lrc.idTags[.title] = token.song_name
             lrc.idTags[.artist] = token.artist_name
             
-            lrc.metadata.lyricsURL = lrcURL
+            lrc.metadata.remoteURL = lrcURL
             lrc.metadata.source = .xiami
             lrc.metadata.artworkURL = token.album_logo
             completionHandler(lrc)

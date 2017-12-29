@@ -24,10 +24,6 @@ extension Lyrics.MetaData.Key {
     public static var source        = Lyrics.MetaData.Key("source")
     public static var title         = Lyrics.MetaData.Key("title")
     public static var artist        = Lyrics.MetaData.Key("artist")
-    public static var request       = Lyrics.MetaData.Key("request")
-    public static var searchIndex   = Lyrics.MetaData.Key("searchIndex")
-    public static var lyricsURL     = Lyrics.MetaData.Key("lyricsURL")
-    public static var artworkURL    = Lyrics.MetaData.Key("artworkURL")
     public static var attachmentTags = Lyrics.MetaData.Key("attachmentTags")
 }
 
@@ -46,26 +42,6 @@ extension Lyrics.MetaData {
     public var artist: String? {
         get { return data[.artist] as? String }
         set { data[.artist] = newValue }
-    }
-    
-    public var request: LyricsSearchRequest? {
-        get { return data[.request] as? LyricsSearchRequest }
-        set { data[.request] = newValue }
-    }
-    
-    public var searchIndex: Int {
-        get { return data[.searchIndex] as? Int ?? 0 }
-        set { data[.searchIndex] = newValue }
-    }
-    
-    public var lyricsURL: URL? {
-        get { return data[.lyricsURL] as? URL }
-        set { data[.lyricsURL] = newValue }
-    }
-    
-    public var artworkURL: URL? {
-        get { return data[.artworkURL] as? URL }
-        set { data[.artworkURL] = newValue }
     }
     
     public var attachmentTags: Set<LyricsLineAttachmentTag> {
