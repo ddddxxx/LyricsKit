@@ -31,7 +31,7 @@ public final class LyricsKugou: _LyricsProvider {
     
     public static let source: Lyrics.MetaData.Source = .kugou
     
-    let session = URLSession()
+    let session = sharedSession
     
     func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [

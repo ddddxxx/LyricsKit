@@ -34,6 +34,7 @@
 		BBBEE4B61F74FF0300119E9D /* KugouKrcDecrypter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */; };
 		BBC80B861F665AD80052578A /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC80B851F665AD80052578A /* Utilities.swift */; };
 		BBC80B881F665F120052578A /* LyricsLineAttachmentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC80B871F665F120052578A /* LyricsLineAttachmentFactory.swift */; };
+		BBCC72121FF61EB00090C7E0 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC72111FF61EB00090C7E0 /* Then.swift */; };
 		BBD517AD1FB14C6C0056084A /* TTPodXtrcParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD517AC1FB14C6C0056084A /* TTPodXtrcParser.swift */; };
 		BBDB158B1F7A221400C190E4 /* LyricsLineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDB15891F7A217100C190E4 /* LyricsLineTests.swift */; };
 		BBDCA9E71F6991A1008ECB89 /* Dictionary+HttpParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDCA9E61F6991A1008ECB89 /* Dictionary+HttpParameter.swift */; };
@@ -92,6 +93,7 @@
 		BBBEE4B41F74F48300119E9D /* KugouKrcHeaderFieldLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KugouKrcHeaderFieldLanguage.swift; sourceTree = "<group>"; };
 		BBC80B851F665AD80052578A /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		BBC80B871F665F120052578A /* LyricsLineAttachmentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineAttachmentFactory.swift; sourceTree = "<group>"; };
+		BBCC72111FF61EB00090C7E0 /* Then.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
 		BBD517AC1FB14C6C0056084A /* TTPodXtrcParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodXtrcParser.swift; sourceTree = "<group>"; };
 		BBDB15891F7A217100C190E4 /* LyricsLineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineTests.swift; sourceTree = "<group>"; };
 		BBDCA9E61F6991A1008ECB89 /* Dictionary+HttpParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+HttpParameter.swift"; sourceTree = "<group>"; };
@@ -283,6 +285,7 @@
 				BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */,
 				BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */,
 				BB0897FD1F74ED1600E29748 /* Regex.swift */,
+				BBCC72111FF61EB00090C7E0 /* Then.swift */,
 			);
 			name = Utilities;
 			path = Sources/Provider/Utilities;
@@ -474,6 +477,7 @@
 				BBDED14B1FCC0433001DC7E1 /* LyricsSearchTask.swift in Sources */,
 				BBC80B861F665AD80052578A /* Utilities.swift in Sources */,
 				BB7ECC041FC7BE410062B4E2 /* LyricsSearchRequest.swift in Sources */,
+				BBCC72121FF61EB00090C7E0 /* Then.swift in Sources */,
 				BB6B507A1F6AB9E700D4A818 /* Lyrics+Merge.swift in Sources */,
 				BBA7D8E81F69601A00EE9E3E /* QQResponseSearchResult.swift in Sources */,
 				BBDCA9EA1F6A5A70008ECB89 /* KugouResponseSearchResult.swift in Sources */,
@@ -514,7 +518,7 @@
 				ENABLE_NS_ASSERTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -539,7 +543,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_OPTIMIZATION_LEVEL = s;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_SWIFT_FLAGS = "-DXcode";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -562,7 +566,6 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProvider_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ddddxxx.LyricsX.LyricsProvider;
@@ -583,7 +586,6 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LyricsProvider.xcodeproj/LyricsProvider_Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ddddxxx.LyricsX.LyricsProvider;

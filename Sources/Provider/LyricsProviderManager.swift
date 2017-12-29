@@ -20,6 +20,12 @@
 
 import Foundation
 
+let sharedSession = URLSession(configuration: .default, delegate: nil, delegateQueue: urlSessionQueue)
+
+let urlSessionQueue = OperationQueue().then {
+    $0.maxConcurrentOperationCount = 1
+}
+
 public class LyricsProviderManager {
     
     let providers: [LyricsProvider] = [

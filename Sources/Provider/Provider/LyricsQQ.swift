@@ -31,7 +31,7 @@ public final class LyricsQQ: _LyricsProvider {
     
     public static let source: Lyrics.MetaData.Source = .qq
     
-    let session = URLSession()
+    let session = sharedSession
     
     func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) -> URLSessionTask? {
         let parameter = ["w": request.searchTerm.description]
