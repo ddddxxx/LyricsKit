@@ -30,9 +30,17 @@ public struct LyricsSearchRequest {
     public var timeout: TimeInterval
     
     public enum SearchTerm {
-        
         case keyword(String)
         case info(title: String, artist: String)
+    }
+    
+    public init(searchTerm: SearchTerm, title: String, artist: String, duration: TimeInterval, limit: Int = 6, timeout: TimeInterval = 10) {
+        self.searchTerm = searchTerm
+        self.title = title
+        self.artist = artist
+        self.duration = duration
+        self.limit = limit
+        self.timeout = timeout
     }
 }
 
