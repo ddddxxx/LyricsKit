@@ -38,7 +38,7 @@ public class LyricsProviderManager {
     
     public init() {}
     
-    fileprivate func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {
+    public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {
         let subTasks = providers.map {
             $0.lyricsTask(request: request, using: using)
         }

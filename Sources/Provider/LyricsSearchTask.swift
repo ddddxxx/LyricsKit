@@ -37,7 +37,7 @@ public class LyricsSearchTask {
         subTasks.forEach { progress.addChild($0.progress, withPendingUnitCount: 1) }
     }
     
-    func resume() {
+    public func resume() {
         timeoutTimer = Timer.scheduledTimer(timeInterval: request.timeout, target: self, selector: #selector(cancel), userInfo: nil, repeats: false)
         progressObservation = progress.observe(\.fractionCompleted, options: [.new]) { [weak self] progress, change in
             if change.newValue == 1 {
@@ -47,7 +47,7 @@ public class LyricsSearchTask {
         subTasks.forEach { $0.resume() }
     }
     
-    @objc func cancel() {
+    @objc public func cancel() {
         subTasks.forEach { $0.cancel() }
     }
 }
