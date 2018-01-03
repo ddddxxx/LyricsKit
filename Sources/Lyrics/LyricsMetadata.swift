@@ -29,8 +29,8 @@ extension Lyrics.MetaData.Key {
 
 extension Lyrics.MetaData {
     
-    public var source: Source {
-        get { return data[.source] as? Source ?? .Unknown }
+    public var source: LyricsProviderSource? {
+        get { return data[.source] as? LyricsProviderSource }
         set { data[.source] = newValue }
     }
     

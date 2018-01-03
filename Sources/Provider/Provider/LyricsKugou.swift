@@ -23,13 +23,9 @@ import Foundation
 private let kugouSearchBaseURLString = "http://lyrics.kugou.com/search"
 private let kugouLyricsBaseURLString = "http://lyrics.kugou.com/download"
 
-extension Lyrics.MetaData.Source {
-    static let kugou = Lyrics.MetaData.Source("Kugou")
-}
-
 public final class LyricsKugou: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .kugou
+    public static let source: LyricsProviderSource = .kugou
     
     let session: URLSession
     

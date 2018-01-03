@@ -23,13 +23,9 @@ import Foundation
 private let gecimiLyricsBaseURL = URL(string: "http://gecimi.com/api/lyric")!
 private let gecimiCoverBaseURL = URL(string:"http://gecimi.com/api/cover")!
 
-extension Lyrics.MetaData.Source {
-    static let gecimi = Lyrics.MetaData.Source("Gecimi")
-}
-
 public final class LyricsGecimi: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .gecimi
+    public static let source: LyricsProviderSource = .gecimi
     
     let session: URLSession
     

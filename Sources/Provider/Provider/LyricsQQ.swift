@@ -23,13 +23,9 @@ import Foundation
 private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
 
-extension Lyrics.MetaData.Source {
-    static let qq = Lyrics.MetaData.Source("QQMusic")
-}
-
 public final class LyricsQQ: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .qq
+    public static let source: LyricsProviderSource = .qq
     
     let session: URLSession
     

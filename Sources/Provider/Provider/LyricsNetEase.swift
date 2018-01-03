@@ -23,13 +23,9 @@ import Foundation
 private let netEaseSearchBaseURLString = "http://music.163.com/api/search/pc?"
 private let netEaseLyricsBaseURLString = "http://music.163.com/api/song/lyric?"
 
-extension Lyrics.MetaData.Source {
-    public static let netease = Lyrics.MetaData.Source("163")
-}
-
 public final class LyricsNetEase: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .netease
+    public static let source: LyricsProviderSource = .netease
     
     let session: URLSession
     

@@ -22,13 +22,9 @@ import Foundation
 
 private let xiamiSearchBaseURLString = "http://api.xiami.com/web?"
 
-extension Lyrics.MetaData.Source {
-    static let xiami = Lyrics.MetaData.Source("Xiami")
-}
-
 public final class LyricsXiami: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .xiami
+    public static let source: LyricsProviderSource = .xiami
     
     let session: URLSession
     

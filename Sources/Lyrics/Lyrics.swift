@@ -152,23 +152,6 @@ final public class Lyrics: LosslessStringConvertible {
                 return rawValue.hash
             }
         }
-        
-        public struct Source: RawRepresentable {
-            
-            public var rawValue: String
-            
-            public init(rawValue: String) {
-                self.rawValue = rawValue
-            }
-            
-            public init(_ rawValue: String) {
-                self.rawValue = rawValue
-            }
-            
-            public static let Unknown = Source("Unknown")
-            public static let Local = Source("Local")
-            public static let Import = Source("Import")
-        }
     }
 }
 
@@ -235,14 +218,6 @@ extension Lyrics {
                 lines[index].enabled = false
             }
         }
-    }
-}
-
-// MARK: - Equatable
-
-extension Lyrics.MetaData.Source: Equatable {
-    public static func ==(lhs: Lyrics.MetaData.Source, rhs: Lyrics.MetaData.Source) -> Bool {
-        return lhs.rawValue == rhs.rawValue
     }
 }
 
