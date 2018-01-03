@@ -74,6 +74,7 @@ public final class LyricsNetEase: _LyricsProvider {
             lrc.idTags[.album]   = token.album.name
             lrc.idTags[.lrcBy]   = model.lyricUser?.nickname
             
+            lrc.length = Double(token.duration) * 1000
             lrc.metadata.source      = .netease
             lrc.metadata.artworkURL  = token.album.picUrl
             

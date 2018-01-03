@@ -54,6 +54,7 @@ struct QQResponseSearchResult: Decodable {
                 let songname: String
                 let albumname: String
                 let singer: [Singer]
+                let interval: Int
                 
                 /*
                 let albummid: String
@@ -64,7 +65,6 @@ struct QQResponseSearchResult: Decodable {
                 let chinesesinger: Int
                 let docid: String
                 let format: String
-                let interval: Int
                 let isonly: Int
                 let lyric: String
                 let lyric_hilight: String

@@ -68,6 +68,7 @@ public final class LyricsKugou: _LyricsProvider {
             lrc.idTags[.artist] = token.singer
             lrc.idTags[.lrcBy] = "Kugou"
             
+            lrc.length = Double(token.duration)/1000
             lrc.metadata.source = .kugou
             
             completionHandler(lrc)
