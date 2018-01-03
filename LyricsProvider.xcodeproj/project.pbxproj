@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		BB0897FA1F73A86C00E29748 /* NetEaseKLyricParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0897F91F73A86C00E29748 /* NetEaseKLyricParser.swift */; };
 		BB0897FC1F74EC9500E29748 /* KugouKrcParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0897FB1F74EC9400E29748 /* KugouKrcParser.swift */; };
-		BB0897FE1F74ED1600E29748 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0897FD1F74ED1600E29748 /* Regex.swift */; };
+		BB0897FE1F74ED1600E29748 /* RegexPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB0897FD1F74ED1600E29748 /* RegexPattern.swift */; };
 		BB2AC1AF1F6B86F700BE765A /* Data+Gzip.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */; };
 		BB2B4E991F9C55C700C01C4F /* URLSession+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2B4E981F9C55C700C01C4F /* URLSession+Task.swift */; };
 		BB558A5D1F6A5EFB00686746 /* XiamiResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB558A5C1F6A5EFB00686746 /* XiamiResponseSearchResult.swift */; };
@@ -37,6 +37,7 @@
 		BBCC72121FF61EB00090C7E0 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC72111FF61EB00090C7E0 /* Then.swift */; };
 		BBCC72141FF62A480090C7E0 /* LyricsMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC72131FF62A480090C7E0 /* LyricsMetadata.swift */; };
 		BBCC72161FF62EE00090C7E0 /* LyricsMetaData+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC72151FF62EE00090C7E0 /* LyricsMetaData+Extension.swift */; };
+		BBCC72181FF650940090C7E0 /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCC72171FF650940090C7E0 /* Regex.swift */; };
 		BBD517AD1FB14C6C0056084A /* TTPodXtrcParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD517AC1FB14C6C0056084A /* TTPodXtrcParser.swift */; };
 		BBDB158B1F7A221400C190E4 /* LyricsLineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDB15891F7A217100C190E4 /* LyricsLineTests.swift */; };
 		BBDCA9E71F6991A1008ECB89 /* Dictionary+HttpParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDCA9E61F6991A1008ECB89 /* Dictionary+HttpParameter.swift */; };
@@ -70,7 +71,7 @@
 /* Begin PBXFileReference section */
 		BB0897F91F73A86C00E29748 /* NetEaseKLyricParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetEaseKLyricParser.swift; sourceTree = "<group>"; };
 		BB0897FB1F74EC9400E29748 /* KugouKrcParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KugouKrcParser.swift; sourceTree = "<group>"; };
-		BB0897FD1F74ED1600E29748 /* Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
+		BB0897FD1F74ED1600E29748 /* RegexPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegexPattern.swift; sourceTree = "<group>"; };
 		BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Gzip.swift"; sourceTree = "<group>"; };
 		BB2AC1B11F6B876F00BE765A /* KugouKrcDecrypter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KugouKrcDecrypter.swift; sourceTree = "<group>"; };
 		BB2B4E981F9C55C700C01C4F /* URLSession+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Task.swift"; sourceTree = "<group>"; };
@@ -98,6 +99,7 @@
 		BBCC72111FF61EB00090C7E0 /* Then.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
 		BBCC72131FF62A480090C7E0 /* LyricsMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsMetadata.swift; sourceTree = "<group>"; };
 		BBCC72151FF62EE00090C7E0 /* LyricsMetaData+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LyricsMetaData+Extension.swift"; sourceTree = "<group>"; };
+		BBCC72171FF650940090C7E0 /* Regex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		BBD517AC1FB14C6C0056084A /* TTPodXtrcParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTPodXtrcParser.swift; sourceTree = "<group>"; };
 		BBDB15891F7A217100C190E4 /* LyricsLineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLineTests.swift; sourceTree = "<group>"; };
 		BBDCA9E61F6991A1008ECB89 /* Dictionary+HttpParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+HttpParameter.swift"; sourceTree = "<group>"; };
@@ -290,7 +292,8 @@
 				BB95279B1FD14ACC00529650 /* String+XMLDecode.swift */,
 				BB6B50791F6AB9E700D4A818 /* Lyrics+Merge.swift */,
 				BB2AC1AE1F6B86F700BE765A /* Data+Gzip.swift */,
-				BB0897FD1F74ED1600E29748 /* Regex.swift */,
+				BB0897FD1F74ED1600E29748 /* RegexPattern.swift */,
+				BBCC72171FF650940090C7E0 /* Regex.swift */,
 				BBCC72111FF61EB00090C7E0 /* Then.swift */,
 			);
 			name = Utilities;
@@ -456,7 +459,7 @@
 				BBA7D8E21F694FBE00EE9E3E /* NetEaseResponseSearchResult.swift in Sources */,
 				BBCC72161FF62EE00090C7E0 /* LyricsMetaData+Extension.swift in Sources */,
 				BB2B4E991F9C55C700C01C4F /* URLSession+Task.swift in Sources */,
-				BB0897FE1F74ED1600E29748 /* Regex.swift in Sources */,
+				BB0897FE1F74ED1600E29748 /* RegexPattern.swift in Sources */,
 				BBAB68591F66CA6F005D583F /* LyricsLineAttachmentTimeLine.swift in Sources */,
 				BBD517AD1FB14C6C0056084A /* TTPodXtrcParser.swift in Sources */,
 				OBJ_51 /* LyricsNetEase.swift in Sources */,
@@ -482,6 +485,7 @@
 				BBFAF74E1F650FB0001A50C3 /* LyricsLineAttachment.swift in Sources */,
 				BB6C57BE1F34442100F26C26 /* LyricsSourceIconDrawing+Image.swift in Sources */,
 				BBDED14B1FCC0433001DC7E1 /* LyricsSearchTask.swift in Sources */,
+				BBCC72181FF650940090C7E0 /* Regex.swift in Sources */,
 				BBCC72141FF62A480090C7E0 /* LyricsMetadata.swift in Sources */,
 				BBC80B861F665AD80052578A /* Utilities.swift in Sources */,
 				BB7ECC041FC7BE410062B4E2 /* LyricsSearchRequest.swift in Sources */,
