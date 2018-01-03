@@ -31,7 +31,11 @@ public final class LyricsGecimi: _LyricsProvider {
     
     public static let source: Lyrics.MetaData.Source = .gecimi
     
-    let session = sharedSession
+    let session: URLSession
+    
+    init(session: URLSession) {
+        self.session = session
+    }
     
     func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) -> URLSessionTask? {
         guard case let .info(title, artist) = request.searchTerm else {

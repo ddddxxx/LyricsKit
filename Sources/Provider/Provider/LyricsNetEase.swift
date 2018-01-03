@@ -31,7 +31,11 @@ public final class LyricsNetEase: _LyricsProvider {
     
     public static let source: Lyrics.MetaData.Source = .netease
     
-    let session = sharedSession
+    let session: URLSession
+    
+    init(session: URLSession) {
+        self.session = session
+    }
     
     func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [

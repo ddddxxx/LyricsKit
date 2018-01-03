@@ -20,23 +20,25 @@
 
 import Foundation
 
-let sharedSession = URLSession(configuration: .default, delegate: nil, delegateQueue: urlSessionQueue)
-
-let urlSessionQueue = OperationQueue().then {
-    $0.maxConcurrentOperationCount = 1
-}
-
 public class LyricsProviderManager {
     
-    let providers: [LyricsProvider] = [
-        LyricsXiami(),
-        LyricsGecimi(),
-        LyricsNetEase(),
-        LyricsQQ(),
-        LyricsKugou(),
-    ]
+    let queue: OperationQueue
+    let session: URLSession
+    let providers: [LyricsProvider]
     
-    public init() {}
+    public init() {
+        queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
+        // TODO: dependency injection
+        providers = [
+            LyricsXiami(session: session),
+            LyricsGecimi(session: session),
+            LyricsNetEase(session: session),
+            LyricsQQ(session: session),
+            LyricsKugou(session: session),
+        ]
+    }
     
     public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {
         let subTasks = providers.map {
