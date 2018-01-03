@@ -20,117 +20,28 @@
 
 import Foundation
 
-public protocol LyricsConsuming: class {
-    
-    func lyricsReceived(lyrics: Lyrics)
-    
-    func fetchCompleted(result: [Lyrics])
-}
-
 public class LyricsProviderManager {
     
-    public weak var consumer: LyricsConsuming?
+    let queue: OperationQueue
+    let session: URLSession
+    let providers: [LyricsProvider]
     
-    private var dispatchGroup = DispatchGroup()
-    let providers: [LyricsProvider] = [
-        LyricsXiami(),
-        LyricsGecimi(),
-        LyricsTTPod(),
-        LyricsNetEase(),
-        LyricsQQ(),
-        LyricsKugou(),
-    ]
-    
-    public var term: Lyrics.MetaData.SearchTerm?
-    
-    public var lyrics: [Lyrics] = []
-    
-    public init() {}
-    
-    fileprivate func searchLyrics(term: Lyrics.MetaData.SearchTerm, title: String?, artist: String?, duration: TimeInterval) {
-        self.term = term
-        lyrics = []
-        providers.forEach { $0.cancelSearch() }
-        providers.forEach { source in
-            dispatchGroup.enter()
-            source.searchLyrics(term: term, duration: duration, using: { lrc in
-                guard self.term == term else {
-                    return
-                }
-                
-                lrc.metadata.title = title
-                lrc.metadata.artist = artist
-                lrc.idTags[.recreater] = "LyricsX"
-                lrc.idTags[.version] = "1"
-                
-                let index = self.lyrics.index(where: {$0 < lrc}) ?? self.lyrics.count
-                self.lyrics.insert(lrc, at: index)
-                self.consumer?.lyricsReceived(lyrics: lrc)
-            }, completionHandler: {
-                self.dispatchGroup.leave()
-            })
-        }
-        dispatchGroup.notify(queue: .global()) {
-            self.consumer?.fetchCompleted(result: self.lyrics)
-        }
+    public init(sources: [LyricsProviderSource] = LyricsProviderSource.all) {
+        let queue = OperationQueue()
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
+        let providers = sources.map { $0.cls.init(session: session) }
+        
+        queue.maxConcurrentOperationCount = 1
+        
+        self.queue = queue
+        self.session = session
+        self.providers = providers
     }
     
-    fileprivate func iFeelLucky(term: Lyrics.MetaData.SearchTerm, title: String?, artist: String?, duration: TimeInterval) {
-        self.term = term
-        lyrics = []
-        providers.forEach { $0.cancelSearch() }
-        providers.forEach { source in
-            dispatchGroup.enter()
-            source.iFeelLucky(term: term, duration: duration) {
-                defer {
-                    self.dispatchGroup.leave()
-                }
-                if let lrc = $0 {
-                    guard self.term == term else {
-                        return
-                    }
-                    lrc.metadata.title = title
-                    lrc.metadata.artist = artist
-                    lrc.idTags[.recreater] = "LyricsX"
-                    lrc.idTags[.version] = "1"
-                    
-                    let index = self.lyrics.index(where: {$0 < lrc}) ?? self.lyrics.count
-                    self.lyrics.insert(lrc, at: index)
-                    self.consumer?.lyricsReceived(lyrics: lrc)
-                }
-            }
+    public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {
+        let subTasks = providers.map {
+            $0.lyricsTask(request: request, using: using)
         }
-        dispatchGroup.notify(queue: .global()) {
-            self.consumer?.fetchCompleted(result: self.lyrics)
-        }
-    }
-    
-    public func cancelSearching() {
-        self.term = nil
-        lyrics = []
-        providers.forEach { $0.cancelSearch() }
+        return LyricsSearchTask(request: request, subTasks: subTasks)
     }
 }
-
-extension LyricsProviderManager {
-    
-    public func searchLyrics(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchArtist ?? artist)
-        searchLyrics(term: term, title: title, artist: artist, duration: duration)
-    }
-    
-    public func iFeelLucky(searchTitle: String? = nil, searchArtist: String? = nil, title: String, artist: String, duration: TimeInterval) {
-        let term = Lyrics.MetaData.SearchTerm.info(title: searchTitle ?? title, artist: searchArtist ?? artist)
-        iFeelLucky(term: term, title: title, artist: artist, duration: duration)
-    }
-    
-    public func searchLyrics(keyword: String, title: String, artist: String, duration: TimeInterval) {
-        searchLyrics(term: .keyword(keyword), title: title, artist: artist, duration: duration)
-    }
-    
-    public func iFeelLucky(keyword: String, title: String, artist: String, duration: TimeInterval) {
-        iFeelLucky(term: .keyword(keyword), title: title, artist: artist, duration: duration)
-    }
-    
-}
-

@@ -23,21 +23,20 @@ import Foundation
 private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
 
-extension Lyrics.MetaData.Source {
-    static let qq = Lyrics.MetaData.Source("QQMusic")
-}
-
-public final class LyricsQQ: MultiResultLyricsProvider {
+public final class LyricsQQ: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .qq
+    public static let source: LyricsProviderSource = .qq
     
-    let session = URLSession(configuration: .providerConfig)
-    let dispatchGroup = DispatchGroup()
+    let session: URLSession
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) {
-        let parameter = ["w": term.description]
+    init(session: URLSession) {
+        self.session = session
+    }
+    
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) -> URLSessionTask? {
+        let parameter = ["w": request.searchTerm.description]
         let url = URL(string: qqSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
+        return session.dataTask(with: url) { data, resp, error in
             guard let data = data?.dropFirst(9).dropLast(),
                 let model = try? JSONDecoder().decode(QQResponseSearchResult.self, from: data) else {
                     completionHandler([])
@@ -45,10 +44,9 @@ public final class LyricsQQ: MultiResultLyricsProvider {
             }
             completionHandler(model.songs)
         }
-        task.resume()
     }
     
-    func getLyricsWithToken(token: QQResponseSearchResult.Data.Song.Item, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: QQResponseSearchResult.Data.Song.Item, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [
             "songmid": token.songmid,
             "g_tk": 5381
@@ -56,7 +54,7 @@ public final class LyricsQQ: MultiResultLyricsProvider {
         let url = URL(string: qqLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
         var req = URLRequest(url: url)
         req.setValue("y.qq.com/portal/player.html", forHTTPHeaderField: "Referer")
-        let task = session.dataTask(with: req) { data, resp, error in
+        return session.dataTask(with: req) { data, resp, error in
             guard let data = data?.dropFirst(18).dropLast(),
                 let model = try? JSONDecoder().decode(QQResponseSingleLyrics.self, from: data),
                 let lrcContent = model.lyricString,
@@ -73,12 +71,12 @@ public final class LyricsQQ: MultiResultLyricsProvider {
             lrc.idTags[.artist] = token.singer.first?.name
             lrc.idTags[.album] = token.albumname
             
+            lrc.length = Double(token.interval)
             lrc.metadata.source = .qq
             if let id = Int(token.songmid) {
                 lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
             }
             completionHandler(lrc)
         }
-        task.resume()
     }
 }

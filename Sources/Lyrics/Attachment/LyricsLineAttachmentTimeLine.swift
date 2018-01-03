@@ -21,10 +21,10 @@
 import Foundation
 
 private let timeLineAttachmentPattern = "<(\\d+,\\d+)>"
-private let timeLineAttachmentRegex = try! NSRegularExpression(pattern: timeLineAttachmentPattern)
+private let timeLineAttachmentRegex = try! Regex(timeLineAttachmentPattern)
 
 private let timeLineAttachmentDurationPattern = "<(\\d+)>"
-private let timeLineAttachmentDurationRegex = try! NSRegularExpression(pattern: timeLineAttachmentDurationPattern)
+private let timeLineAttachmentDurationRegex = try! Regex(timeLineAttachmentDurationPattern)
 
 public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     
@@ -66,12 +66,12 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     
     public init?(_ description: String) {
         let matchs = timeLineAttachmentRegex.matches(in: description)
-        tags = matchs.flatMap { Tag(description[$0.range(at: 1)]!) }
+        tags = matchs.flatMap { Tag($0[1]!.string) }
         guard !tags.isEmpty else {
             return nil
         }
         if let match = timeLineAttachmentDurationRegex.firstMatch(in: description) {
-            durationMSec = Int(description[match.range(at: 1)]!)
+            durationMSec = Int(match[1]!.string)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  TTPodResponseSingleLyrics.swift
+//  LyricsProviderSource.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,11 +20,31 @@
 
 import Foundation
 
-struct TTPodResponseSingleLyrics: Decodable {
-    let data: Data
-    let code: Int
+public enum LyricsProviderSource: String {
+    case netease = "163"
+    case qq = "QQMusic"
+    case kugou = "Kugou"
+    case xiami = "Xiami"
+    case gecimi = "Gecimi"
+}
+
+extension LyricsProviderSource {
     
-    struct Data: Decodable {
-        let lrc: String
+    var cls: LyricsProvider.Type {
+        switch self {
+        case .netease:  return LyricsNetEase.self
+        case .qq:       return LyricsQQ.self
+        case .kugou:    return LyricsKugou.self
+        case .xiami:    return LyricsXiami.self
+        case .gecimi:   return LyricsGecimi.self
+        }
     }
+    
+    public static let all: [LyricsProviderSource] = [
+        .netease,
+        .qq,
+        .kugou,
+        .xiami,
+        .gecimi,
+    ]
 }

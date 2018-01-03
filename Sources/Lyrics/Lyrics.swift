@@ -20,14 +20,14 @@
 
 import Foundation
 
-//private let id3TagPattern = "^\\[(.+?):(.*)\\](?=\\n)"
+//private let id3TagPattern = "^(?!\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])\\[(.+?):(.+)\\]$"
 //private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern, options: .anchorsMatchLines)
 
-private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+(?!\\[)([^【\\n\\r]*)(?:【(.*)】)?"
-private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern, options: .anchorsMatchLines)
+private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+(?!\\[)([^【\\n\\r]*)(?:【(.*)】)?"
+private let lyricsLineRegex = try! Regex(lyricsLinePattern, options: .anchorsMatchLines)
 
-private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:.\\d+)?\\])+\\[(.+?)\\](.*)"
-private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern, options: .anchorsMatchLines)
+private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+\\[(.+?)\\](.*)"
+private let lyricsLineAttachmentRegex = try! Regex(lyricsLineAttachmentPattern, options: .anchorsMatchLines)
 
 final public class Lyrics: LosslessStringConvertible {
     
@@ -39,21 +39,21 @@ final public class Lyrics: LosslessStringConvertible {
     
     public init?(_ description: String) {
         id3TagRegex.matches(in: description).forEach { match in
-            if let key = description[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-                let value = description[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !value.isEmpty {
                 idTags[.init(key)] = value
             }
         }
         
         lines = lyricsLineRegex.matches(in: description).flatMap { match -> [LyricsLine] in
-            let timeTagStr = description[match.range(at: 1)]!
+            let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
-            let lyricsContentStr = description[match.range(at: 2)]!
+            let lyricsContentStr = match[2]!.string
             var line = LyricsLine(content: lyricsContentStr, position: 0)
             
-            if let translationStr = description[match.range(at: 3)] {
+            if let translationStr = match[3]?.string {
                 let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
                 line.attachments[.translation] = translationAttachment
             }
@@ -68,14 +68,15 @@ final public class Lyrics: LosslessStringConvertible {
             $0.position < $1.position
         }
         
+        var tags: Set<LyricsLineAttachmentTag> = []
         lyricsLineAttachmentRegex.matches(in: description).forEach { match in
-            let timeTagStr = description[match.range(at: 1)]!
+            let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
-            let attachmentTagStr = description[match.range(at: 2)]!
+            let attachmentTagStr = match[2]!.string
             let attachmentTag = LyricsLineAttachmentTag(attachmentTagStr)
             
-            let attachmentStr = description[match.range(at: 3)] ?? ""
+            let attachmentStr = match[3]?.string ?? ""
             guard let attachment = LyricsLineAttachmentFactory.createAttachment(str: attachmentStr, tag: attachmentTag) else {
                 return
             }
@@ -85,8 +86,9 @@ final public class Lyrics: LosslessStringConvertible {
                     lines[index].attachments[attachmentTag] = attachment
                 }
             }
-            metadata.attachmentTags.insert(attachmentTag)
+            tags.insert(attachmentTag)
         }
+        metadata.data[.attachmentTags] = tags
         
         guard !lines.isEmpty else {
             return nil
@@ -120,48 +122,36 @@ final public class Lyrics: LosslessStringConvertible {
             return rawValue.hash
         }
         
-        public static let title    = IDTagKey("ti")
-        public static let album    = IDTagKey("al")
-        public static let artist   = IDTagKey("ar")
-        public static let author   = IDTagKey("au")
-        public static let lrcBy    = IDTagKey("by")
-        public static let offset   = IDTagKey("offset")
+        public static let title     = IDTagKey("ti")
+        public static let album     = IDTagKey("al")
+        public static let artist    = IDTagKey("ar")
+        public static let author    = IDTagKey("au")
+        public static let lrcBy     = IDTagKey("by")
+        public static let offset    = IDTagKey("offset")
+        public static let length    = IDTagKey("length")
         public static let recreater = IDTagKey("re")
-        public static let version  = IDTagKey("ve")
+        public static let version   = IDTagKey("ve")
     }
     
     public struct MetaData {
         
-        public var source: Source = .Unknown
-        public var title: String? = nil
-        public var artist: String? = nil
-        public var searchBy: SearchTerm? = nil
-        public var searchIndex: Int = 0
-        public var lyricsURL: URL? = nil
-        public var artworkURL: URL? = nil
-        public var attachmentTags: Set<LyricsLineAttachmentTag> = []
+        public var data: [Key: Any] = [:]
         
-        public struct Source: RawRepresentable {
+        public struct Key: RawRepresentable, Hashable {
             
             public var rawValue: String
-            
-            public init(rawValue: String) {
-                self.rawValue = rawValue
-            }
             
             public init(_ rawValue: String) {
                 self.rawValue = rawValue
             }
             
-            public static let Unknown = Source("Unknown")
-            public static let Local = Source("Local")
-            public static let Import = Source("Import")
-        }
-        
-        public enum SearchTerm {
+            public init(rawValue: String) {
+                self.rawValue = rawValue
+            }
             
-            case keyword(String)
-            case info(title: String, artist: String)
+            public var hashValue: Int {
+                return rawValue.hash
+            }
         }
     }
 }
@@ -183,6 +173,32 @@ extension Lyrics {
         }
         set {
             offset = Int(newValue * 1000)
+        }
+    }
+    
+    private static let base60TimePattern = "^\\s*(?:(\\d+):)?(\\d+(?:.\\d+)?)\\s*$"
+    private static let base60TimeRegex = try! Regex(base60TimePattern)
+    
+    public var length: TimeInterval? {
+        get {
+            guard let len = idTags[.length],
+                let match = Lyrics.base60TimeRegex.firstMatch(in: len) else {
+                    return nil
+            }
+            let min = (match[1]?.content).flatMap(Double.init) ?? 0
+            let sec = Double(match[2]!.content)!
+            return min * 60 + sec
+        }
+        set {
+            guard let newValue = newValue else {
+                idTags.removeValue(forKey: .length)
+                return
+            }
+            let fmt = NumberFormatter()
+            fmt.minimumFractionDigits = 0
+            fmt.maximumFractionDigits = 2
+            let str = fmt.string(from: newValue as NSNumber)
+            idTags[.length] = str
         }
     }
     
@@ -232,40 +248,7 @@ extension Lyrics {
     }
 }
 
-// MARK: - Equatable
-
-extension Lyrics.MetaData.Source: Equatable {
-    public static func ==(lhs: Lyrics.MetaData.Source, rhs: Lyrics.MetaData.Source) -> Bool {
-        return lhs.rawValue == rhs.rawValue
-    }
-}
-
-extension Lyrics.MetaData.SearchTerm: Equatable {
-    public static func ==(lhs: Lyrics.MetaData.SearchTerm, rhs: Lyrics.MetaData.SearchTerm) -> Bool {
-        switch (lhs, rhs) {
-        case (.keyword, .info), (.info, .keyword):
-            return false
-        case (let .keyword(l), let .keyword(r)):
-            return l == r
-        case (let .info(l1, l2), let .info(r1, r2)):
-            return (l1 == r1) && (l2 == r2)
-        }
-    }
-}
-
 // MARK: CustomStringConvertible
-
-extension Lyrics.MetaData.SearchTerm: CustomStringConvertible {
-    
-    public var description: String {
-        switch self {
-        case let .keyword(keyword):
-            return keyword
-        case let .info(title: title, artist: artist):
-            return title + " " + artist
-        }
-    }
-}
 
 extension Lyrics.MetaData: CustomStringConvertible {
     

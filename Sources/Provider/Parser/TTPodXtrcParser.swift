@@ -24,14 +24,14 @@ extension Lyrics {
     
     convenience init?(ttpodXtrcContent content: String) {
         let lineMatchs = ttpodXtrcLineRegex.matches(in: content)
-        guard !lineMatchs.filter({$0.range(at: 2).length > 0}).isEmpty else {
+        guard !lineMatchs.filter({$0[2] != nil}).isEmpty else {
             self.init(content)
             return
         }
         self.init()
         id3TagRegex.matches(in: content).forEach { match in
-            if let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-                let value = content[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
                 !value.isEmpty {
                 idTags[.init(key)] = value
@@ -39,16 +39,16 @@ extension Lyrics {
         }
         
         lines = lineMatchs.flatMap { match -> [LyricsLine] in
-            let timeTagStr = content[match.range(at: 1)]!
+            let timeTagStr = String(match[1]!.content)
             let timeTags = resolveTimeTag(timeTagStr)
             
             var lineContent = ""
             var timetagAttachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)])
             var dt = 0.0
-            ttpodXtrcInlineTagRegex.matches(in: content, range: match.range(at: 2)).forEach { m in
-                let timeTagStr = content[m.range(at: 1)]!
+            ttpodXtrcInlineTagRegex.matches(in: content, range: match[2]!.range).forEach { m in
+                let timeTagStr = m[1]!.content
                 let timeTag = TimeInterval(timeTagStr)! / 1000
-                let fragment = content[m.range(at: 2)]!
+                let fragment = m[2]!.content
                 lineContent += fragment
                 dt += timeTag
                 timetagAttachment.tags.append(.init(timeTag: dt, index: lineContent.count))
@@ -56,7 +56,7 @@ extension Lyrics {
             
             var line = LyricsLine(content: lineContent, position: 0, attachments: [.timetag: timetagAttachment])
             
-            if let translationStr = content[match.range(at: 3)] {
+            if let translationStr = match[3]?.string {
                 let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
                 line.attachments[.translation] = translationAttachment
                 metadata.attachmentTags.insert(.translation)

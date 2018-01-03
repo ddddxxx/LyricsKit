@@ -21,7 +21,7 @@
 #if !os(watchOS)
     
     @available(OSX 10.10, iOS 8, tvOS 2, *)
-    private extension Lyrics.MetaData.Source {
+    private extension LyricsProviderSource {
         
         var drawingMethod: ((CGRect) -> Void)? {
             switch self {
@@ -33,12 +33,8 @@
                 return LyricsSourceIconDrawing.drawKugou
             case .qq:
                 return LyricsSourceIconDrawing.drawQQMusic
-            case .ttpod:
-                return LyricsSourceIconDrawing.drawTTPod
             case .xiami:
                 return LyricsSourceIconDrawing.drawXiami
-            default:
-                return nil
             }
         }
         
@@ -54,7 +50,7 @@
         
         public static let defaultSize = CGSize(width: 48, height: 48)
         
-        public static func icon(of source: Lyrics.MetaData.Source, size: CGSize = defaultSize) -> NSImage {
+        public static func icon(of source: LyricsProviderSource, size: CGSize = defaultSize) -> NSImage {
             return NSImage(size: size, flipped: false) { (NSRect) -> Bool in
                 source.drawingMethod?(CGRect(origin: .zero, size: size))
                 return true

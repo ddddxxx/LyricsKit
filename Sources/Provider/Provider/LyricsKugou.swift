@@ -23,33 +23,31 @@ import Foundation
 private let kugouSearchBaseURLString = "http://lyrics.kugou.com/search"
 private let kugouLyricsBaseURLString = "http://lyrics.kugou.com/download"
 
-extension Lyrics.MetaData.Source {
-    static let kugou = Lyrics.MetaData.Source("Kugou")
-}
-
-public final class LyricsKugou: MultiResultLyricsProvider {
+public final class LyricsKugou: _LyricsProvider {
     
-    public static let source: Lyrics.MetaData.Source = .kugou
+    public static let source: LyricsProviderSource = .kugou
     
-    let session = URLSession(configuration: .providerConfig)
-    let dispatchGroup = DispatchGroup()
+    let session: URLSession
     
-    func searchLyricsToken(term: Lyrics.MetaData.SearchTerm, duration: TimeInterval, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) {
+    init(session: URLSession) {
+        self.session = session
+    }
+    
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [
-            "keyword": term.description,
-            "duration": Int(duration * 1000),
+            "keyword": request.searchTerm.description,
+            "duration": Int(request.duration * 1000),
             "client": "pc",
             "ver": 1,
             "man": "yes",
             ]
         let url = URL(string: kugouSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url, type: KugouResponseSearchResult.self) { model, error in
+        return session.dataTask(with: url, type: KugouResponseSearchResult.self) { model, error in
             completionHandler(model?.candidates ?? [])
         }
-        task.resume()
     }
     
-    func getLyricsWithToken(token: KugouResponseSearchResult.Item, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: KugouResponseSearchResult.Item, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
         let parameter: [String: Any] = [
             "id": token.id,
             "accesskey": token.accesskey,
@@ -59,7 +57,7 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             "ver": 1,
             ]
         let url = URL(string: kugouLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url, type: KugouResponseSingleLyrics.self) { model, error in
+        return session.dataTask(with: url, type: KugouResponseSingleLyrics.self) { model, error in
             guard let model = model,
                 let lrcContent = decryptKugouKrc(model.content),
                 let lrc = Lyrics(kugouKrcContent: lrcContent) else {
@@ -70,10 +68,10 @@ public final class LyricsKugou: MultiResultLyricsProvider {
             lrc.idTags[.artist] = token.singer
             lrc.idTags[.lrcBy] = "Kugou"
             
+            lrc.length = Double(token.duration)/1000
             lrc.metadata.source = .kugou
             
             completionHandler(lrc)
         }
-        task.resume()
     }
 }
