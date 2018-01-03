@@ -26,18 +26,16 @@ public class LyricsProviderManager {
     let session: URLSession
     let providers: [LyricsProvider]
     
-    public init() {
-        queue = OperationQueue()
+    public init(sources: [LyricsProviderSource] = LyricsProviderSource.all) {
+        let queue = OperationQueue()
+        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
+        let providers = sources.map { $0.cls.init(session: session) }
+        
         queue.maxConcurrentOperationCount = 1
-        session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
-        // TODO: dependency injection
-        providers = [
-            LyricsXiami(session: session),
-            LyricsGecimi(session: session),
-            LyricsNetEase(session: session),
-            LyricsQQ(session: session),
-            LyricsKugou(session: session),
-        ]
+        
+        self.queue = queue
+        self.session = session
+        self.providers = providers
     }
     
     public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {

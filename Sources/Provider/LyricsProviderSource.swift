@@ -29,6 +29,7 @@ public enum LyricsProviderSource: String {
 }
 
 extension LyricsProviderSource {
+    
     var cls: LyricsProvider.Type {
         switch self {
         case .netease:  return LyricsNetEase.self
@@ -38,4 +39,12 @@ extension LyricsProviderSource {
         case .gecimi:   return LyricsGecimi.self
         }
     }
+    
+    public static let all: [LyricsProviderSource] = [
+        .netease,
+        .qq,
+        .kugou,
+        .xiami,
+        .gecimi,
+    ]
 }

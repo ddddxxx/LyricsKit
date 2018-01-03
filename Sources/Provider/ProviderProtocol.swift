@@ -22,14 +22,14 @@ import Foundation
 
 protocol LyricsProvider {
     
+    init(session: URLSession)
+    
     func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> DistributedLyricsSearchTask
 }
 
 protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
-    
-    init(session: URLSession)
     
     func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void) -> URLSessionTask?
     
