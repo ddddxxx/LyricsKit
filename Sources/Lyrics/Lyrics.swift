@@ -122,14 +122,15 @@ final public class Lyrics: LosslessStringConvertible {
             return rawValue.hash
         }
         
-        public static let title    = IDTagKey("ti")
-        public static let album    = IDTagKey("al")
-        public static let artist   = IDTagKey("ar")
-        public static let author   = IDTagKey("au")
-        public static let lrcBy    = IDTagKey("by")
-        public static let offset   = IDTagKey("offset")
+        public static let title     = IDTagKey("ti")
+        public static let album     = IDTagKey("al")
+        public static let artist    = IDTagKey("ar")
+        public static let author    = IDTagKey("au")
+        public static let lrcBy     = IDTagKey("by")
+        public static let offset    = IDTagKey("offset")
+        public static let length    = IDTagKey("length")
         public static let recreater = IDTagKey("re")
-        public static let version  = IDTagKey("ve")
+        public static let version   = IDTagKey("ve")
     }
     
     public struct MetaData {
@@ -172,6 +173,32 @@ extension Lyrics {
         }
         set {
             offset = Int(newValue * 1000)
+        }
+    }
+    
+    private static let base60TimePattern = "^\\s*(?:(\\d+):)?(\\d+(?:.\\d+)?)\\s*$"
+    private static let base60TimeRegex = try! Regex(base60TimePattern)
+    
+    public var length: TimeInterval? {
+        get {
+            guard let len = idTags[.length],
+                let match = Lyrics.base60TimeRegex.firstMatch(in: len) else {
+                    return nil
+            }
+            let min = (match[1]?.content).flatMap(Double.init) ?? 0
+            let sec = Double(match[2]!.content)!
+            return min * 60 + sec
+        }
+        set {
+            guard let newValue = newValue else {
+                idTags.removeValue(forKey: .length)
+                return
+            }
+            let fmt = NumberFormatter()
+            fmt.minimumFractionDigits = 0
+            fmt.maximumFractionDigits = 2
+            let str = fmt.string(from: newValue as NSNumber)
+            idTags[.length] = str
         }
     }
     
