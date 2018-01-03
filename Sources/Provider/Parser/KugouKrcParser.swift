@@ -69,9 +69,9 @@ extension Lyrics {
         // TODO: multiple translation
         if let transContent = languageHeader?.content.first?.lyricContent {
             transContent.prefix(lines.count).enumerated().forEach { index, item in
-                if let str = item.first {
-                    lines[index].attachments[.translation] = LyricsLineAttachmentPlainText(str)
-                }
+                guard !item.isEmpty else { return }
+                let str = item.joined(separator: " ")
+                lines[index].attachments[.translation] = LyricsLineAttachmentPlainText(str)
             }
             metadata.attachmentTags.insert(.translation)
         }
