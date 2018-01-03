@@ -25,8 +25,8 @@ extension Lyrics {
     convenience init?(netEaseKLyricContent content: String) {
         self.init()
         id3TagRegex.matches(in: content).forEach { match in
-            if let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-                let value = content[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
                 !value.isEmpty {
                 idTags[.init(key)] = value
@@ -34,20 +34,20 @@ extension Lyrics {
         }
         
         lines = krcLineRegex.matches(in: content).map { match in
-            let timeTagStr = content[match.range(at: 1)]!
+            let timeTagStr = match[1]!.string
             let timeTag = TimeInterval(timeTagStr)! / 1000
             
-            let durationStr = content[match.range(at: 2)]!
+            let durationStr = match[2]!.string
             let duration = TimeInterval(durationStr)! / 1000
             
             var lineContent = ""
             var attachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)], duration: duration)
             var dt = 0.0
-            netEaseInlineTagRegex.matches(in: content, range: match.range(at: 3)).forEach { m in
-                let timeTagStr = content[m.range(at: 1)]!
+            netEaseInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
+                let timeTagStr = match[1]!.string
                 var timeTag = TimeInterval(timeTagStr)! / 1000
-                var fragment = content[m.range(at: 2)]!
-                if m.range(at: 3).location != NSNotFound {
+                var fragment = match[2]!.string
+                if match[3] != nil {
                     timeTag += 0.001
                     fragment += " "
                 }

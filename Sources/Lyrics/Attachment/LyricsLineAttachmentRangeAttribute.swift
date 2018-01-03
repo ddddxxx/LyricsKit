@@ -40,11 +40,11 @@ public struct LyricsLineAttachmentRangeAttribute: LyricsLineAttachment {
     }
     
     static private let rangeAttachmentPattern = "<([^,]+,\\d+,\\d+)>"
-    static private let rangeAttachmentRegex = try! NSRegularExpression(pattern: rangeAttachmentPattern)
+    static private let rangeAttachmentRegex = try! Regex(rangeAttachmentPattern)
     
     public init?(_ description: String) {
         let matchs = LyricsLineAttachmentRangeAttribute.rangeAttachmentRegex.matches(in: description)
-        attachment = matchs.flatMap { Tag(description[$0.range(at: 1)]!) }
+        attachment = matchs.flatMap { Tag($0[1]!.string) }
         guard !attachment.isEmpty else {
             return nil
         }

@@ -24,10 +24,10 @@ import Foundation
 //private let id3TagRegex = try! NSRegularExpression(pattern: id3TagPattern, options: .anchorsMatchLines)
 
 private let lyricsLinePattern = "^(\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+(?!\\[)([^【\\n\\r]*)(?:【(.*)】)?"
-private let lyricsLineRegex = try! NSRegularExpression(pattern: lyricsLinePattern, options: .anchorsMatchLines)
+private let lyricsLineRegex = try! Regex(lyricsLinePattern, options: .anchorsMatchLines)
 
 private let lyricsLineAttachmentPattern = "^(\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+\\[(.+?)\\](.*)"
-private let lyricsLineAttachmentRegex = try! NSRegularExpression(pattern: lyricsLineAttachmentPattern, options: .anchorsMatchLines)
+private let lyricsLineAttachmentRegex = try! Regex(lyricsLineAttachmentPattern, options: .anchorsMatchLines)
 
 final public class Lyrics: LosslessStringConvertible {
     
@@ -39,21 +39,21 @@ final public class Lyrics: LosslessStringConvertible {
     
     public init?(_ description: String) {
         id3TagRegex.matches(in: description).forEach { match in
-            if let key = description[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-                let value = description[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !value.isEmpty {
                 idTags[.init(key)] = value
             }
         }
         
         lines = lyricsLineRegex.matches(in: description).flatMap { match -> [LyricsLine] in
-            let timeTagStr = description[match.range(at: 1)]!
+            let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
-            let lyricsContentStr = description[match.range(at: 2)]!
+            let lyricsContentStr = match[2]!.string
             var line = LyricsLine(content: lyricsContentStr, position: 0)
             
-            if let translationStr = description[match.range(at: 3)] {
+            if let translationStr = match[3]?.string {
                 let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
                 line.attachments[.translation] = translationAttachment
             }
@@ -70,13 +70,13 @@ final public class Lyrics: LosslessStringConvertible {
         
         var tags: Set<LyricsLineAttachmentTag> = []
         lyricsLineAttachmentRegex.matches(in: description).forEach { match in
-            let timeTagStr = description[match.range(at: 1)]!
+            let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
-            let attachmentTagStr = description[match.range(at: 2)]!
+            let attachmentTagStr = match[2]!.string
             let attachmentTag = LyricsLineAttachmentTag(attachmentTagStr)
             
-            let attachmentStr = description[match.range(at: 3)] ?? ""
+            let attachmentStr = match[3]?.string ?? ""
             guard let attachment = LyricsLineAttachmentFactory.createAttachment(str: attachmentStr, tag: attachmentTag) else {
                 return
             }

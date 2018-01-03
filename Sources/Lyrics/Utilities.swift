@@ -21,37 +21,12 @@
 import Foundation
 
 private let timeTagPattern = "\\[([-+]?\\d+):(\\d+(?:\\.\\d+)?)\\]"
-private let timeTagRegex = try! NSRegularExpression(pattern: timeTagPattern)
+private let timeTagRegex = try! Regex(timeTagPattern)
 func resolveTimeTag(_ str: String) -> [TimeInterval] {
     let matchs = timeTagRegex.matches(in: str)
     return matchs.map { match in
-        let min = Double(str[match.range(at: 1)]!)!
-        let sec = Double(str[match.range(at: 2)]!)!
+        let min = Double(match[1]!.content)!
+        let sec = Double(match[2]!.content)!
         return min * 60 + sec
-    }
-}
-
-// MARK: -
-
-extension NSRegularExpression {
-    
-    func matches(in string: String, options: NSRegularExpression.MatchingOptions = []) -> [NSTextCheckingResult] {
-        let r = NSRange(string.startIndex..<string.endIndex, in: string)
-        return matches(in: string, options: options, range: r)
-    }
-    
-    func firstMatch(in string: String, options: NSRegularExpression.MatchingOptions = []) -> NSTextCheckingResult? {
-        let r = NSRange(string.startIndex..<string.endIndex, in: string)
-        return firstMatch(in: string, options: options, range: r)
-    }
-}
-
-extension String {
-    
-    subscript(nsRange: NSRange) -> String? {
-        guard let r = Range(nsRange, in: self) else {
-            return nil
-        }
-        return String(self[r])
     }
 }

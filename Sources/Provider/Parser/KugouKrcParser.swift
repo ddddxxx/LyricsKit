@@ -26,8 +26,8 @@ extension Lyrics {
         self.init()
         var languageHeader: KugouKrcHeaderFieldLanguage?
         id3TagRegex.matches(in: content).forEach { match in
-            guard let key = content[match.range(at: 1)]?.trimmingCharacters(in: .whitespaces),
-                let value = content[match.range(at: 2)]?.trimmingCharacters(in: .whitespaces),
+            guard let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
                 !value.isEmpty else {
                     return
@@ -43,19 +43,19 @@ extension Lyrics {
         }
         
         lines = krcLineRegex.matches(in: content).map { match in
-            let timeTagStr = content[match.range(at: 1)]!
+            let timeTagStr = match[1]!.string
             let timeTag = TimeInterval(timeTagStr)! / 1000
             
-            let durationStr = content[match.range(at: 2)]!
+            let durationStr = match[2]!.string
             let duration = TimeInterval(durationStr)! / 1000
             
             var lineContent = ""
             var attachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)], duration: duration)
-            kugouInlineTagRegex.matches(in: content, range: match.range(at: 3)).forEach { m in
-                let t1 = Int(content[m.range(at: 1)]!)!
-                let t2 = Int(content[m.range(at: 2)]!)!
+            kugouInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
+                let t1 = Int(m[1]!.content)!
+                let t2 = Int(m[2]!.content)!
                 let t = TimeInterval(t1 + t2) / 1000
-                let fragment = content[m.range(at: 3)]!
+                let fragment = m[3]!.content
                 lineContent += fragment
                 attachment.tags.append(.init(timeTag: t, index: lineContent.count))
             }
