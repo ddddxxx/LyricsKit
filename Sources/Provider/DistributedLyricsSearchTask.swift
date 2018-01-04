@@ -83,6 +83,7 @@ public class DistributedLyricsSearchTask {
     
     func cancel() {
         state = .canceling
+        handler = {_ in}
         urlTasks.forEach { $0.cancel() }
     }
     
