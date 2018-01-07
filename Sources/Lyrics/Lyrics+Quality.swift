@@ -20,10 +20,52 @@
 
 import Foundation
 
+private let weight = 1000.0
+
 extension Lyrics {
     
     var quality: Int {
         return 0
+    }
+    
+    private var artistQuality: Double? {
+        guard let artist = idTags[.artist] else { return nil }
+        switch metadata.request?.searchTerm {
+        case let .info(_, searchArtist)?:
+            return similarity(s1: artist, s2: searchArtist)
+        case let .keyword(keyword)?:
+            return similarity(s1: artist, in: keyword)
+        case nil:
+            return nil
+        }
+    }
+    
+    private var titleQuality: Double? {
+        guard let title = idTags[.title] else { return nil }
+        switch metadata.request?.searchTerm {
+        case let .info(searchTitle, _)?:
+            return similarity(s1: title, s2: searchTitle)
+        case let .keyword(keyword)?:
+            return similarity(s1: title, in: keyword)
+        case nil:
+            return nil
+        }
+    }
+    
+    private var durationQuality: Double? {
+        guard let duration = length,
+            let searchDuration = metadata.request?.duration else {
+                return nil
+        }
+        let dt = searchDuration - duration
+        switch abs(dt) {
+        case 0...1:
+            return 1
+        case 1...10:
+            return 1 - (abs(dt) / 10)
+        case _:
+            return 0
+        }
     }
 }
 
@@ -47,4 +89,16 @@ private extension String {
         }
         return d.last!
     }
+}
+
+private func similarity(s1: String, s2: String) -> Double {
+    let len = min(s1.count, s2.count)
+    let diff = min(s1.distance(to: s2, insertionCost: 0), s1.distance(to: s2, dedeletionCostl: 0))
+    return Double(len - diff) / Double(len)
+}
+
+private func similarity(s1: String, in s2: String) -> Double {
+    let len = max(s1.count, s2.count)
+    let diff = s1.distance(to: s2, insertionCost: 0)
+    return Double(len - diff) / Double(len)
 }
