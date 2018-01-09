@@ -22,8 +22,6 @@ import Foundation
 
 extension Lyrics.MetaData.Key {
     public static var source        = Lyrics.MetaData.Key("source")
-    public static var title         = Lyrics.MetaData.Key("title")
-    public static var artist        = Lyrics.MetaData.Key("artist")
     public static var attachmentTags = Lyrics.MetaData.Key("attachmentTags")
 }
 
@@ -32,16 +30,6 @@ extension Lyrics.MetaData {
     public var source: LyricsProviderSource? {
         get { return data[.source] as? LyricsProviderSource }
         set { data[.source] = newValue }
-    }
-    
-    public var title: String? {
-        get { return data[.title] as? String }
-        set { data[.title] = newValue }
-    }
-    
-    public var artist: String? {
-        get { return data[.artist] as? String }
-        set { data[.artist] = newValue }
     }
     
     public var attachmentTags: Set<LyricsLineAttachmentTag> {
