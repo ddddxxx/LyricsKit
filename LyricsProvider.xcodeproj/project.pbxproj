@@ -230,6 +230,7 @@
 				OBJ_13 /* LyricsProviderManager.swift */,
 				OBJ_17 /* ProviderProtocol.swift */,
 				BB781FDC1FFCB06000C6ED2E /* LyricsProviderSource.swift */,
+				BB9D96921F729D2600852A1C /* Lyrics+Quality.swift */,
 				BBCC72151FF62EE00090C7E0 /* LyricsMetaData+Extension.swift */,
 				BBA7D8DF1F694EE000EE9E3E /* Provider */,
 				BBA7D8E01F694F0700EE9E3E /* JSONModel */,
@@ -257,7 +258,6 @@
 				OBJ_12 /* LyricsLine.swift */,
 				OBJ_8 /* Lyrics.swift */,
 				BBCC72131FF62A480090C7E0 /* LyricsMetadata.swift */,
-				BB9D96921F729D2600852A1C /* Lyrics+Quality.swift */,
 				BBC80B851F665AD80052578A /* Utilities.swift */,
 			);
 			name = Lyrics;
