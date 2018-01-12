@@ -20,42 +20,47 @@
 
 import Foundation
 
-private let weight = 1000.0
-
 extension Lyrics {
     
-    var quality: Int {
-        return 0
+    public var quality: Double {
+        var quality = (artistQuality + titleQuality + durationQuality) / 3
+        if metadata.attachmentTags.contains(.translation) {
+            quality += 0.1
+        }
+        if metadata.attachmentTags.contains(.timetag) {
+            quality += 0.1
+        }
+        return quality
     }
     
-    private var artistQuality: Double? {
-        guard let artist = idTags[.artist] else { return nil }
+    private var artistQuality: Double {
+        guard let artist = idTags[.artist] else { return 0.8 }
         switch metadata.request?.searchTerm {
         case let .info(_, searchArtist)?:
             return similarity(s1: artist, s2: searchArtist)
         case let .keyword(keyword)?:
             return similarity(s1: artist, in: keyword)
         case nil:
-            return nil
+            return 0.8
         }
     }
     
-    private var titleQuality: Double? {
-        guard let title = idTags[.title] else { return nil }
+    private var titleQuality: Double {
+        guard let title = idTags[.title] else { return 0.8 }
         switch metadata.request?.searchTerm {
         case let .info(searchTitle, _)?:
             return similarity(s1: title, s2: searchTitle)
         case let .keyword(keyword)?:
             return similarity(s1: title, in: keyword)
         case nil:
-            return nil
+            return 0.8
         }
     }
     
-    private var durationQuality: Double? {
+    private var durationQuality: Double {
         guard let duration = length,
             let searchDuration = metadata.request?.duration else {
-                return nil
+                return 0.8
         }
         let dt = searchDuration - duration
         switch abs(dt) {
