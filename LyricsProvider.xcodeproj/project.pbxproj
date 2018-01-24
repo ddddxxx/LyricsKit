@@ -117,7 +117,6 @@
 		OBJ_20 /* ProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderTests.swift; sourceTree = "<group>"; };
 		OBJ_29 /* LyricsProvider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LyricsProvider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_30 /* LyricsProviderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = LyricsProviderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Lyrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lyrics.swift; sourceTree = "<group>"; };
 		OBJ_9 /* LyricsNetEase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsNetEase.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -340,7 +339,6 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Sources */,
 				OBJ_18 /* Tests */,
 				OBJ_26 /* Products */,
