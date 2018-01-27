@@ -70,6 +70,7 @@ public final class LyricsKugou: _LyricsProvider {
             
             lrc.length = Double(token.duration)/1000
             lrc.metadata.source = .kugou
+            lrc.metadata.providerToken = "\(token.id),\(token.accesskey)"
             
             completionHandler(lrc)
         }

@@ -53,22 +53,23 @@ public final class LyricsGecimi: _LyricsProvider {
         return session.dataTask(with: token.lrc) { data, resp, error in
             guard let data = data,
                 let lrcContent = String(data: data, encoding: .utf8),
-                let lyrics = Lyrics(lrcContent)else {
+                let lrc = Lyrics(lrcContent)else {
                 completionHandler(nil)
                 return
             }
-            lyrics.metadata.remoteURL = token.lrc
-            lyrics.metadata.source = .gecimi
+            lrc.metadata.remoteURL = token.lrc
+            lrc.metadata.source = .gecimi
+            lrc.metadata.providerToken = "\(token.aid),\(token.lrc)"
             
 //            let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")
 //            let task = self.session.dataTask(with: url, type: GecimiResponseCover.self) { model, error in
 //                if let model = model {
-//                    lyrics.metadata.artworkURL = model.result.cover
+//                    lrc.metadata.artworkURL = model.result.cover
 //                }
 //            }
 //            task.resume()
             
-            completionHandler(lyrics)
+            completionHandler(lrc)
         }
     }
 }

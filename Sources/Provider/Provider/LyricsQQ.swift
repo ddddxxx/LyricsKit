@@ -73,6 +73,7 @@ public final class LyricsQQ: _LyricsProvider {
             
             lrc.length = Double(token.interval)
             lrc.metadata.source = .qq
+            lrc.metadata.providerToken = "\(token.songmid)"
             if let id = Int(token.songmid) {
                 lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
             }
