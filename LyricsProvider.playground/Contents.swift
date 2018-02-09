@@ -19,8 +19,8 @@ task = lpm.searchLyrics(request: req) { lrc in
 }
 
 var kvo: NSKeyValueObservation?
-kvo = task.progress.observe(\.fractionCompleted, options: [.new]) { progress, change in
-    if change.newValue == 1 {
+kvo = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+    if change.newValue == true {
         kvo?.invalidate()
         // searchComplete
         
