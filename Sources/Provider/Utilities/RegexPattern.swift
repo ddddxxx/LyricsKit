@@ -32,7 +32,7 @@ let netEaseInlineTagRegex = try! Regex(netEaseInlineTagPattern)
 private let kugouInlineTagPattern = "<(\\d+),(\\d+),0>([^<]*)"
 let kugouInlineTagRegex = try! Regex(kugouInlineTagPattern)
 
-private let ttpodXtrcLinePattern = "^((?:\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+)((?:<\\d+>[^<\\r\\n]+)*)(?:[\\r\\n]+\\[x\\-trans\\](.*))?"
+private let ttpodXtrcLinePattern = "^((?:\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])+)(?:((?:<\\d+>[^<\\r\\n]+)+)|(.*))$(?:[\\r\\n]+\\[x\\-trans\\](.*))?"
 let ttpodXtrcLineRegex = try! Regex(ttpodXtrcLinePattern, options: .anchorsMatchLines)
 
 private let ttpodXtrcInlineTagPattern = "<(\\d+)>([^<\\r\\n]+)"

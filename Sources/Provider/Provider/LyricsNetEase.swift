@@ -77,6 +77,7 @@ public final class LyricsNetEase: _LyricsProvider {
             lrc.length = Double(token.duration) / 1000
             lrc.metadata.source      = .netease
             lrc.metadata.artworkURL  = token.album.picUrl
+            lrc.metadata.providerToken = "\(token.id)"
             
             completionHandler(lrc)
         }

@@ -21,79 +21,60 @@
 import XCTest
 @testable import LyricsProvider
 
+let testSong = "Uprising"
+let testArtist = "Muse"
+let duration = 305.0
+let searchReq = LyricsSearchRequest(searchTerm: .info(title: testSong, artist: testArtist), title: testSong, artist: testArtist, duration: duration)
+
 class ProviderTests: XCTestCase {
-    
-    let testSong = "Uprising"
-    let testArtist = "Muse"
-    let duration = 305.0
     
     func _test(provider: LyricsProvider) {
         var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
         let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-        provider.searchLyrics(term: .info(title: testSong, artist: testArtist), duration: duration, using: { _ in
+        let task = provider.lyricsTask(request: searchReq) { lrc in
             searchResultEx?.fulfill()
             searchResultEx = nil
-        }, completionHandler: {
-            searchCompleteEx.fulfill()
-        })
+        }
+        let kvo = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+            if change.newValue == true {
+                searchCompleteEx.fulfill()
+            }
+        }
+        task.resume()
         waitForExpectations(timeout: 10)
     }
     
     func testNetEase() {
-        _test(provider: LyricsNetEase())
+        _test(provider: LyricsNetEase(session: .shared))
     }
     
     func testQQ() {
-        _test(provider: LyricsQQ())
+        _test(provider: LyricsQQ(session: .shared))
     }
     
     func testKugou() {
-        _test(provider: LyricsKugou())
+        _test(provider: LyricsKugou(session: .shared))
     }
     
     func testXiami() {
-        _test(provider: LyricsXiami())
-    }
-    
-    func testTTPod() {
-        _test(provider: LyricsTTPod())
+        _test(provider: LyricsXiami(session: .shared))
     }
     
     func testGecimi() {
-        _test(provider: LyricsGecimi())
+        _test(provider: LyricsGecimi(session: .shared))
     }
     
     func testSearchLyricsPerformance() {
         let src = LyricsProviderManager()
-        
         measure {
             let searchCompleteEx = self.expectation(description: "Search complete")
-            let consumer = TestConsumer(completedHandle: {
-                searchCompleteEx.fulfill()
-            })
-            src.consumer = consumer
-            src.searchLyrics(title: self.testSong, artist: self.testArtist, duration: 230)
+            let task = src.searchLyrics(request: searchReq) { _ in }
+            task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+                if change.newValue == true {
+                    searchCompleteEx.fulfill()
+                }
+            }
             self.waitForExpectations(timeout: 10)
         }
     }
-}
-
-class TestConsumer: LyricsConsuming {
-    
-    private let receivedHandle: (() -> Void)?
-    private let completedHandle: (() -> Void)?
-    
-    init(receivedHandle: (() -> Void)? = nil, completedHandle: (() -> Void)? = nil) {
-        self.receivedHandle = receivedHandle
-        self.completedHandle = completedHandle
-    }
-    
-    func lyricsReceived(lyrics: Lyrics) {
-        receivedHandle?()
-    }
-    
-    func fetchCompleted(result: [Lyrics]) {
-        completedHandle?()
-    }
-    
 }

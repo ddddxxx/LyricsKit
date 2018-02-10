@@ -68,6 +68,7 @@ public final class LyricsXiami: _LyricsProvider {
             lrc.metadata.remoteURL = lrcURL
             lrc.metadata.source = .xiami
             lrc.metadata.artworkURL = token.album_logo
+            lrc.metadata.providerToken = token.lyric
             completionHandler(lrc)
         }
     }
