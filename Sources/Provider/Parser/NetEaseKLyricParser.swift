@@ -44,10 +44,10 @@ extension Lyrics {
             var attachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)], duration: duration)
             var dt = 0.0
             netEaseInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
-                let timeTagStr = match[1]!.string
+                let timeTagStr = m[1]!.string
                 var timeTag = TimeInterval(timeTagStr)! / 1000
-                var fragment = match[2]!.string
-                if match[3] != nil {
+                var fragment = m[2]!.string
+                if m[3] != nil {
                     timeTag += 0.001
                     fragment += " "
                 }
