@@ -23,7 +23,6 @@ import Foundation
 extension Lyrics {
     
     convenience init?(ttpodXtrcContent content: String) {
-        print(content)
         let lineMatchs = ttpodXtrcLineRegex.matches(in: content)
         guard !lineMatchs.filter({$0[2] != nil || $0[3] != nil}).isEmpty else {
             self.init(content)
