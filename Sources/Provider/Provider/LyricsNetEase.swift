@@ -66,6 +66,7 @@ public final class LyricsNetEase: _LyricsProvider {
             }
             if let transLrcContent = model.tlyric?.lyric,
                 let transLrc = Lyrics(transLrcContent) {
+                // FIXME: `klyric` does not match `tlyric` (which matchs `lyric` section)
                 lrc.merge(translation: transLrc)
             }
             
