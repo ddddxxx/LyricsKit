@@ -61,7 +61,7 @@ extension Lyrics {
                 line = LyricsLine(content: lineContent, position: 0, attachments: [.timetag: timetagAttachment])
             }
             
-            if let translationStr = match[3]?.string {
+            if let translationStr = match[4]?.string {
                 let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
                 line.attachments[.translation] = translationAttachment
                 metadata.attachmentTags.insert(.translation)
