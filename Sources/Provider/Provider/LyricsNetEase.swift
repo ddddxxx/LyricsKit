@@ -59,16 +59,18 @@ public final class LyricsNetEase: _LyricsProvider {
         let url = URL(string: netEaseLyricsBaseURLString + parameter.stringFromHttpParameters)!
         return session.dataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
             guard let model = model,
-                let lrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
-                ?? (model.lrc?.lyric).flatMap(Lyrics.init) else {
+                let lrc = (model.lrc?.lyric).flatMap(Lyrics.init) else {
                     completionHandler(nil)
                     return
             }
+            
             if let transLrcContent = model.tlyric?.lyric,
                 let transLrc = Lyrics(transLrcContent) {
-                // FIXME: `klyric` does not match `tlyric` (which matchs `lyric` section)
                 lrc.merge(translation: transLrc)
             }
+            
+            // FIXME: merge inline time tags back to lyrics
+            // if let taggedLrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
             
             lrc.idTags[.title]   = token.name
             lrc.idTags[.artist]  = token.artists.first?.name
