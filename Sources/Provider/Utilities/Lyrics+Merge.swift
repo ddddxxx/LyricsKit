@@ -31,8 +31,7 @@ extension Lyrics {
             if abs(lines[index].position - translation.lines[transIndex].position) < mergeTimetagThreshold {
                 let transStr = translation.lines[transIndex].content
                 if !transStr.isEmpty {
-                    let translation = LyricsLineAttachmentPlainText(transStr)
-                    lines[index].attachments[.translation] = translation
+                    lines[index].attachments.setTranslation(transStr)
                 }
                 lines.formIndex(after: &index)
                 translation.lines.formIndex(after: &transIndex)

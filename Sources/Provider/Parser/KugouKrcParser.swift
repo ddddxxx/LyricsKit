@@ -50,7 +50,7 @@ extension Lyrics {
             let duration = TimeInterval(durationStr)! / 1000
             
             var lineContent = ""
-            var attachment = LyricsLineAttachmentTimeLine(tags: [.init(timeTag: 0, index: 0)], duration: duration)
+            var attachment = LyricsLine.Attachments.WordTimeTag(tags: [.init(timeTag: 0, index: 0)], duration: duration)
             kugouInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
                 let t1 = Int(m[1]!.content)!
                 let t2 = Int(m[2]!.content)!
@@ -60,7 +60,8 @@ extension Lyrics {
                 attachment.tags.append(.init(timeTag: t, index: lineContent.count))
             }
             
-            var line = LyricsLine(content: lineContent, position: timeTag, attachments: [.timetag: attachment])
+            let att = LyricsLine.Attachments(attachments: [.timetag: attachment])
+            var line = LyricsLine(content: lineContent, position: timeTag, attachments: att)
             line.lyrics = self
             return line
         }
@@ -71,7 +72,7 @@ extension Lyrics {
             transContent.prefix(lines.count).enumerated().forEach { index, item in
                 guard !item.isEmpty else { return }
                 let str = item.joined(separator: " ")
-                lines[index].attachments[.translation] = LyricsLineAttachmentPlainText(str)
+                lines[index].attachments.setTranslation(str)
             }
             metadata.attachmentTags.insert(.translation)
         }
