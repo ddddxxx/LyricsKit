@@ -66,7 +66,7 @@ public struct LyricsLineAttachmentTimeLine: LyricsLineAttachment {
     
     public init?(_ description: String) {
         let matchs = timeLineAttachmentRegex.matches(in: description)
-        tags = matchs.flatMap { Tag($0[1]!.string) }
+        tags = matchs.compactMap { Tag($0[1]!.string) }
         guard !tags.isEmpty else {
             return nil
         }

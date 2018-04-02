@@ -35,7 +35,7 @@ class ProviderTests: XCTestCase {
             searchResultEx?.fulfill()
             searchResultEx = nil
         }
-        let kvo = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+        _ = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
             if change.newValue == true {
                 searchCompleteEx.fulfill()
             }
@@ -69,7 +69,7 @@ class ProviderTests: XCTestCase {
         measure {
             let searchCompleteEx = self.expectation(description: "Search complete")
             let task = src.searchLyrics(request: searchReq) { _ in }
-            task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+            _ = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
                 if change.newValue == true {
                     searchCompleteEx.fulfill()
                 }

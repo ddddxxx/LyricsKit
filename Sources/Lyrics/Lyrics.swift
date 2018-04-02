@@ -118,10 +118,6 @@ final public class Lyrics: LosslessStringConvertible {
             self.rawValue = rawValue
         }
         
-        public var hashValue: Int {
-            return rawValue.hash
-        }
-        
         public static let title     = IDTagKey("ti")
         public static let album     = IDTagKey("al")
         public static let artist    = IDTagKey("ar")
@@ -147,10 +143,6 @@ final public class Lyrics: LosslessStringConvertible {
             
             public init(rawValue: String) {
                 self.rawValue = rawValue
-            }
-            
-            public var hashValue: Int {
-                return rawValue.hash
             }
         }
     }

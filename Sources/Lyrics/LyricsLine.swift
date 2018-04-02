@@ -49,14 +49,14 @@ extension LyricsLine {
     }
 }
 
-extension LyricsLine: Equatable, Hashable {
-    
-    public var hashValue: Int {
-        return content.hashValue ^ position.hashValue
-    }
+extension LyricsLine: Equatable {
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        return lhs.content == rhs.content &&
+            lhs.position == rhs.position &&
+            // TODO: check attachments
+            // lhs.attachments == rhs.attachments &&
+            lhs.enabled == rhs.enabled
     }
 }
 

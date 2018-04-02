@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct LyricsLineAttachmentTag: RawRepresentable {
+public struct LyricsLineAttachmentTag: RawRepresentable, Equatable, Hashable {
     
     public var rawValue: String
     
@@ -43,17 +43,6 @@ public struct LyricsLineAttachmentTag: RawRepresentable {
         } else {
             return .init("tr:" + languageCode)
         }
-    }
-}
-
-extension LyricsLineAttachmentTag: Equatable, Hashable {
-    
-    public var hashValue: Int {
-        return rawValue.hashValue
-    }
-    
-    public static func ==(lhs: LyricsLineAttachmentTag, rhs: LyricsLineAttachmentTag) -> Bool {
-        return lhs.hashValue == rhs.hashValue
     }
 }
 

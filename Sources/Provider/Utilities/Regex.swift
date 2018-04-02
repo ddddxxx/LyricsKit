@@ -24,7 +24,7 @@ import Foundation
 
 struct MatchResult {
     
-    struct Capture {
+    struct Capture: Equatable, Hashable {
         let range: NSRange
         let content: Substring
         
@@ -131,17 +131,6 @@ extension Regex {
 }
 
 // MARK: Conformances
-
-extension MatchResult.Capture: Equatable, Hashable {
-    
-    static func == (lhs: MatchResult.Capture, rhs: MatchResult.Capture) -> Bool {
-        return lhs.content == rhs.content && lhs.range == rhs.range
-    }
-    
-    var hashValue: Int {
-        return content.hashValue ^ range.hashValue
-    }
-}
 
 extension MatchResult: Equatable, Hashable {
     
