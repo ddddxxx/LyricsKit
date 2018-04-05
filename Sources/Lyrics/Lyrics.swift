@@ -53,9 +53,8 @@ final public class Lyrics: LosslessStringConvertible {
             let lyricsContentStr = match[2]!.string
             var line = LyricsLine(content: lyricsContentStr, position: 0)
             
-            if let translationStr = match[3]?.string {
-                let translationAttachment = LyricsLineAttachmentPlainText(translationStr)
-                line.attachments[.translation] = translationAttachment
+            if let translationStr = match[3]?.string, !translationStr.isEmpty {
+                line.attachments.setTranslation(translationStr)
             }
             
             return timeTags.map { timeTag in
@@ -68,25 +67,21 @@ final public class Lyrics: LosslessStringConvertible {
             $0.position < $1.position
         }
         
-        var tags: Set<LyricsLineAttachmentTag> = []
+        var tags: Set<LyricsLine.Attachments.Tag> = []
         lyricsLineAttachmentRegex.matches(in: description).forEach { match in
             let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
             let attachmentTagStr = match[2]!.string
-            let attachmentTag = LyricsLineAttachmentTag(attachmentTagStr)
             
             let attachmentStr = match[3]?.string ?? ""
-            guard let attachment = LyricsLineAttachmentFactory.createAttachment(str: attachmentStr, tag: attachmentTag) else {
-                return
-            }
             
             for timeTag in timeTags {
                 if case let .found(at: index) = lineIndex(of: timeTag) {
-                    lines[index].attachments[attachmentTag] = attachment
+                    lines[index].attachments[attachmentTagStr] = attachmentStr
                 }
             }
-            tags.insert(attachmentTag)
+            tags.insert(.init(attachmentTagStr))
         }
         metadata.data[.attachmentTags] = tags
         
@@ -102,7 +97,7 @@ final public class Lyrics: LosslessStringConvertible {
     }
     
     public var legacyDescription: String {
-        let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" } + lines.map { "[\($0.timeTag)]\($0.content)" + ($0.translation.map { "【\($0)】" } ?? "") }
+        let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" } + lines.map { "[\($0.timeTag)]\($0.content)" + ($0.attachments.translation().map { "【\($0)】" } ?? "") }
         return components.joined(separator: "\n")
     }
     
@@ -116,10 +111,6 @@ final public class Lyrics: LosslessStringConvertible {
         
         public init(rawValue: String) {
             self.rawValue = rawValue
-        }
-        
-        public var hashValue: Int {
-            return rawValue.hash
         }
         
         public static let title     = IDTagKey("ti")
@@ -147,10 +138,6 @@ final public class Lyrics: LosslessStringConvertible {
             
             public init(rawValue: String) {
                 self.rawValue = rawValue
-            }
-            
-            public var hashValue: Int {
-                return rawValue.hash
             }
         }
     }

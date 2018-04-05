@@ -32,8 +32,8 @@ extension Lyrics.MetaData {
         set { data[.source] = newValue }
     }
     
-    public var attachmentTags: Set<LyricsLineAttachmentTag> {
-        get { return data[.attachmentTags] as? Set<LyricsLineAttachmentTag> ?? [] }
+    public var attachmentTags: Set<LyricsLine.Attachments.Tag> {
+        get { return data[.attachmentTags] as? Set<LyricsLine.Attachments.Tag> ?? [] }
         set { data[.attachmentTags] = newValue }
     }
 }

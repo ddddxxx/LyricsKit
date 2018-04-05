@@ -24,7 +24,7 @@ import XCTest
 class LyricsLineTests: XCTestCase {
     
     func testTimeTagAttachment() {
-        guard let att = LyricsLineAttachmentTimeLine(timeTagAttachmentExample) else {
+        guard let att = LyricsLine.Attachments.WordTimeTag(timeTagAttachmentExample) else {
             XCTFail()
             return
         }
@@ -34,7 +34,7 @@ class LyricsLineTests: XCTestCase {
     }
     
     func testRangeAttributeAttachment() {
-        guard let att = LyricsLineAttachmentRangeAttribute(rangeAttributeAttachmentExample) else {
+        guard let att = LyricsLine.Attachments.RangeAttribute(rangeAttributeAttachmentExample) else {
             XCTFail()
             return
         }

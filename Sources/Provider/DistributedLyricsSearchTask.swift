@@ -89,7 +89,7 @@ public class DistributedLyricsSearchTask {
     
     private func searchComplete(tokens: [Any]) {
         state = .fetching
-        let tasks = Array(tokens.enumerated().flatMap { (idx, token) in
+        let tasks = Array(tokens.enumerated().compactMap { (idx, token) in
             provider.fetchTask(token: token) { lrc in
                 lrc?.metadata.searchIndex = idx
                 self.fetchComplete(lyrics: lrc)

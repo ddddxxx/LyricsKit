@@ -104,6 +104,7 @@ private func similarity(s1: String, s2: String) -> Double {
 
 private func similarity(s1: String, in s2: String) -> Double {
     let len = max(s1.count, s2.count)
+    guard len > 0 else { return 1 }
     let diff = s1.distance(to: s2, insertionCost: 0)
     return Double(len - diff) / Double(len)
 }

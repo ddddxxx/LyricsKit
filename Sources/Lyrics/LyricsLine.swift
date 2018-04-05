@@ -24,7 +24,7 @@ public struct LyricsLine {
     
     public var content: String
     public var position: TimeInterval
-    public var attachments: [LyricsLineAttachmentTag: LyricsLineAttachment]
+    public var attachments: Attachments
     public var enabled: Bool = true
     
     public weak var lyrics: Lyrics?
@@ -35,35 +35,28 @@ public struct LyricsLine {
         return String(format: "%02d:%06.3f", min, sec)
     }
     
-    public init(content: String, position: TimeInterval, attachments: [LyricsLineAttachmentTag: LyricsLineAttachment] = [:]) {
+    public init(content: String, position: TimeInterval, attachments: Attachments = Attachments()) {
         self.content = content
         self.position = position
         self.attachments = attachments
     }
 }
 
-extension LyricsLine {
-    
-    public var translation: String? {
-        return attachments[.translation]?.description
-    }
-}
-
-extension LyricsLine: Equatable, Hashable {
-    
-    public var hashValue: Int {
-        return content.hashValue ^ position.hashValue
-    }
+extension LyricsLine: Equatable {
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        return lhs.content == rhs.content &&
+            lhs.position == rhs.position &&
+            // TODO: check attachments
+            // lhs.attachments == rhs.attachments &&
+            lhs.enabled == rhs.enabled
     }
 }
 
 extension LyricsLine: CustomStringConvertible {
     
     public var description: String {
-        return ([content] + attachments.map { "[\($0.key)]\($0.value)" }).map {
+        return ([content] + attachments.content.map { "[\($0.key)]\($0.value)" }).map {
             "[\(timeTag)]\($0)"
         }.joined(separator: "\n")
     }
