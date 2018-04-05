@@ -39,8 +39,8 @@ public class LyricsSearchTask {
     
     public func resume() {
         timeoutTimer = Timer.scheduledTimer(timeInterval: request.timeout, target: self, selector: #selector(cancel), userInfo: nil, repeats: false)
-        progressObservation = progress.observe(\.fractionCompleted, options: [.new]) { [weak self] progress, change in
-            if change.newValue == 1 {
+        progressObservation = progress.observe(\.isFinished, options: [.new]) { [weak self] progress, change in
+            if change.newValue == true {
                 self?.timeoutTimer?.invalidate()
             }
         }
@@ -48,6 +48,7 @@ public class LyricsSearchTask {
     }
     
     @objc public func cancel() {
+        progressObservation?.invalidate()
         subTasks.forEach { $0.cancel() }
     }
 }
