@@ -33,7 +33,7 @@ public final class LyricsNetEase: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) -> URLSessionTask? {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([NetEaseResponseSearchResult.Result.Song]) -> Void) {
         let parameter: [String: Any] = [
             "s": request.searchTerm.description,
             "offset": 0,
@@ -44,12 +44,13 @@ public final class LyricsNetEase: _LyricsProvider {
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
         req.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
-        return session.dataTask(with: req, type: NetEaseResponseSearchResult.self) { model, error in
+        let task = session.dataTask(with: req, type: NetEaseResponseSearchResult.self) { model, error in
             completionHandler(model?.songs ?? [])
         }
+        task.resume()
     }
     
-    func fetchTask(token: NetEaseResponseSearchResult.Result.Song, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
+    func fetchTask(token: NetEaseResponseSearchResult.Result.Song, completionHandler: @escaping (Lyrics?) -> Void) {
         let parameter: [String: Any] = [
             "id": token.id,
             "lv": 1,
@@ -57,7 +58,7 @@ public final class LyricsNetEase: _LyricsProvider {
             "tv": -1,
             ]
         let url = URL(string: netEaseLyricsBaseURLString + parameter.stringFromHttpParameters)!
-        return session.dataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
+        let task = session.dataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
             guard let model = model,
                 let lrc = (model.lrc?.lyric).flatMap(Lyrics.init) else {
                     completionHandler(nil)
@@ -84,5 +85,6 @@ public final class LyricsNetEase: _LyricsProvider {
             
             completionHandler(lrc)
         }
+        task.resume()
     }
 }

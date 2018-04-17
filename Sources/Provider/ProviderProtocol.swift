@@ -31,9 +31,9 @@ protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void) -> URLSessionTask?
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void)
     
-    func fetchTask(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask?
+    func fetchTask(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void)
 }
 
 extension _LyricsProvider {

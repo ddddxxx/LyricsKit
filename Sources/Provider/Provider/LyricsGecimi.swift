@@ -33,24 +33,25 @@ public final class LyricsGecimi: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) -> URLSessionTask? {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) {
         guard case let .info(title, artist) = request.searchTerm else {
             // cannot search by keyword
             completionHandler([])
-            return nil
+            return
         }
         let encodedTitle = title.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         let encodedArtist = artist.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         
         let url = gecimiLyricsBaseURL.appendingPathComponent("\(encodedTitle)/\(encodedArtist)")
         let req = URLRequest(url: url)
-        return session.dataTask(with: req, type: GecimiResponseSearchResult.self) { model, error in
+        let task = session.dataTask(with: req, type: GecimiResponseSearchResult.self) { model, error in
             completionHandler(model?.result ?? [])
         }
+        task.resume()
     }
     
-    func fetchTask(token: GecimiResponseSearchResult.Result, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
-        return session.dataTask(with: token.lrc) { data, resp, error in
+    func fetchTask(token: GecimiResponseSearchResult.Result, completionHandler: @escaping (Lyrics?) -> Void) {
+        let task = session.dataTask(with: token.lrc) { data, resp, error in
             guard let data = data,
                 let lrcContent = String(data: data, encoding: .utf8),
                 let lrc = Lyrics(lrcContent)else {
@@ -61,15 +62,16 @@ public final class LyricsGecimi: _LyricsProvider {
             lrc.metadata.source = .gecimi
             lrc.metadata.providerToken = "\(token.aid),\(token.lrc)"
             
-//            let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")
-//            let task = self.session.dataTask(with: url, type: GecimiResponseCover.self) { model, error in
-//                if let model = model {
-//                    lrc.metadata.artworkURL = model.result.cover
-//                }
-//            }
-//            task.resume()
+            let url = gecimiCoverBaseURL.appendingPathComponent("\(token.aid)")
+            let task = self.session.dataTask(with: url, type: GecimiResponseCover.self) { model, error in
+                if let model = model {
+                    lrc.metadata.artworkURL = model.result.cover
+                }
+            }
+            task.resume()
             
             completionHandler(lrc)
         }
+        task.resume()
     }
 }
