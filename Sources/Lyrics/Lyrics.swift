@@ -173,7 +173,7 @@ extension Lyrics {
                     return nil
             }
             let min = (match[1]?.content).flatMap(Double.init) ?? 0
-            let sec = Double(match[2]!.content)!
+            let sec = Double(match[2]!.content) ?? 0
             return min * 60 + sec
         }
         set {
