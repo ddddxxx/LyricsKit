@@ -86,8 +86,6 @@ public class DistributedLyricsSearchTask {
     private func fetchComplete(lyrics: Lyrics?) {
         if let lyrics = lyrics {
             lyrics.metadata.request = request
-            lyrics.idTags[.recreater] = "LyricsX"
-            lyrics.idTags[.version] = "1"
             handler(lyrics)
         }
     }

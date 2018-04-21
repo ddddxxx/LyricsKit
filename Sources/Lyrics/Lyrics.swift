@@ -120,8 +120,6 @@ final public class Lyrics: LosslessStringConvertible {
         public static let lrcBy     = IDTagKey("by")
         public static let offset    = IDTagKey("offset")
         public static let length    = IDTagKey("length")
-        public static let recreater = IDTagKey("re")
-        public static let version   = IDTagKey("ve")
     }
     
     public struct MetaData {
