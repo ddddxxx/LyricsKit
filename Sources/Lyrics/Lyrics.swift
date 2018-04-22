@@ -120,8 +120,6 @@ final public class Lyrics: LosslessStringConvertible {
         public static let lrcBy     = IDTagKey("by")
         public static let offset    = IDTagKey("offset")
         public static let length    = IDTagKey("length")
-        public static let recreater = IDTagKey("re")
-        public static let version   = IDTagKey("ve")
     }
     
     public struct MetaData {
@@ -173,7 +171,7 @@ extension Lyrics {
                     return nil
             }
             let min = (match[1]?.content).flatMap(Double.init) ?? 0
-            let sec = Double(match[2]!.content)!
+            let sec = Double(match[2]!.content) ?? 0
             return min * 60 + sec
         }
         set {

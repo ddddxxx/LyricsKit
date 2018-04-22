@@ -32,7 +32,7 @@ public final class LyricsXiami: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) -> URLSessionTask? {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([XiamiResponseSearchResult.Data.Song]) -> Void) {
         let parameter: [String : Any] = [
             "key": request.searchTerm.description,
             "limit": 10,
@@ -44,18 +44,19 @@ public final class LyricsXiami: _LyricsProvider {
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
         req.setValue("http://h.xiami.com/", forHTTPHeaderField: "Referer")
-        return session.dataTask(with: req, type: XiamiResponseSearchResult.self) { model, error in
+        let task = session.dataTask(with: req, type: XiamiResponseSearchResult.self) { model, error in
             let songs = model?.data.songs.filter { $0.lyric != nil } ?? []
             completionHandler(songs)
         }
+        task.resume()
     }
     
-    func fetchTask(token: XiamiResponseSearchResult.Data.Song, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
+    func fetchTask(token: XiamiResponseSearchResult.Data.Song, completionHandler: @escaping (Lyrics?) -> Void) {
         guard let lrcURLStr = token.lyric,
             let lrcURL = URL(string: lrcURLStr) else {
-            return nil
+            return
         }
-        return session.dataTask(with: lrcURL) { data, resp, error in
+        let task = session.dataTask(with: lrcURL) { data, resp, error in
             guard let data = data,
                 let lrcStr = String.init(data: data, encoding: .utf8),
                 let lrc = Lyrics(ttpodXtrcContent:lrcStr) else {
@@ -71,5 +72,6 @@ public final class LyricsXiami: _LyricsProvider {
             lrc.metadata.providerToken = token.lyric
             completionHandler(lrc)
         }
+        task.resume()
     }
 }

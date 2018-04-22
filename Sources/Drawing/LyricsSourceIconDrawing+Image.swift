@@ -18,8 +18,10 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#if !os(watchOS)
-    
+#if canImport(CoreGraphics)
+
+    import CoreGraphics
+
     @available(OSX 10.10, iOS 8, tvOS 2, *)
     private extension LyricsProviderSource {
         
@@ -42,7 +44,7 @@
     
 #endif
 
-#if os(macOS)
+#if canImport(Cocoa)
     
     import Cocoa
     
@@ -58,7 +60,7 @@
         }
     }
     
-#elseif os(iOS) || os(tvOS)
+#elseif canImport(UIKit)
     
     import UIKit
     
@@ -66,7 +68,7 @@
         
         public static let defaultSize = CGSize(width: 48, height: 48)
         
-        public static func icon(of source: Lyrics.MetaData.Source, size: CGSize = defaultSize) -> UIImage {
+        public static func icon(of source: LyricsProviderSource, size: CGSize = defaultSize) -> UIImage {
             UIGraphicsBeginImageContextWithOptions(size, false, 0)
             source.drawingMethod?(CGRect(origin: .zero, size: size))
             let image = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)

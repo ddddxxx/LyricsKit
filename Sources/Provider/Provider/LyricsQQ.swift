@@ -33,10 +33,10 @@ public final class LyricsQQ: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) -> URLSessionTask? {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([QQResponseSearchResult.Data.Song.Item]) -> Void) {
         let parameter = ["w": request.searchTerm.description]
         let url = URL(string: qqSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        return session.dataTask(with: url) { data, resp, error in
+        let task = session.dataTask(with: url) { data, resp, error in
             guard let data = data?.dropFirst(9).dropLast(),
                 let model = try? JSONDecoder().decode(QQResponseSearchResult.self, from: data) else {
                     completionHandler([])
@@ -44,9 +44,10 @@ public final class LyricsQQ: _LyricsProvider {
             }
             completionHandler(model.songs)
         }
+        task.resume()
     }
     
-    func fetchTask(token: QQResponseSearchResult.Data.Song.Item, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
+    func fetchTask(token: QQResponseSearchResult.Data.Song.Item, completionHandler: @escaping (Lyrics?) -> Void) {
         let parameter: [String: Any] = [
             "songmid": token.songmid,
             "g_tk": 5381
@@ -54,7 +55,7 @@ public final class LyricsQQ: _LyricsProvider {
         let url = URL(string: qqLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
         var req = URLRequest(url: url)
         req.setValue("y.qq.com/portal/player.html", forHTTPHeaderField: "Referer")
-        return session.dataTask(with: req) { data, resp, error in
+        let task = session.dataTask(with: req) { data, resp, error in
             guard let data = data?.dropFirst(18).dropLast(),
                 let model = try? JSONDecoder().decode(QQResponseSingleLyrics.self, from: data),
                 let lrcContent = model.lyricString,
@@ -79,5 +80,6 @@ public final class LyricsQQ: _LyricsProvider {
             }
             completionHandler(lrc)
         }
+        task.resume()
     }
 }

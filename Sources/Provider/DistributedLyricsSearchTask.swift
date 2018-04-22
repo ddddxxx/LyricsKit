@@ -22,99 +22,71 @@ import Foundation
 
 struct _AnyLyricsProvider {
     
-    private var _searchTask: (LyricsSearchRequest, @escaping ([Any]) -> Void) -> URLSessionTask?
-    private var _fetchTask: (Any, @escaping (Lyrics?) -> Void) -> URLSessionTask?
+    private var _searchTask: (LyricsSearchRequest, @escaping ([Any]) -> Void) -> Void
+    private var _fetchTask: (Any, @escaping (Lyrics?) -> Void) -> Void
     
     init<T: _LyricsProvider>(_ provider: T) {
         _searchTask = { req, callback in
-            return provider.searchTask(request: req, completionHandler: { tokens in
+            provider.searchTask(request: req, completionHandler: { tokens in
                 callback(tokens)
             })
         }
         _fetchTask = { token, callback in
-            return provider.fetchTask(token: token as! T.LyricsToken, completionHandler: callback)
+            provider.fetchTask(token: token as! T.LyricsToken, completionHandler: callback)
         }
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([Any]) -> Void) -> URLSessionTask? {
-        return _searchTask(request, completionHandler)
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([Any]) -> Void) {
+        _searchTask(request, completionHandler)
     }
     
-    func fetchTask(token: Any, completionHandler: @escaping (Lyrics?) -> Void) -> URLSessionTask? {
-        return _fetchTask(token, completionHandler)
+    func fetchTask(token: Any, completionHandler: @escaping (Lyrics?) -> Void) {
+        _fetchTask(token, completionHandler)
     }
 }
 
 public class DistributedLyricsSearchTask {
     
-    public enum State {
-        case pending
-        case searching
-        case fetching
-        case canceling
-        case completed
-    }
-    
     public let request: LyricsSearchRequest
-    public var state: State
-    public var progress = Progress()
+    public var progress: Progress
     
-    var urlTasks: [URLSessionTask] = []
     var provider: _AnyLyricsProvider
     var handler: (Lyrics) -> Void
     
     init(request: LyricsSearchRequest, provider: _AnyLyricsProvider, handler: @escaping (Lyrics) -> Void) {
         self.request = request
-        self.state = .pending
         self.provider = provider
         self.handler = handler
+        progress = Progress(parent: Progress.current())
+        progress.totalUnitCount = 10
     }
     
     func resume() {
-        guard case .pending = state else { return }
-        guard let searchTask = provider.searchTask(request: request, completionHandler: self.searchComplete) else {
-            state = .completed
-            progress.completedUnitCount = 1
-            return
-        }
-        urlTasks.append(searchTask)
-        searchTask.resume()
-    }
-    
-    func cancel() {
-        state = .canceling
-        handler = {_ in}
-        urlTasks.forEach { $0.cancel() }
+        progress.becomeCurrent(withPendingUnitCount: 2)
+        provider.searchTask(request: request, completionHandler: self.searchComplete)
+        progress.resignCurrent()
     }
     
     private func searchComplete(tokens: [Any]) {
-        state = .fetching
-        let tasks = Array(tokens.enumerated().compactMap { (idx, token) in
+        progress.becomeCurrent(withPendingUnitCount: 8)
+        defer { progress.resignCurrent() }
+        guard !tokens.isEmpty else { return }
+        let fetchProgress = Progress(parent: Progress.current())
+        fetchProgress.totalUnitCount = Int64(tokens.count)
+        tokens.enumerated().forEach { (idx, token) in
+            fetchProgress.becomeCurrent(withPendingUnitCount: 1)
+            defer { fetchProgress.resignCurrent() }
             provider.fetchTask(token: token) { lrc in
                 lrc?.metadata.searchIndex = idx
                 self.fetchComplete(lyrics: lrc)
             }
-        }.prefix(request.limit))
-        progress.totalUnitCount += Int64(tasks.count)
-        progress.completedUnitCount = 1
-        guard !tasks.isEmpty else {
-            state = .completed
-            return
         }
-        urlTasks += tasks
-        urlTasks.forEach { $0.resume() }
     }
     
     private func fetchComplete(lyrics: Lyrics?) {
         if let lyrics = lyrics {
             lyrics.metadata.request = request
-            lyrics.idTags[.recreater] = "LyricsX"
-            lyrics.idTags[.version] = "1"
             handler(lyrics)
-        }
-        progress.completedUnitCount += 1
-        if progress.fractionCompleted == 1 {
-            state = .completed
         }
     }
 }

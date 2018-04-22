@@ -49,7 +49,7 @@ public class LyricsSearchTask {
     
     @objc public func cancel() {
         progressObservation?.invalidate()
-        subTasks.forEach { $0.cancel() }
+        progress.cancel()
     }
 }
 

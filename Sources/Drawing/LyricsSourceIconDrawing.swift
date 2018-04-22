@@ -20,7 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#if os(macOS)
+#if canImport(Cocoa)
     
     import Cocoa
     
@@ -48,7 +48,7 @@
         
     }
     
-#else
+#elseif canImport(UIKit)
     
     import UIKit
     
