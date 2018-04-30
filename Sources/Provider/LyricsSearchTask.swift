@@ -48,8 +48,11 @@ public class LyricsSearchTask {
     }
     
     @objc public func cancel() {
-        progressObservation?.invalidate()
         progress.cancel()
+    }
+    
+    deinit {
+        progressObservation?.invalidate()
     }
 }
 
