@@ -43,7 +43,10 @@ struct MatchResult {
         captures = (0..<result.numberOfRanges).map { index in
             let nsrange = result.range(at: index)
             guard nsrange.location != NSNotFound else { return nil }
-            let r = Range(nsrange, in: string)!
+            guard let r = Range(nsrange, in: string) else {
+                // FIXME: regex detected an invalid position.
+                return Capture(range: nsrange, content: "")
+            }
             return Capture(range: nsrange, content: string[r])
         }
     }
