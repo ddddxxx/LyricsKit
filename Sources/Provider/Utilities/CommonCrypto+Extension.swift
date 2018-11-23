@@ -1,5 +1,5 @@
 //
-//  LyricsProviderSource.swift
+//  CommonCrypto+Extension.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -19,26 +19,15 @@
 //
 
 import Foundation
+import CommonCrypto
 
-public enum LyricsProviderSource: String, CaseIterable {
-    case netease = "163"
-    case qq = "QQMusic"
-    case kugou = "Kugou"
-    case xiami = "Xiami"
-    case gecimi = "Gecimi"
-    case viewLyrics = "ViewLyrics"
-}
-
-extension LyricsProviderSource {
-    
-    var cls: LyricsProvider.Type {
-        switch self {
-        case .netease:  return LyricsNetEase.self
-        case .qq:       return LyricsQQ.self
-        case .kugou:    return LyricsKugou.self
-        case .xiami:    return LyricsXiami.self
-        case .gecimi:   return LyricsGecimi.self
-        case .viewLyrics: return ViewLyrics.self
+func md5(_ string: String) -> Data {
+    let messageData = string.data(using:.utf8)!
+    var digestData = Data(count: Int(CC_MD5_DIGEST_LENGTH))
+    digestData.withUnsafeMutableBytes { digestBytes in
+        messageData.withUnsafeBytes { messageBytes in
+            _ = CC_MD5(messageBytes, CC_LONG(messageData.count), digestBytes)
         }
     }
+    return digestData
 }

@@ -1,5 +1,5 @@
 //
-//  LyricsProviderSource.swift
+//  Optional+Filter.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -18,27 +18,12 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Foundation
-
-public enum LyricsProviderSource: String, CaseIterable {
-    case netease = "163"
-    case qq = "QQMusic"
-    case kugou = "Kugou"
-    case xiami = "Xiami"
-    case gecimi = "Gecimi"
-    case viewLyrics = "ViewLyrics"
-}
-
-extension LyricsProviderSource {
+extension Optional {
     
-    var cls: LyricsProvider.Type {
-        switch self {
-        case .netease:  return LyricsNetEase.self
-        case .qq:       return LyricsQQ.self
-        case .kugou:    return LyricsKugou.self
-        case .xiami:    return LyricsXiami.self
-        case .gecimi:   return LyricsGecimi.self
-        case .viewLyrics: return ViewLyrics.self
+    func filter(_ condition: (Wrapped) -> Bool) -> Wrapped? {
+        if let v = self, condition(v) {
+            return v
         }
+        return nil
     }
 }

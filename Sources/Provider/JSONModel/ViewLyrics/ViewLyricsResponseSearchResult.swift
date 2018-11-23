@@ -1,5 +1,5 @@
 //
-//  LyricsProviderSource.swift
+//  ViewLyricsResponseSearchResult.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,25 +20,15 @@
 
 import Foundation
 
-public enum LyricsProviderSource: String, CaseIterable {
-    case netease = "163"
-    case qq = "QQMusic"
-    case kugou = "Kugou"
-    case xiami = "Xiami"
-    case gecimi = "Gecimi"
-    case viewLyrics = "ViewLyrics"
-}
-
-extension LyricsProviderSource {
+struct ViewLyricsResponseSearchResult: Decodable {
     
-    var cls: LyricsProvider.Type {
-        switch self {
-        case .netease:  return LyricsNetEase.self
-        case .qq:       return LyricsQQ.self
-        case .kugou:    return LyricsKugou.self
-        case .xiami:    return LyricsXiami.self
-        case .gecimi:   return LyricsGecimi.self
-        case .viewLyrics: return ViewLyrics.self
-        }
-    }
+    let link: String
+    let artist: String
+    let title: String
+    let album: String
+    let uploader: String?
+    let timelength: Int?
+    let rate: Double?
+    let ratecount: Int?
+    let downloads: Int?
 }
