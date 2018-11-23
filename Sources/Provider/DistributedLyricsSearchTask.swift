@@ -72,8 +72,8 @@ public class DistributedLyricsSearchTask {
         defer { progress.resignCurrent() }
         guard !tokens.isEmpty else { return }
         let fetchProgress = Progress(parent: Progress.current())
-        fetchProgress.totalUnitCount = Int64(tokens.count)
-        tokens.enumerated().forEach { (idx, token) in
+        fetchProgress.totalUnitCount = Int64(min(tokens.count, request.limit))
+        tokens.prefix(request.limit).enumerated().forEach { (idx, token) in
             fetchProgress.becomeCurrent(withPendingUnitCount: 1)
             defer { fetchProgress.resignCurrent() }
             provider.fetchTask(token: token) { lrc in

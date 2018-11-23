@@ -37,6 +37,8 @@
                 return LyricsSourceIconDrawing.drawQQMusic
             case .xiami:
                 return LyricsSourceIconDrawing.drawXiami
+            default:
+                return nil
             }
         }
         

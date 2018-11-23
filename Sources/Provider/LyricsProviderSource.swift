@@ -20,12 +20,14 @@
 
 import Foundation
 
-public enum LyricsProviderSource: String {
+public enum LyricsProviderSource: String, CaseIterable {
     case netease = "163"
     case qq = "QQMusic"
     case kugou = "Kugou"
     case xiami = "Xiami"
     case gecimi = "Gecimi"
+    case viewLyrics = "ViewLyrics"
+    case syair = "Syair"
 }
 
 extension LyricsProviderSource {
@@ -37,14 +39,8 @@ extension LyricsProviderSource {
         case .kugou:    return LyricsKugou.self
         case .xiami:    return LyricsXiami.self
         case .gecimi:   return LyricsGecimi.self
+        case .viewLyrics: return ViewLyrics.self
+        case .syair:    return LyricsSyair.self
         }
     }
-    
-    public static let all: [LyricsProviderSource] = [
-        .netease,
-        .qq,
-        .kugou,
-        .xiami,
-        .gecimi,
-    ]
 }

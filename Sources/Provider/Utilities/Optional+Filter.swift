@@ -1,5 +1,5 @@
 //
-//  GecimiResponseCover.swift
+//  Optional+Filter.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -18,18 +18,12 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Foundation
-
-struct GecimiResponseCover: Decodable {
-    let result: Result
+extension Optional {
     
-    /*
-    let count: Int
-    let code: Int
-     */
-    
-    struct Result: Decodable {
-        let cover: URL
-        let thumb: URL
+    func filter(_ condition: (Wrapped) -> Bool) -> Wrapped? {
+        if let v = self, condition(v) {
+            return v
+        }
+        return nil
     }
 }

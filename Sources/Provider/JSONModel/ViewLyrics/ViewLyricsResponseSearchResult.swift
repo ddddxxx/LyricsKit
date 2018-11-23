@@ -1,5 +1,5 @@
 //
-//  GecimiResponseCover.swift
+//  ViewLyricsResponseSearchResult.swift
 //
 //  This file is part of LyricsX
 //  Copyright (C) 2017  Xander Deng
@@ -20,16 +20,15 @@
 
 import Foundation
 
-struct GecimiResponseCover: Decodable {
-    let result: Result
+struct ViewLyricsResponseSearchResult: Decodable {
     
-    /*
-    let count: Int
-    let code: Int
-     */
-    
-    struct Result: Decodable {
-        let cover: URL
-        let thumb: URL
-    }
+    let link: String
+    let artist: String
+    let title: String
+    let album: String
+    let uploader: String?
+    let timelength: Int?
+    let rate: Double?
+    let ratecount: Int?
+    let downloads: Int?
 }
