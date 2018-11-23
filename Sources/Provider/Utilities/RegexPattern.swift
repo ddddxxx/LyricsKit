@@ -37,3 +37,9 @@ let ttpodXtrcLineRegex = try! Regex(ttpodXtrcLinePattern, options: .anchorsMatch
 
 private let ttpodXtrcInlineTagPattern = "<(\\d+)>([^<\\r\\n]+)"
 let ttpodXtrcInlineTagRegex = try! Regex(ttpodXtrcInlineTagPattern)
+
+private let syairSearchResultPattern = "<div class=\"title\"><a href=\"([^\"]+)\">"
+let syairSearchResultRegex = try! Regex(syairSearchResultPattern)
+
+private let syairLyricsContentPattern = "<div class=\"entry\">(.+?)<div"
+let syairLyricsContentRegex = try! Regex(syairLyricsContentPattern, options: .dotMatchesLineSeparators)

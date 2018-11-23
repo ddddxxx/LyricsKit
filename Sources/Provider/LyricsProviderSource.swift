@@ -27,6 +27,7 @@ public enum LyricsProviderSource: String, CaseIterable {
     case xiami = "Xiami"
     case gecimi = "Gecimi"
     case viewLyrics = "ViewLyrics"
+    case syair = "Syair"
 }
 
 extension LyricsProviderSource {
@@ -39,6 +40,7 @@ extension LyricsProviderSource {
         case .xiami:    return LyricsXiami.self
         case .gecimi:   return LyricsGecimi.self
         case .viewLyrics: return ViewLyrics.self
+        case .syair:    return LyricsSyair.self
         }
     }
 }

@@ -44,6 +44,7 @@
 		E9B389FB21A79DA800551E90 /* Optional+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B389FA21A79DA800551E90 /* Optional+Filter.swift */; };
 		E9B389FE21A7A29B00551E90 /* ViewLyricsResponseSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B389FD21A7A29B00551E90 /* ViewLyricsResponseSearchResult.swift */; };
 		E9B38A0021A7A31E00551E90 /* CommonCrypto+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B389FF21A7A31E00551E90 /* CommonCrypto+Extension.swift */; };
+		E9B38A0221A7DE5300551E90 /* LyricsSyair.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B38A0121A7DE5300551E90 /* LyricsSyair.swift */; };
 		OBJ_50 /* Lyrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_8 /* Lyrics.swift */; };
 		OBJ_51 /* LyricsNetEase.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* LyricsNetEase.swift */; };
 		OBJ_52 /* LyricsGecimi.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_10 /* LyricsGecimi.swift */; };
@@ -105,6 +106,7 @@
 		E9B389FA21A79DA800551E90 /* Optional+Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Filter.swift"; sourceTree = "<group>"; };
 		E9B389FD21A7A29B00551E90 /* ViewLyricsResponseSearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLyricsResponseSearchResult.swift; sourceTree = "<group>"; };
 		E9B389FF21A7A31E00551E90 /* CommonCrypto+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommonCrypto+Extension.swift"; sourceTree = "<group>"; };
+		E9B38A0121A7DE5300551E90 /* LyricsSyair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsSyair.swift; sourceTree = "<group>"; };
 		OBJ_10 /* LyricsGecimi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsGecimi.swift; sourceTree = "<group>"; };
 		OBJ_11 /* LyricsKugou.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsKugou.swift; sourceTree = "<group>"; };
 		OBJ_12 /* LyricsLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsLine.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				OBJ_16 /* LyricsXiami.swift */,
 				OBJ_10 /* LyricsGecimi.swift */,
 				E9B389F821A64F0700551E90 /* ViewLyrics.swift */,
+				E9B38A0121A7DE5300551E90 /* LyricsSyair.swift */,
 			);
 			name = Provider;
 			path = Sources/Provider/Provider;
@@ -486,6 +489,7 @@
 				BB6B507A1F6AB9E700D4A818 /* Lyrics+Merge.swift in Sources */,
 				BBA7D8E81F69601A00EE9E3E /* QQResponseSearchResult.swift in Sources */,
 				BBDCA9EA1F6A5A70008ECB89 /* KugouResponseSearchResult.swift in Sources */,
+				E9B38A0221A7DE5300551E90 /* LyricsSyair.swift in Sources */,
 				BBBEE4B51F74F48300119E9D /* KugouKrcHeaderFieldLanguage.swift in Sources */,
 				BB9D96931F729D2600852A1C /* Lyrics+Quality.swift in Sources */,
 				OBJ_59 /* ProviderProtocol.swift in Sources */,

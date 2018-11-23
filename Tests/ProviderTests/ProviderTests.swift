@@ -68,6 +68,10 @@ class ProviderTests: XCTestCase {
         _test(provider: ViewLyrics(session: .shared))
     }
     
+    func testSyair() {
+        _test(provider: LyricsSyair(session: .shared))
+    }
+    
     func testSearchLyricsPerformance() {
         let src = LyricsProviderManager()
         measure {
