@@ -35,7 +35,7 @@ class ProviderTests: XCTestCase {
             searchResultEx?.fulfill()
             searchResultEx = nil
         }
-        _ = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+        let token = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
             if change.newValue == true {
                 searchCompleteEx.fulfill()
             }
@@ -62,6 +62,10 @@ class ProviderTests: XCTestCase {
     
     func testGecimi() {
         _test(provider: LyricsGecimi(session: .shared))
+    }
+    
+    func testViewLyrics() {
+        _test(provider: ViewLyrics(session: .shared))
     }
     
     func testSearchLyricsPerformance() {
