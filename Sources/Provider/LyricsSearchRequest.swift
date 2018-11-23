@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct LyricsSearchRequest {
+public struct LyricsSearchRequest: Equatable {
     
     public var searchTerm: SearchTerm
     public var title: String
@@ -29,7 +29,7 @@ public struct LyricsSearchRequest {
     public var limit: Int
     public var timeout: TimeInterval
     
-    public enum SearchTerm {
+    public enum SearchTerm: Equatable {
         case keyword(String)
         case info(title: String, artist: String)
     }
@@ -41,32 +41,6 @@ public struct LyricsSearchRequest {
         self.duration = duration
         self.limit = limit
         self.timeout = timeout
-    }
-}
-
-extension LyricsSearchRequest: Equatable {
-    
-    public static func ==(lhs: LyricsSearchRequest, rhs: LyricsSearchRequest) -> Bool {
-        return lhs.searchTerm == rhs.searchTerm &&
-            lhs.title == rhs.title &&
-            lhs.artist == rhs.artist &&
-            lhs.duration == rhs.duration &&
-            lhs.limit == rhs.limit &&
-            lhs.timeout == rhs.timeout
-    }
-}
-
-extension LyricsSearchRequest.SearchTerm: Equatable {
-    
-    public static func ==(lhs: LyricsSearchRequest.SearchTerm, rhs: LyricsSearchRequest.SearchTerm) -> Bool {
-        switch (lhs, rhs) {
-        case (.keyword, .info), (.info, .keyword):
-            return false
-        case (let .keyword(l), let .keyword(r)):
-            return l == r
-        case (let .info(l1, l2), let .info(r1, r2)):
-            return (l1 == r1) && (l2 == r2)
-        }
     }
 }
 
