@@ -26,7 +26,7 @@ public class LyricsProviderManager {
     let session: URLSession
     let providers: [LyricsProvider]
     
-    public init(sources: [LyricsProviderSource] = LyricsProviderSource.all) {
+    public init(sources: [LyricsProviderSource] = LyricsProviderSource.allCases) {
         let queue = OperationQueue()
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
         let providers = sources.map { $0.cls.init(session: session) }
