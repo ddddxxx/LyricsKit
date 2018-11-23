@@ -76,6 +76,9 @@ public final class ViewLyrics: _LyricsProvider {
             lrc.metadata.remoteURL = url
             lrc.metadata.source = .viewLyrics
             lrc.metadata.providerToken = token.link
+            if let length = token.timelength, lrc.length == nil {
+                lrc.length = TimeInterval(length)
+            }
             
             completionHandler(lrc)
         }
