@@ -54,7 +54,7 @@ public final class LyricsGecimi: _LyricsProvider {
         let task = session.dataTask(with: token.lrc) { data, resp, error in
             guard let data = data,
                 let lrcContent = String(data: data, encoding: .utf8),
-                let lrc = Lyrics(lrcContent)else {
+                let lrc = Lyrics(lrcContent) else {
                 completionHandler(nil)
                 return
             }
