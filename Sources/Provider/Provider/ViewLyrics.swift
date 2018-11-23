@@ -42,10 +42,15 @@ public final class ViewLyrics: _LyricsProvider {
     }
     
     func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([ViewLyricsResponseSearchResult]) -> Void) {
+        guard case let .info(title, artist) = request.searchTerm else {
+            // cannot search by keyword
+            completionHandler([])
+            return
+        }
         var req = URLRequest(url: viewLyricsSearchURL)
         req.httpMethod = "POST"
         req.addValue("MiniLyrics", forHTTPHeaderField: "User-Agent")
-        req.httpBody = assembleQuery(artist: request.artist, title: request.title)
+        req.httpBody = assembleQuery(artist: artist, title: title)
         
         let task = session.dataTask(with: req) { data, resp, err in
             guard let data = data else {
