@@ -25,7 +25,7 @@ private let viewLyricsItemBaseURL = URL(string: "http://viewlyrics.com/")!
 
 public final class ViewLyrics: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .gecimi
+    public static let source: LyricsProviderSource = .viewLyrics
     
     let session: URLSession
     
