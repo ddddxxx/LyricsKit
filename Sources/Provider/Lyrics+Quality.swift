@@ -20,56 +20,71 @@
 
 import Foundation
 
+
+private let translationFactor = 0.1
+private let wordTimeTagFactor = 0.1
+private let matchedArtistFactor = 1.3
+private let matchedTitleFactor = 1.5
+private let noArtistFactor = 0.7
+private let noTitleFactor = 0.7
+private let noDurationFactor = 0.7
+
 extension Lyrics {
     
     public var quality: Double {
-        var quality = (artistQuality + titleQuality + durationQuality) / 3
+        var quality = artistQuality + titleQuality + durationQuality
         if metadata.attachmentTags.contains(.translation) {
-            quality += 0.1
+            quality += translationFactor
         }
         if metadata.attachmentTags.contains(.timetag) {
-            quality += 0.1
+            quality += wordTimeTagFactor
         }
         return quality
     }
     
     private var artistQuality: Double {
-        guard let artist = idTags[.artist] else { return 0.8 }
+        guard let artist = idTags[.artist] else { return noArtistFactor }
         switch metadata.request?.searchTerm {
         case let .info(_, searchArtist)?:
+            if artist == searchArtist { return matchedArtistFactor }
             return similarity(s1: artist, s2: searchArtist)
         case let .keyword(keyword)?:
+            if keyword.contains(artist) { return matchedArtistFactor }
             return similarity(s1: artist, in: keyword)
         case nil:
-            return 0.8
+            return noArtistFactor
         }
     }
     
     private var titleQuality: Double {
-        guard let title = idTags[.title] else { return 0.8 }
+        guard let title = idTags[.title] else { return noTitleFactor }
         switch metadata.request?.searchTerm {
         case let .info(searchTitle, _)?:
+            if title == searchTitle { return matchedTitleFactor }
             return similarity(s1: title, s2: searchTitle)
         case let .keyword(keyword)?:
+            if keyword.contains(title) { return matchedTitleFactor }
             return similarity(s1: title, in: keyword)
         case nil:
-            return 0.8
+            return noTitleFactor
         }
     }
     
     private var durationQuality: Double {
         guard let duration = length,
             let searchDuration = metadata.request?.duration else {
-                return 0.8
+                return noDurationFactor
         }
         let dt = searchDuration - duration
         switch abs(dt) {
         case 0...1:
             return 1
-        case 1...10:
-            return 1 - (abs(dt) / 10)
+        case 1...4:
+            return 0.9
+        case 4...10:
+            return 0.8
         case _:
-            return 0
+            return 0.7
         }
     }
 }
