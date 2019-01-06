@@ -31,17 +31,17 @@ class ProviderTests: XCTestCase {
     func _test(provider: LyricsProvider) {
         var searchResultEx: XCTestExpectation? = expectation(description: "Search result: \(provider)")
         let searchCompleteEx = expectation(description: "Search complete: \(provider)")
-        let task = provider.lyricsTask(request: searchReq) { lrc in
+        let progress = provider.lyricsTask(request: searchReq) { lrc in
             searchResultEx?.fulfill()
             searchResultEx = nil
         }
-        let token = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+        let token = progress.observe(\.isFinished, options: [.new]) { progress, change in
             if change.newValue == true {
                 searchCompleteEx.fulfill()
             }
         }
-        task.resume()
         waitForExpectations(timeout: 10)
+        token.invalidate()
     }
     
     func testNetEase() {
@@ -76,8 +76,8 @@ class ProviderTests: XCTestCase {
         let src = LyricsProviderManager()
         measure {
             let searchCompleteEx = self.expectation(description: "Search complete")
-            let task = src.searchLyrics(request: searchReq) { _ in }
-            _ = task.progress.observe(\.isFinished, options: [.new]) { progress, change in
+            let progress = src.searchLyrics(request: searchReq) { _ in }
+            _ = progress.observe(\.isFinished, options: [.new]) { progress, change in
                 if change.newValue == true {
                     searchCompleteEx.fulfill()
                 }

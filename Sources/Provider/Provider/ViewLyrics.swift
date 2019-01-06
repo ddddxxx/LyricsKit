@@ -41,18 +41,18 @@ public final class ViewLyrics: _LyricsProvider {
         return header + queryhash + queryForm.data(using: .utf8)!
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([ViewLyricsResponseSearchResult]) -> Void) {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([ViewLyricsResponseSearchResult]) -> Void) -> Progress {
         guard case let .info(title, artist) = request.searchTerm else {
             // cannot search by keyword
             completionHandler([])
-            return
+            return Progress.completedProgress()
         }
         var req = URLRequest(url: viewLyricsSearchURL)
         req.httpMethod = "POST"
         req.addValue("MiniLyrics", forHTTPHeaderField: "User-Agent")
         req.httpBody = assembleQuery(artist: artist, title: title)
         
-        let task = session.dataTask(with: req) { data, resp, err in
+        return session.startDataTask(with: req) { data, resp, err in
             guard let data = data else {
                 completionHandler([])
                 return
@@ -63,15 +63,14 @@ public final class ViewLyrics: _LyricsProvider {
             try? parser.parseResponse(data: decrypted)
             completionHandler(parser.result)
         }
-        task.resume()
     }
     
-    func fetchTask(token: ViewLyricsResponseSearchResult, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: ViewLyricsResponseSearchResult, completionHandler: @escaping (Lyrics?) -> Void) -> Progress {
         guard let url = URL(string: token.link, relativeTo: viewLyricsItemBaseURL) else {
             completionHandler(nil)
-            return
+            return Progress.completedProgress()
         }
-        let task = session.dataTask(with: url) { data, resp, error in
+        return session.startDataTask(with: url) { data, resp, error in
             guard let data = data,
                 let lrcContent = String(data: data, encoding: .utf8),
                 let lrc = Lyrics(lrcContent) else {
@@ -87,7 +86,6 @@ public final class ViewLyrics: _LyricsProvider {
             
             completionHandler(lrc)
         }
-        task.resume()
     }
 }
 

@@ -24,21 +24,36 @@ protocol LyricsProvider {
     
     init(session: URLSession)
     
-    func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> DistributedLyricsSearchTask
+    func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> Progress
 }
 
 protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void)
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([LyricsToken]) -> Void) -> Progress
     
-    func fetchTask(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void)
+    func fetchTask(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void) -> Progress
 }
 
 extension _LyricsProvider {
     
-    public func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> DistributedLyricsSearchTask {
-        return DistributedLyricsSearchTask(request: request, provider: _AnyLyricsProvider(self), handler: using)
+    public func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> Progress {
+        let progress = Progress(parent: Progress.current())
+        progress.totalUnitCount = 100
+        let searchProgress = searchTask(request: request) { tokens in
+            let count = min(tokens.count, request.limit)
+            let fetchProgress = Progress(totalUnitCount: Int64(count), parent: progress, pendingUnitCount: 80)
+            tokens.prefix(request.limit).enumerated().forEach { (idx, token) in
+                let child = self.fetchTask(token: token) { lrc in
+                    guard let lrc = lrc else { return }
+                    lrc.metadata.searchIndex = idx
+                    using(lrc)
+                }
+                fetchProgress.addChild(child, withPendingUnitCount: 1)
+            }
+        }
+        progress.addChild(searchProgress, withPendingUnitCount: 20)
+        return progress
     }
 }

@@ -33,7 +33,7 @@ public final class LyricsSyair: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([String]) -> Void) {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([String]) -> Void) -> Progress {
         var parameter: [String: Any] = ["page": 1]
         switch request.searchTerm {
         case let .info(title: title, artist: artist):
@@ -43,7 +43,7 @@ public final class LyricsSyair: _LyricsProvider {
             parameter["q"] = keyword
         }
         let url = URL(string: syairSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url) { data, resp, error in
+        return session.startDataTask(with: url) { data, resp, error in
             guard let data = data,
                 let str = String(data: data, encoding: .utf8) else {
                     completionHandler([])
@@ -52,17 +52,16 @@ public final class LyricsSyair: _LyricsProvider {
             let tokens = syairSearchResultRegex.matches(in: str).compactMap { ($0.captures[1]?.content).map(String.init) }
             completionHandler(tokens)
         }
-        task.resume()
     }
     
-    func fetchTask(token: String, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: String, completionHandler: @escaping (Lyrics?) -> Void) -> Progress {
         guard let url = URL(string: token, relativeTo: syairLyricsBaseURL) else {
             completionHandler(nil)
-            return
+            return Progress.completedProgress()
         }
         var req = URLRequest(url: url)
         req.addValue("https://syair.info/", forHTTPHeaderField: "Referer")
-        let task = session.dataTask(with: req) { data, resp, error in
+        return session.startDataTask(with: req) { data, resp, error in
             guard let data = data,
                 let str = String(data: data, encoding: .utf8),
                 let lrcData = syairLyricsContentRegex.firstMatch(in: str)?.captures[1]?.content.data(using: .utf8),
@@ -77,6 +76,5 @@ public final class LyricsSyair: _LyricsProvider {
             
             completionHandler(lrc)
         }
-        task.resume()
     }
 }
