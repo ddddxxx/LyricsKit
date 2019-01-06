@@ -38,10 +38,12 @@ public class LyricsProviderManager {
         self.providers = providers
     }
     
-    public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> LyricsSearchTask {
-        let subTasks = providers.map {
-            $0.lyricsTask(request: request, using: using)
+    public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> Progress {
+        let progress = Progress(totalUnitCount: Int64(providers.count))
+        for provider in providers {
+            let child = provider.lyricsTask(request: request, using: using)
+            progress.addChild(child, withPendingUnitCount: 1)
         }
-        return LyricsSearchTask(request: request, subTasks: subTasks)
+        return progress
     }
 }

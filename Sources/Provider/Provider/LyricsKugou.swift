@@ -33,7 +33,7 @@ public final class LyricsKugou: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([KugouResponseSearchResult.Item]) -> Void) -> Progress {
         let parameter: [String: Any] = [
             "keyword": request.searchTerm.description,
             "duration": Int(request.duration * 1000),
@@ -42,13 +42,12 @@ public final class LyricsKugou: _LyricsProvider {
             "man": "yes",
             ]
         let url = URL(string: kugouSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url, type: KugouResponseSearchResult.self) { model, error in
+        return session.startDataTask(with: url, type: KugouResponseSearchResult.self) { model, error in
             completionHandler(model?.candidates ?? [])
         }
-        task.resume()
     }
     
-    func fetchTask(token: KugouResponseSearchResult.Item, completionHandler: @escaping (Lyrics?) -> Void) {
+    func fetchTask(token: KugouResponseSearchResult.Item, completionHandler: @escaping (Lyrics?) -> Void) -> Progress {
         let parameter: [String: Any] = [
             "id": token.id,
             "accesskey": token.accesskey,
@@ -58,7 +57,7 @@ public final class LyricsKugou: _LyricsProvider {
             "ver": 1,
             ]
         let url = URL(string: kugouLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
-        let task = session.dataTask(with: url, type: KugouResponseSingleLyrics.self) { model, error in
+        return session.startDataTask(with: url, type: KugouResponseSingleLyrics.self) { model, error in
             guard let model = model,
                 let lrcContent = decryptKugouKrc(model.content),
                 let lrc = Lyrics(kugouKrcContent: lrcContent) else {
@@ -75,6 +74,5 @@ public final class LyricsKugou: _LyricsProvider {
             
             completionHandler(lrc)
         }
-        task.resume()
     }
 }

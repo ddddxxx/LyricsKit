@@ -33,25 +33,24 @@ public final class LyricsGecimi: _LyricsProvider {
         self.session = session
     }
     
-    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) {
+    func searchTask(request: LyricsSearchRequest, completionHandler: @escaping ([GecimiResponseSearchResult.Result]) -> Void) -> Progress {
         guard case let .info(title, artist) = request.searchTerm else {
             // cannot search by keyword
             completionHandler([])
-            return
+            return Progress.completedProgress()
         }
         let encodedTitle = title.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         let encodedArtist = artist.addingPercentEncoding(withAllowedCharacters: .uriComponentAllowed)!
         
         let url = gecimiLyricsBaseURL.appendingPathComponent("\(encodedTitle)/\(encodedArtist)")
         let req = URLRequest(url: url)
-        let task = session.dataTask(with: req, type: GecimiResponseSearchResult.self) { model, error in
+        return session.startDataTask(with: req, type: GecimiResponseSearchResult.self) { model, error in
             completionHandler(model?.result ?? [])
         }
-        task.resume()
     }
     
-    func fetchTask(token: GecimiResponseSearchResult.Result, completionHandler: @escaping (Lyrics?) -> Void) {
-        let task = session.dataTask(with: token.lrc) { data, resp, error in
+    func fetchTask(token: GecimiResponseSearchResult.Result, completionHandler: @escaping (Lyrics?) -> Void) -> Progress {
+        return session.startDataTask(with: token.lrc) { data, resp, error in
             guard let data = data,
                 let lrcContent = String(data: data, encoding: .utf8),
                 let lrc = Lyrics(lrcContent) else {
@@ -72,6 +71,5 @@ public final class LyricsGecimi: _LyricsProvider {
             
             completionHandler(lrc)
         }
-        task.resume()
     }
 }
