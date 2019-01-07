@@ -65,7 +65,7 @@ public final class LyricsSyair: _LyricsProvider {
             guard let data = data,
                 let str = String(data: data, encoding: .utf8),
                 let lrcData = syairLyricsContentRegex.firstMatch(in: str)?.captures[1]?.content.data(using: .utf8),
-                let lrcString = NSAttributedString(html: lrcData, documentAttributes: nil)?.string,
+                let lrcString = try? NSAttributedString(data: lrcData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil).string,
                 let lrc = Lyrics(lrcString) else {
                 completionHandler(nil)
                 return

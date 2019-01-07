@@ -36,24 +36,31 @@ protocol _LyricsProvider: LyricsProvider {
     func fetchTask(token: LyricsToken, completionHandler: @escaping (Lyrics?) -> Void) -> Progress
 }
 
+private let subProgressUnitCount: Int64 = 100
+private let portionOfSearchTask: Int64 = 20
+private let portionOfFetchTask = subProgressUnitCount - portionOfSearchTask
+
 extension _LyricsProvider {
     
     public func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> Progress {
         let progress = Progress(parent: Progress.current())
-        progress.totalUnitCount = 100
+        progress.totalUnitCount = subProgressUnitCount
         let searchProgress = searchTask(request: request) { tokens in
-            let count = min(tokens.count, request.limit)
-            let fetchProgress = Progress(totalUnitCount: Int64(count), parent: progress, pendingUnitCount: 80)
-            tokens.prefix(request.limit).enumerated().forEach { (idx, token) in
+            let tokens = tokens.prefix(request.limit)
+            let unit = Int64(tokens.count) * subProgressUnitCount
+            let fetchProgress = Progress(totalUnitCount: unit,
+                                         parent: progress,
+                                         pendingUnitCount: portionOfFetchTask)
+            tokens.enumerated().forEach { (idx, token) in
                 let child = self.fetchTask(token: token) { lrc in
                     guard let lrc = lrc else { return }
                     lrc.metadata.searchIndex = idx
                     using(lrc)
                 }
-                fetchProgress.addChild(child, withPendingUnitCount: 1)
+                fetchProgress.addChild(child, withPendingUnitCount: subProgressUnitCount)
             }
         }
-        progress.addChild(searchProgress, withPendingUnitCount: 20)
+        progress.addChild(searchProgress, withPendingUnitCount: portionOfSearchTask)
         return progress
     }
 }

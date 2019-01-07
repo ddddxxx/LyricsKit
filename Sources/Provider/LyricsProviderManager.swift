@@ -24,23 +24,20 @@ public class LyricsProviderManager {
     
     let queue: OperationQueue
     let session: URLSession
-    let providers: [LyricsProvider]
     
-    public init(sources: [LyricsProviderSource] = LyricsProviderSource.allCases) {
-        let queue = OperationQueue()
-        let session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
-        let providers = sources.map { $0.cls.init(session: session) }
-        
-        queue.maxConcurrentOperationCount = 1
-        
-        self.queue = queue
-        self.session = session
-        self.providers = providers
+    public var sources: [LyricsProviderSource] = LyricsProviderSource.allCases
+    
+    public init(delegateQueue: OperationQueue? = nil) {
+        self.queue = delegateQueue ?? OperationQueue().then {
+            $0.maxConcurrentOperationCount = 1
+        }
+        self.session = URLSession(configuration: .default, delegate: nil, delegateQueue: queue)
     }
     
     public func searchLyrics(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> Progress {
-        let progress = Progress(totalUnitCount: Int64(providers.count))
-        for provider in providers {
+        let progress = Progress(totalUnitCount: Int64(sources.count))
+        for source in sources {
+            let provider = source.cls.init(session: session)
             let child = provider.lyricsTask(request: request, using: using)
             progress.addChild(child, withPendingUnitCount: 1)
         }
