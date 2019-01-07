@@ -54,6 +54,7 @@ extension _LyricsProvider {
             tokens.enumerated().forEach { (idx, token) in
                 let child = self.fetchTask(token: token) { lrc in
                     guard let lrc = lrc else { return }
+                    lrc.metadata.request = request
                     lrc.metadata.searchIndex = idx
                     using(lrc)
                 }
