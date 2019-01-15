@@ -36,4 +36,10 @@ extension Lyrics.MetaData {
         get { return data[.attachmentTags] as? Set<LyricsLine.Attachments.Tag> ?? [] }
         set { data[.attachmentTags] = newValue }
     }
+    
+    public var hasTranslation: Bool {
+        return attachmentTags.contains { tag in
+            tag.isTranslation
+        }
+    }
 }

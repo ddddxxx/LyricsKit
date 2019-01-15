@@ -33,7 +33,7 @@ extension Lyrics {
     
     public var quality: Double {
         var quality = artistQuality + titleQuality + durationQuality
-        if metadata.attachmentTags.contains(.translation) {
+        if metadata.hasTranslation {
             quality += translationFactor
         }
         if metadata.attachmentTags.contains(.timetag) {
