@@ -42,6 +42,23 @@ extension Lyrics {
         return quality
     }
     
+    public func isMatched() -> Bool {
+        guard let artist = idTags[.artist],
+            let title = idTags[.title] else {
+            return false
+        }
+        switch metadata.request?.searchTerm {
+        case let .info(searchTitle, searchArtist)?:
+            return title.isCaseInsensitiveSimilar(to: searchTitle)
+                && artist.isCaseInsensitiveSimilar(to: searchArtist)
+        case let .keyword(keyword)?:
+            return title.isCaseInsensitiveSimilar(to: keyword)
+                && artist.isCaseInsensitiveSimilar(to: keyword)
+        case nil:
+            return false
+        }
+    }
+    
     private var artistQuality: Double {
         guard let artist = idTags[.artist] else { return noArtistFactor }
         switch metadata.request?.searchTerm {
@@ -108,6 +125,12 @@ private extension String {
             }
         }
         return d.last!
+    }
+    
+    func isCaseInsensitiveSimilar(to string: String) -> Bool {
+        let s1 = lowercased()
+        let s2 = string.lowercased()
+        return s1.contains(s2) || s2.contains(s1)
     }
 }
 
