@@ -71,8 +71,10 @@ extension LyricsLine.Attachments {
             return content[.init(tag)]?.description
         }
         set {
-            let t = LyricsLine.Attachments.Tag(tag)
-            content[t] = newValue.flatMap { LyricsLine.Attachments.createAttachment(str: $0, tag: t) }
+            if let newValue = newValue {
+                let t = LyricsLine.Attachments.Tag(tag)
+                content[t] = LyricsLine.Attachments.createAttachment(str: newValue, tag: t)
+            }
         }
     }
     
@@ -107,6 +109,10 @@ extension LyricsLine.Attachments.Tag {
         } else {
             return .init("tr:" + languageCode)
         }
+    }
+    
+    public var isTranslation: Bool {
+        return rawValue.hasPrefix("tr")
     }
 }
 
