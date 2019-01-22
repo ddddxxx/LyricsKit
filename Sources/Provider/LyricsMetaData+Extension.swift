@@ -26,6 +26,7 @@ extension Lyrics.MetaData.Key {
     public static var remoteURL     = Lyrics.MetaData.Key("remoteURL")
     public static var artworkURL    = Lyrics.MetaData.Key("artworkURL")
     public static var providerToken = Lyrics.MetaData.Key("providerToken")
+    static var quality              = Lyrics.MetaData.Key("quality")
 }
 
 extension Lyrics.MetaData {
@@ -53,5 +54,10 @@ extension Lyrics.MetaData {
     public var providerToken: String? {
         get { return data[.providerToken] as? String }
         set { data[.providerToken] = newValue }
+    }
+    
+    var quality: Double? {
+        get { return data[.quality] as? Double }
+        set { data[.quality] = newValue }
     }
 }
