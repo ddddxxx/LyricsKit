@@ -43,4 +43,18 @@ extension Lyrics {
         }
         metadata.attachmentTags.insert(.translation)
     }
+    
+    /// merge without maching timetag
+    func forceMerge(translation: Lyrics) {
+        guard lines.count == translation.lines.count else {
+            return
+        }
+        for idx in lines.indices {
+            let transStr = translation.lines[idx].content
+            if !transStr.isEmpty {
+                lines[idx].attachments.setTranslation(transStr)
+            }
+        }
+        metadata.attachmentTags.insert(.translation)
+    }
 }

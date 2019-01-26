@@ -58,31 +58,37 @@ public final class LyricsNetEase: _LyricsProvider {
             ]
         let url = URL(string: netEaseLyricsBaseURLString + parameter.stringFromHttpParameters)!
         return session.startDataTask(with: url, type: NetEaseResponseSingleLyrics.self) { model, error in
-            guard let model = model,
-                let lrc = (model.lrc?.lyric).flatMap(Lyrics.init) else {
-                    completionHandler(nil)
-                    return
+            guard let model = model else {
+                completionHandler(nil)
+                return
             }
-            
-            if let transLrcContent = model.tlyric?.lyric,
-                let transLrc = Lyrics(transLrcContent) {
-                lrc.merge(translation: transLrc)
+            let lyrics: Lyrics
+            let transLrc = (model.tlyric?.lyric).flatMap(Lyrics.init)
+            if let kLrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:)) {
+                transLrc.map(kLrc.forceMerge)
+                lyrics = kLrc
+            } else if let lrc = (model.lrc?.lyric).flatMap(Lyrics.init) {
+                transLrc.map(lrc.merge)
+                lyrics = lrc
+            } else {
+                completionHandler(nil)
+                return
             }
             
             // FIXME: merge inline time tags back to lyrics
             // if let taggedLrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
             
-            lrc.idTags[.title]   = token.name
-            lrc.idTags[.artist]  = token.artists.first?.name
-            lrc.idTags[.album]   = token.album.name
-            lrc.idTags[.lrcBy]   = model.lyricUser?.nickname
+            lyrics.idTags[.title]   = token.name
+            lyrics.idTags[.artist]  = token.artists.first?.name
+            lyrics.idTags[.album]   = token.album.name
+            lyrics.idTags[.lrcBy]   = model.lyricUser?.nickname
             
-            lrc.length = Double(token.duration) / 1000
-            lrc.metadata.source      = .netease
-            lrc.metadata.artworkURL  = token.album.picUrl
-            lrc.metadata.providerToken = "\(token.id)"
+            lyrics.length = Double(token.duration) / 1000
+            lyrics.metadata.source      = .netease
+            lyrics.metadata.artworkURL  = token.album.picUrl
+            lyrics.metadata.providerToken = "\(token.id)"
             
-            completionHandler(lrc)
+            completionHandler(lyrics)
         }
     }
 }

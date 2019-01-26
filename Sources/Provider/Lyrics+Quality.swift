@@ -32,6 +32,9 @@ private let noDurationFactor = 0.7
 extension Lyrics {
     
     public var quality: Double {
+        if let quality = metadata.quality {
+            return quality
+        }
         var quality = artistQuality + titleQuality + durationQuality
         if metadata.hasTranslation {
             quality += translationFactor
@@ -39,6 +42,7 @@ extension Lyrics {
         if metadata.attachmentTags.contains(.timetag) {
             quality += wordTimeTagFactor
         }
+        metadata.quality = quality
         return quality
     }
     
