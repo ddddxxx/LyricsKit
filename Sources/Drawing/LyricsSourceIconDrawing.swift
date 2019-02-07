@@ -31,10 +31,10 @@
         
         var usesEvenOddFillRule: Bool {
             get {
-                return windingRule == .evenOddWindingRule
+                return windingRule == .evenOdd
             }
             set {
-                windingRule = newValue ? .evenOddWindingRule : .nonZeroWindingRule
+                windingRule = newValue ? .evenOdd : .nonZero
             }
         }
         
