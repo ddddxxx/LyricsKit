@@ -32,7 +32,7 @@ func decryptKugouKrc(_ data: Data) -> String? {
         return byte ^ decodeKey[index & 0b1111]
     }
     
-    guard let unarchivedData = try? Data(bytes: decrypted).gunzipped() else {
+    guard let unarchivedData = try? Data(decrypted).gunzipped() else {
         return nil
     }
     

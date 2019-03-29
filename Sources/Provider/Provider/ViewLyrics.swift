@@ -37,7 +37,7 @@ public final class ViewLyrics: _LyricsProvider {
         let watermark = "Mlv1clt4.0"
         let queryForm = "<?xml version='1.0' encoding='utf-8'?><searchV1 artist='\(artist)' title='\(title)' OnlyMatched='1' client='MiniLyrics' RequestPage='\(page)'/>"
         let queryhash = md5(queryForm + watermark)
-        let header = Data(bytes: [2, 0, 4, 0, 0, 0])
+        let header = Data([2, 0, 4, 0, 0, 0])
         return header + queryhash + queryForm.data(using: .utf8)!
     }
     

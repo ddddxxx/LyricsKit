@@ -141,10 +141,8 @@ extension MatchResult: Equatable, Hashable {
         return lhs.captures.elementsEqual(rhs.captures, by: ==)
     }
     
-    var hashValue: Int {
-        return captures.reduce(0) { r, e in
-            hashCombine(seed: r, value: e?.hashValue ?? 0)
-        }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(captures)
     }
 }
 
@@ -154,8 +152,8 @@ extension Regex: Equatable, Hashable {
         return lhs._regex == rhs._regex
     }
     
-    var hashValue: Int {
-        return _regex.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(_regex)
     }
 }
 

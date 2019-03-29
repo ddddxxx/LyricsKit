@@ -217,7 +217,7 @@ extension Lyrics {
         case let .notFound(insertAt: i): index = i
         }
         let current = (0..<index).reversed().first { lines[$0].enabled }
-        let next = lines[index...].index { $0.enabled }
+        let next = lines[index...].firstIndex { $0.enabled }
         return (current, next)
     }
 }
