@@ -22,6 +22,8 @@ import Foundation
 
 protocol LyricsProvider {
     
+    static var source: LyricsProviderSource { get }
+    
     init(session: URLSession)
     
     func lyricsTask(request: LyricsSearchRequest, using: @escaping (Lyrics) -> Void) -> Progress
@@ -51,6 +53,11 @@ extension _LyricsProvider {
             let fetchProgress = Progress(totalUnitCount: unit,
                                          parent: progress,
                                          pendingUnitCount: portionOfFetchTask)
+            guard unit > 0 else {
+                // no lyrics token received, complete the progress.
+                fetchProgress.completedUnitCount = 1
+                return
+            }
             tokens.enumerated().forEach { (idx, token) in
                 let child = self.fetchTask(token: token) { lrc in
                     guard let lrc = lrc else { return }
