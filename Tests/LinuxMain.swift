@@ -1,6 +1,7 @@
 import XCTest
-@testable import LyricsProviderTests
 
-XCTMain([
-    testCase(LyricsProviderTests.allTests),
-])
+import LyricsKitTests
+
+var tests = [XCTestCaseEntry]()
+tests += LyricsKitTests.allTests()
+XCTMain(tests)
