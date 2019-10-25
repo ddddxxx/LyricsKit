@@ -1,0 +1,70 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CombineX",
+        "repositoryURL": "https://github.com/cx-org/CombineX",
+        "state": {
+          "branch": "master",
+          "revision": "d1e929b62fd66b5f8ab6bd03a48532bce5d430f0",
+          "version": null
+        }
+      },
+      {
+        "package": "CwlCatchException",
+        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
+        "state": {
+          "branch": null,
+          "revision": "7cd2f8cacc4d22f21bc0b2309c3b18acf7957b66",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "CwlPreconditionTesting",
+        "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
+        "state": {
+          "branch": null,
+          "revision": "c228db5d2ad1b01ebc84435e823e6cca4e3db98b",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Gzip",
+        "repositoryURL": "https://github.com/1024jp/GzipSwift",
+        "state": {
+          "branch": null,
+          "revision": "f8ab7f3fef4e4fd8d08c6b81911e93beb92da550",
+          "version": "5.1.0"
+        }
+      },
+      {
+        "package": "Nimble",
+        "repositoryURL": "https://github.com/Quick/Nimble.git",
+        "state": {
+          "branch": null,
+          "revision": "6abeb3f5c03beba2b9e4dbe20886e773b5b629b6",
+          "version": "8.0.4"
+        }
+      },
+      {
+        "package": "Quick",
+        "repositoryURL": "https://github.com/Quick/Quick.git",
+        "state": {
+          "branch": null,
+          "revision": "33682c2f6230c60614861dfc61df267e11a1602f",
+          "version": "2.2.0"
+        }
+      },
+      {
+        "package": "Regex",
+        "repositoryURL": "https://github.com/ddddxxx/Regex",
+        "state": {
+          "branch": null,
+          "revision": "be99b43cbcd958ef54b8316ea1a0cf82e525ad54",
+          "version": "0.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
