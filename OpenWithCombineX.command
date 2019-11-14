@@ -1,5 +1,5 @@
 #!/bin/sh
 
-export SWIFT_PACKAGE_USE_COMBINEX="true"
+export CX_COMBINE_IMPLEMENTATION="CombineX"
 killall Xcode || true
 open $(dirname $0)/Package.swift

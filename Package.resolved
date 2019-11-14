@@ -5,27 +5,18 @@
         "package": "CombineX",
         "repositoryURL": "https://github.com/cx-org/CombineX",
         "state": {
-          "branch": "master",
-          "revision": "d1e929b62fd66b5f8ab6bd03a48532bce5d430f0",
-          "version": null
+          "branch": null,
+          "revision": "ed68f8faea91c2af8da3520780734a2581df8b7f",
+          "version": "0.1.0"
         }
       },
       {
-        "package": "CwlCatchException",
-        "repositoryURL": "https://github.com/mattgallagher/CwlCatchException.git",
+        "package": "CRuntime",
+        "repositoryURL": "https://github.com/wickwirew/CRuntime.git",
         "state": {
           "branch": null,
-          "revision": "7cd2f8cacc4d22f21bc0b2309c3b18acf7957b66",
-          "version": "1.2.0"
-        }
-      },
-      {
-        "package": "CwlPreconditionTesting",
-        "repositoryURL": "https://github.com/mattgallagher/CwlPreconditionTesting.git",
-        "state": {
-          "branch": null,
-          "revision": "c228db5d2ad1b01ebc84435e823e6cca4e3db98b",
-          "version": "1.2.0"
+          "revision": "95f911318d8c885f6fc05e971471f94adfd39405",
+          "version": "2.1.2"
         }
       },
       {
@@ -33,8 +24,8 @@
         "repositoryURL": "https://github.com/1024jp/GzipSwift",
         "state": {
           "branch": null,
-          "revision": "f8ab7f3fef4e4fd8d08c6b81911e93beb92da550",
-          "version": "5.1.0"
+          "revision": "ba0b6cb51cc6202f896e469b87d2889a46b10d1b",
+          "version": "5.1.1"
         }
       },
       {
@@ -42,8 +33,8 @@
         "repositoryURL": "https://github.com/Quick/Nimble.git",
         "state": {
           "branch": null,
-          "revision": "6abeb3f5c03beba2b9e4dbe20886e773b5b629b6",
-          "version": "8.0.4"
+          "revision": "f8657642dfdec9973efc79cc68bcef43a653a2bc",
+          "version": "8.0.2"
         }
       },
       {
@@ -62,6 +53,15 @@
           "branch": null,
           "revision": "be99b43cbcd958ef54b8316ea1a0cf82e525ad54",
           "version": "0.1.0"
+        }
+      },
+      {
+        "package": "Runtime",
+        "repositoryURL": "https://github.com/wickwirew/Runtime.git",
+        "state": {
+          "branch": null,
+          "revision": "61c9776f47d2951bdc562486ad348e5e1ca2e180",
+          "version": "2.1.1"
         }
       }
     ]
