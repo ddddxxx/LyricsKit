@@ -13,8 +13,8 @@ extension Lyrics {
     convenience init?(netEaseKLyricContent content: String) {
         self.init()
         id3TagRegex.matches(in: content).forEach { match in
-            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
-                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.string.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.string.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
                 !value.isEmpty {
                 idTags[.init(key)] = value

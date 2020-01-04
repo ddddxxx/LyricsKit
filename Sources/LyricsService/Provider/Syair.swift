@@ -50,7 +50,7 @@ extension LyricsProviders.Syair: _LyricsProvider {
         return sharedURLSession.cx.dataTaskPublisher(for: req)
             .compactMap {
                 guard let str = String(data: $0.data, encoding: .utf8),
-                    let lrcData = syairLyricsContentRegex.firstMatch(in: str)?.captures[1]?.content.data(using: .utf8),
+                    let lrcData = syairLyricsContentRegex.firstMatch(in: str)?.captures[1]?.string.data(using: .utf8),
                     let lrcStr = try? NSAttributedString(data: lrcData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil).string,
                     let lrc = Lyrics(lrcStr) else {
                         return nil

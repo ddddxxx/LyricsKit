@@ -14,8 +14,8 @@ extension Lyrics {
         self.init()
         var languageHeader: KugouKrcHeaderFieldLanguage?
         id3TagRegex.matches(in: content).forEach { match in
-            guard let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
-                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
+            guard let key = match[1]?.string.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.string.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
                 !value.isEmpty else {
                     return
@@ -40,12 +40,15 @@ extension Lyrics {
             var lineContent = ""
             var attachment = LyricsLine.Attachments.WordTimeTag(tags: [.init(timeTag: 0, index: 0)], duration: duration)
             kugouInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
-                let t1 = Int(m[1]!.content)!
-                let t2 = Int(m[2]!.content)!
+                let t1 = Int(m[1]!.string)!
+                let t2 = Int(m[2]!.string)!
                 let t = TimeInterval(t1 + t2) / 1000
-                let fragment = m[3]!.content
+                let fragment = m[3]!.string
+                let prevCount = lineContent.count
                 lineContent += fragment
-                attachment.tags.append(.init(timeTag: t, index: lineContent.count))
+                if lineContent.count > prevCount {
+                    attachment.tags.append(.init(timeTag: t, index: lineContent.count))
+                }
             }
             
             let att = LyricsLine.Attachments(attachments: [.timetag: attachment])

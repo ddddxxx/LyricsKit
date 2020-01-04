@@ -13,8 +13,8 @@ private let timeTagRegex = try! Regex(timeTagPattern)
 func resolveTimeTag(_ str: String) -> [TimeInterval] {
     let matchs = timeTagRegex.matches(in: str)
     return matchs.map { match in
-        let min = Double(match[1]!.content)!
-        let sec = Double(match[2]!.content)!
+        let min = Double(match[1]!.string)!
+        let sec = Double(match[2]!.string)!
         return min * 60 + sec
     }
 }
