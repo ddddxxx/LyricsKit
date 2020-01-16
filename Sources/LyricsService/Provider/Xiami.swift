@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let xiamiSearchBaseURLString = "http://api.xiami.com/web?"
 
@@ -59,7 +60,7 @@ extension LyricsProviders.Xiami: _LyricsProvider {
                 lrc.metadata.artworkURL = token.album_logo
                 lrc.metadata.providerToken = token.lyric
                 return lrc
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }

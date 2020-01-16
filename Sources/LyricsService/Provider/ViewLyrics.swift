@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let viewLyricsSearchURL = URL(string: "http://search.crintsoft.com/searchlyrics.htm")!
 private let viewLyricsItemBaseURL = URL(string: "http://viewlyrics.com/")!
@@ -68,7 +69,7 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
                     lrc.length = TimeInterval(length)
                 }
                 return lrc
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }

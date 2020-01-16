@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let netEaseSearchBaseURLString = "http://music.163.com/api/search/pc?"
 private let netEaseLyricsBaseURLString = "http://music.163.com/api/song/lyric?"
@@ -79,7 +80,7 @@ extension LyricsProviders.NetEase: _LyricsProvider {
                 lyrics.metadata.providerToken = "\(token.id)"
                 
                 return lyrics
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }

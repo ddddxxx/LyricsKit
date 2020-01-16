@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let gecimiLyricsBaseURL = URL(string: "http://gecimi.com/api/lyric")!
 private let gecimiCoverBaseURL = URL(string:"http://gecimi.com/api/cover")!
@@ -51,7 +52,7 @@ extension LyricsProviders.Gecimi: _LyricsProvider {
                 lrc.metadata.source = .gecimi
                 lrc.metadata.providerToken = "\(token.aid),\(token.lrc)"
                 return lrc
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }

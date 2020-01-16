@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let kugouSearchBaseURLString = "http://lyrics.kugou.com/search"
 private let kugouLyricsBaseURLString = "http://lyrics.kugou.com/download"
@@ -64,7 +65,7 @@ extension LyricsProviders.Kugou: _LyricsProvider {
                 lrc.metadata.source = .kugou
                 lrc.metadata.providerToken = "\(token.id),\(token.accesskey)"
                 return lrc
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }

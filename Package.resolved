@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "CXExtensions",
+        "repositoryURL": "https://github.com/cx-org/CXExtensions",
+        "state": {
+          "branch": null,
+          "revision": "91b845e616c353ec1e1853994d8b094655aded40",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "Gzip",
         "repositoryURL": "https://github.com/1024jp/GzipSwift",
         "state": {

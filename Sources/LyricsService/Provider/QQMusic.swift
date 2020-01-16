@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
@@ -65,7 +66,7 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
                     lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
                 }
                 return lrc
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }

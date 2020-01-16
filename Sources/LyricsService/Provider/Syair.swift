@@ -8,6 +8,7 @@
 import Foundation
 import LyricsCore
 import CXShim
+import CXExtensions
 
 private let syairSearchBaseURLString = "https://syair.info/search"
 private let syairLyricsBaseURL = URL(string: "https://syair.info")!
@@ -58,7 +59,7 @@ extension LyricsProviders.Syair: _LyricsProvider {
                 lrc.metadata.source = .syair
                 lrc.metadata.providerToken = token
                 return lrc
-            }.catch()
+            }.ignoreError()
             .eraseToAnyPublisher()
     }
 }
