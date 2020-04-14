@@ -10,9 +10,7 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
+#if canImport(Darwin)
 
 private let syairSearchBaseURLString = "https://syair.info/search"
 private let syairLyricsBaseURL = URL(string: "https://syair.info")!
@@ -67,3 +65,5 @@ extension LyricsProviders.Syair: _LyricsProvider {
             .eraseToAnyPublisher()
     }
 }
+
+#endif

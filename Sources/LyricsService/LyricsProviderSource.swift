@@ -27,7 +27,10 @@ extension LyricsProviderSource {
         case .xiami:    return LyricsProviders.Xiami.self
         case .gecimi:   return LyricsProviders.Gecimi.self
         case .viewLyrics: return LyricsProviders.ViewLyrics.self
+        #if canImport(Darwin)
         case .syair:    return LyricsProviders.Syair.self
+        #endif
+        default:        return LyricsProviders.Unsupported.self
         }
     }
 }
