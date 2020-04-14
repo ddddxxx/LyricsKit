@@ -10,6 +10,10 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 private let syairSearchBaseURLString = "https://syair.info/search"
 private let syairLyricsBaseURL = URL(string: "https://syair.info")!
 

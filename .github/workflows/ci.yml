@@ -1,0 +1,39 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  mac:
+    runs-on: macOS-latest
+    env:
+      CX_COMBINE_IMPLEMENTATION: CombineX
+      CX_CONTINUOUS_INTEGRATION: "YES"
+    steps:
+      - uses: actions/checkout@v1
+      - name: Swift Version
+        run: swift --version
+      - name: Build and Test
+        run: swift test
+
+  linux:
+    runs-on: ubuntu-latest
+    container:
+      image: swift:latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Swift Version
+        run: swift --version
+      - name: Build and Test
+        run: swift test
+
+  combine:
+    runs-on: macOS-latest
+    env:
+      CX_COMBINE_IMPLEMENTATION: Combine
+      CX_CONTINUOUS_INTEGRATION: "YES"
+    steps:
+      - uses: actions/checkout@v1
+      - name: Swift Version
+        run: swift --version
+      - name: Build and Test
+        run: swift test

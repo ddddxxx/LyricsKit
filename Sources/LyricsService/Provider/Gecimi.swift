@@ -10,6 +10,10 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 private let gecimiLyricsBaseURL = URL(string: "http://gecimi.com/api/lyric")!
 private let gecimiCoverBaseURL = URL(string:"http://gecimi.com/api/cover")!
 

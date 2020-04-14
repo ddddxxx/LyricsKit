@@ -10,6 +10,10 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
+
 private let viewLyricsSearchURL = URL(string: "http://search.crintsoft.com/searchlyrics.htm")!
 private let viewLyricsItemBaseURL = URL(string: "http://viewlyrics.com/")!
 

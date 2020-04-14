@@ -10,6 +10,10 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 private let xiamiSearchBaseURLString = "http://api.xiami.com/web?"
 
 extension LyricsProviders {

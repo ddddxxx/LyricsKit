@@ -10,6 +10,10 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 private let netEaseSearchBaseURLString = "http://music.163.com/api/search/pc?"
 private let netEaseLyricsBaseURLString = "http://music.163.com/api/song/lyric?"
 
