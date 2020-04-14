@@ -9,7 +9,7 @@ import Foundation
 import LyricsCore
 import CXShim
 
-public class LyricsProviderManager {
+public final class LyricsProviderManager {
     
     var providers: [LyricsProvider]
     

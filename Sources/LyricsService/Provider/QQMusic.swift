@@ -10,6 +10,10 @@ import LyricsCore
 import CXShim
 import CXExtensions
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
 

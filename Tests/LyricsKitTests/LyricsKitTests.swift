@@ -17,36 +17,18 @@ final class LyricsKitTests: XCTestCase {
         waitForExpectations(timeout: 10)
         token.cancel()
     }
-
-    func testNetEase() {
-        _test(provider: LyricsProviders.NetEase())
-    }
-
-    func testQQ() {
-        _test(provider: LyricsProviders.QQMusic())
-    }
-
-    func testKugou() {
-        _test(provider: LyricsProviders.Kugou())
-    }
-
-    func testXiami() {
-        _test(provider: LyricsProviders.Xiami())
-    }
-
-    func testGecimi() {
-        _test(provider: LyricsProviders.Gecimi())
-    }
-
-    func testViewLyrics() {
-        _test(provider: LyricsProviders.ViewLyrics())
-    }
-
-    func testSyair() {
-        _test(provider: LyricsProviders.Syair())
+    
+    func testManager() {
+        _test(provider: LyricsProviderManager())
     }
 
     static var allTests = [
-        ("testNetEase", testNetEase),
+        ("testManager", testManager),
     ]
+}
+
+extension LyricsProviderManager: LyricsProvider {
+    public convenience init() {
+        self.init(sources: LyricsProviderSource.allCases)
+    }
 }

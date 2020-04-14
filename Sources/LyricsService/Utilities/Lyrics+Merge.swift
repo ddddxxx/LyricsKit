@@ -18,7 +18,7 @@ extension Lyrics {
         while index < lines.endIndex, transIndex < translation.lines.endIndex {
             if abs(lines[index].position - translation.lines[transIndex].position) < mergeTimetagThreshold {
                 let transStr = translation.lines[transIndex].content
-                if !transStr.isEmpty {
+                if !transStr.isEmpty, transStr != "//" {
                     lines[index].attachments.setTranslation(transStr)
                 }
                 lines.formIndex(after: &index)
@@ -39,7 +39,7 @@ extension Lyrics {
         }
         for idx in lines.indices {
             let transStr = translation.lines[idx].content
-            if !transStr.isEmpty {
+            if !transStr.isEmpty, transStr != "//" {
                 lines[idx].attachments.setTranslation(transStr)
             }
         }
