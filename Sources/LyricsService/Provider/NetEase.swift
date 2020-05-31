@@ -9,6 +9,7 @@ import Foundation
 import LyricsCore
 import CXShim
 import CXExtensions
+import Regex
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -61,11 +62,11 @@ extension LyricsProviders.NetEase: _LyricsProvider {
             .decode(type: NetEaseResponseSingleLyrics.self, decoder: JSONDecoder().cx)
             .compactMap {
                 let lyrics: Lyrics
-                let transLrc = ($0.tlyric?.lyric).flatMap(Lyrics.init)
-                if let kLrc = ($0.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:)) {
+                let transLrc = ($0.tlyric?.fixedLyric).flatMap(Lyrics.init)
+                if let kLrc = ($0.klyric?.fixedLyric).flatMap(Lyrics.init(netEaseKLyricContent:)) {
                     transLrc.map(kLrc.forceMerge)
                     lyrics = kLrc
-                } else if let lrc = ($0.lrc?.lyric).flatMap(Lyrics.init) {
+                } else if let lrc = ($0.lrc?.fixedLyric).flatMap(Lyrics.init) {
                     transLrc.map(lrc.merge)
                     lyrics = lrc
                 } else {
@@ -88,5 +89,13 @@ extension LyricsProviders.NetEase: _LyricsProvider {
                 return lyrics
             }.ignoreError()
             .eraseToAnyPublisher()
+    }
+}
+
+private let netEaseTimeTagFixer = try! Regex(#"(\[\d+:\d+):(\d+\])"#)
+
+private extension NetEaseResponseSingleLyrics.Lyric {
+    var fixedLyric: String? {
+        return lyric?.replacingMatches(of: netEaseTimeTagFixer, with: "$1.$2")
     }
 }
