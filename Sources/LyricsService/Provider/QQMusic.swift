@@ -18,12 +18,14 @@ private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_sea
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
 
 extension LyricsProviders {
-    public final class QQMusic {}
+    public final class QQMusic {
+            public init() {}
+    }
 }
 
 extension LyricsProviders.QQMusic: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .qq
+    public static let service: LyricsProviders.Service = .qq
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<QQResponseSearchResult.Data.Song.Item, Never> {
         let parameter = ["w": request.searchTerm.description]
@@ -64,8 +66,8 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
                 lrc.idTags[.album] = token.albumname
                 
                 lrc.length = Double(token.interval)
-                lrc.metadata.source = .qq
-                lrc.metadata.providerToken = "\(token.songmid)"
+                lrc.metadata.service = Self.service
+                lrc.metadata.serviceToken = "\(token.songmid)"
                 if let id = Int(token.songmid) {
                     lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
                 }

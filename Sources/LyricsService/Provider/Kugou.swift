@@ -18,12 +18,14 @@ private let kugouSearchBaseURLString = "http://lyrics.kugou.com/search"
 private let kugouLyricsBaseURLString = "http://lyrics.kugou.com/download"
 
 extension LyricsProviders {
-    public final class Kugou {}
+    public final class Kugou {
+        public init() {}
+    }
 }
 
 extension LyricsProviders.Kugou: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .kugou
+    public static let service: LyricsProviders.Service = .kugou
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<KugouResponseSearchResult.Item, Never> {
         let parameter: [String: Any] = [
@@ -66,8 +68,8 @@ extension LyricsProviders.Kugou: _LyricsProvider {
                 lrc.idTags[.lrcBy] = "Kugou"
                 
                 lrc.length = Double(token.duration)/1000
-                lrc.metadata.source = .kugou
-                lrc.metadata.providerToken = "\(token.id),\(token.accesskey)"
+                lrc.metadata.service = Self.service
+                lrc.metadata.serviceToken = "\(token.id),\(token.accesskey)"
                 return lrc
             }.ignoreError()
             .eraseToAnyPublisher()

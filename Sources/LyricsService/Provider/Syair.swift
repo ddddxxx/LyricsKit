@@ -16,12 +16,14 @@ private let syairSearchBaseURLString = "https://syair.info/search"
 private let syairLyricsBaseURL = URL(string: "https://syair.info")!
 
 extension LyricsProviders {
-    public final class Syair {}
+    public final class Syair {
+        public init() {}
+}
 }
 
 extension LyricsProviders.Syair: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .syair
+    public static let service: LyricsProviders.Service = .syair
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<String, Never> {
         var parameter: [String: Any] = ["page": 1]
@@ -58,8 +60,8 @@ extension LyricsProviders.Syair: _LyricsProvider {
                     let lrc = Lyrics(lrcStr) else {
                         return nil
                 }
-                lrc.metadata.source = .syair
-                lrc.metadata.providerToken = token
+                lrc.metadata.service = Self.service
+                lrc.metadata.serviceToken = token
                 return lrc
             }.ignoreError()
             .eraseToAnyPublisher()

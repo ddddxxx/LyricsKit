@@ -10,7 +10,9 @@ import LyricsCore
 import CXShim
 
 extension LyricsProviders {
-    public final class Unsupported {}
+    public final class Unsupported {
+        public init() {}
+    }
 }
 
 extension LyricsProviders.Unsupported: LyricsProvider {

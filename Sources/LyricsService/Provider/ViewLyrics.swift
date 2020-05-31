@@ -22,12 +22,14 @@ private let viewLyricsSearchURL = URL(string: "http://search.crintsoft.com/searc
 private let viewLyricsItemBaseURL = URL(string: "http://viewlyrics.com/")!
 
 extension LyricsProviders {
-    public final class ViewLyrics {}
+    public final class ViewLyrics {
+        public init() {}
+    }
 }
 
 extension LyricsProviders.ViewLyrics: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .viewLyrics
+    public static let service: LyricsProviders.Service = .viewLyrics
     
     func assembleQuery(artist: String, title: String, page: Int = 0) -> Data {
         let watermark = "Mlv1clt4.0"
@@ -71,8 +73,8 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
                         return nil
                 }
                 lrc.metadata.remoteURL = url
-                lrc.metadata.source = .viewLyrics
-                lrc.metadata.providerToken = token.link
+                lrc.metadata.service = Self.service
+                lrc.metadata.serviceToken = token.link
                 if let length = token.timelength, lrc.length == nil {
                     lrc.length = TimeInterval(length)
                 }

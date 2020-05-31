@@ -10,7 +10,7 @@
     import CoreGraphics
 
     @available(OSX 10.10, iOS 8, tvOS 2, *)
-    private extension LyricsProviderSource {
+    private extension LyricsProviders.Service {
         
         var drawingMethod: ((CGRect) -> Void)? {
             switch self {
@@ -41,9 +41,9 @@
         
         public static let defaultSize = CGSize(width: 48, height: 48)
         
-        public static func icon(of source: LyricsProviderSource, size: CGSize = defaultSize) -> NSImage {
+        public static func icon(of service: LyricsProviders.Service, size: CGSize = defaultSize) -> NSImage {
             return NSImage(size: size, flipped: false) { (NSRect) -> Bool in
-                source.drawingMethod?(CGRect(origin: .zero, size: size))
+                service.drawingMethod?(CGRect(origin: .zero, size: size))
                 return true
             }
         }

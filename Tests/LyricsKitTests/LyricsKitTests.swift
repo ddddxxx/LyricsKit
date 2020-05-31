@@ -19,16 +19,10 @@ final class LyricsKitTests: XCTestCase {
     }
     
     func testManager() {
-        _test(provider: LyricsProviderManager())
+        _test(provider: LyricsProviders.Group())
     }
 
     static var allTests = [
         ("testManager", testManager),
     ]
-}
-
-extension LyricsProviderManager: LyricsProvider {
-    public convenience init() {
-        self.init(sources: LyricsProviderSource.allCases)
-    }
 }

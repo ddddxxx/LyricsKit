@@ -19,14 +19,14 @@ public enum LyricsProviders {}
 
 protocol LyricsProvider {
     
-    init()
-    
     func lyricsPublisher(request: LyricsSearchRequest) -> AnyPublisher<Lyrics, Never>
 }
 
 protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
+    
+    static var service: LyricsProviders.Service { get }
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never>
     

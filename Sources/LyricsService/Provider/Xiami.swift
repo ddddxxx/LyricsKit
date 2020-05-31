@@ -17,12 +17,14 @@ import FoundationNetworking
 private let xiamiSearchBaseURLString = "http://api.xiami.com/web?"
 
 extension LyricsProviders {
-    public final class Xiami {}
+    public final class Xiami {
+        public init() {}
+    }
 }
 
 extension LyricsProviders.Xiami: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .xiami
+    public static let service: LyricsProviders.Service = .xiami
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<XiamiResponseSearchResult.Data.Song, Never> {
         let parameter: [String : Any] = [
@@ -60,9 +62,9 @@ extension LyricsProviders.Xiami: _LyricsProvider {
                 lrc.idTags[.artist] = token.artist_name
                 
                 lrc.metadata.remoteURL = lrcURL
-                lrc.metadata.source = .xiami
+                lrc.metadata.service = Self.service
                 lrc.metadata.artworkURL = token.album_logo
-                lrc.metadata.providerToken = token.lyric
+                lrc.metadata.serviceToken = token.lyric
                 return lrc
             }.ignoreError()
             .eraseToAnyPublisher()

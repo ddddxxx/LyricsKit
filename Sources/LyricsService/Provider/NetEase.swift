@@ -18,12 +18,14 @@ private let netEaseSearchBaseURLString = "http://music.163.com/api/search/pc?"
 private let netEaseLyricsBaseURLString = "http://music.163.com/api/song/lyric?"
 
 extension LyricsProviders {
-    public final class NetEase {}
+    public final class NetEase {
+            public init() {}
+    }
 }
 
 extension LyricsProviders.NetEase: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .netease
+    public static let service: LyricsProviders.Service = .netease
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<NetEaseResponseSearchResult.Result.Song, Never> {
         let parameter: [String: Any] = [
@@ -79,9 +81,9 @@ extension LyricsProviders.NetEase: _LyricsProvider {
                 lyrics.idTags[.lrcBy]   = $0.lyricUser?.nickname
                 
                 lyrics.length = Double(token.duration) / 1000
-                lyrics.metadata.source      = .netease
-                lyrics.metadata.artworkURL  = token.album.picUrl
-                lyrics.metadata.providerToken = "\(token.id)"
+                lyrics.metadata.artworkURL = token.album.picUrl
+                lyrics.metadata.service = Self.service
+                lyrics.metadata.serviceToken = "\(token.id)"
                 
                 return lyrics
             }.ignoreError()

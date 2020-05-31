@@ -18,12 +18,14 @@ private let gecimiLyricsBaseURL = URL(string: "http://gecimi.com/api/lyric")!
 private let gecimiCoverBaseURL = URL(string:"http://gecimi.com/api/cover")!
 
 extension LyricsProviders {
-    public final class Gecimi {}
+    public final class Gecimi {
+        public init() {}
+    }
 }
 
 extension LyricsProviders.Gecimi: _LyricsProvider {
     
-    public static let source: LyricsProviderSource = .gecimi
+    public static let service: LyricsProviders.Service = .gecimi
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<GecimiResponseSearchResult.Result, Never> {
         guard case let .info(title, artist) = request.searchTerm else {
@@ -53,8 +55,8 @@ extension LyricsProviders.Gecimi: _LyricsProvider {
                         return nil
                 }
                 lrc.metadata.remoteURL = token.lrc
-                lrc.metadata.source = .gecimi
-                lrc.metadata.providerToken = "\(token.aid),\(token.lrc)"
+                lrc.metadata.service = Self.service
+                lrc.metadata.serviceToken = "\(token.aid),\(token.lrc)"
                 return lrc
             }.ignoreError()
             .eraseToAnyPublisher()
