@@ -32,11 +32,10 @@ public struct LyricsLine {
 extension LyricsLine: Equatable {
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {
-        return lhs.content == rhs.content &&
+        return lhs.enabled == rhs.enabled &&
             lhs.position == rhs.position &&
-            // TODO: check attachments
-            // lhs.attachments == rhs.attachments &&
-            lhs.enabled == rhs.enabled
+            lhs.content == rhs.content &&
+            lhs.attachments == rhs.attachments
     }
 }
 

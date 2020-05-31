@@ -75,6 +75,22 @@ extension LyricsLine.Attachments {
     }
 }
 
+extension LyricsLine.Attachments: Equatable {
+    
+    public static func == (lhs: LyricsLine.Attachments, rhs: LyricsLine.Attachments) -> Bool {
+        guard lhs.content.count == rhs.content.count else {
+            return false
+        }
+        for (lkey, lvalue) in lhs.content {
+            guard let rvalue = rhs.content[lkey],
+                rvalue.description == lvalue.description else {
+                return false
+            }
+        }
+        return true
+    }
+}
+
 // MARK: - LyricsLine.Attachments.Tag
 
 extension LyricsLine.Attachments.Tag {
