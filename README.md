@@ -2,6 +2,38 @@
 
 Lyrics submodule for [LyricsX](https://github.com/ddddxxx/LyricsX).
 
+## Usage
+
+#### Search lyrics from the internet
+
+```swift
+import LyricsService
+
+// create a search request
+let song = "Tranquilize"
+let artist = "The Killers"
+let duration = 225.2
+let searchReq = LyricsSearchRequest(
+    searchTerm: .info(title: song, artist: artist),
+    title: song,
+    artist: artist,
+    duration: duration
+)
+
+// choose a lyrics service provider
+let provider = LyricsProviders.Kugou()
+// or search from multiple sources
+let provider = LyricsProviders.Group(service: [.kugou, .netease, .qq])
+
+// search
+provider.lyricsPublisher(request: searchReq).sink { lyrics in
+    print(lyrics)
+}
+```
+
+## License
+
+LyricsKit is part of LyricsX and licensed under MPL 2.0. See the [LICENSE file](LICENSE).
 
 ## LRCX file
 
