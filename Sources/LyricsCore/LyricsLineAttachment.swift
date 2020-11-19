@@ -45,6 +45,15 @@ extension LyricsLine.Attachments {
         }
     }
     
+    public var furigana: LyricsLine.Attachments.RangeAttribute? {
+        get {
+            return content[.furigana] as? LyricsLine.Attachments.RangeAttribute
+        }
+        set {
+            content[.furigana] = newValue
+        }
+    }
+    
     public func translation(languageCode: String? = nil) -> String? {
         let tag = languageCode.map(LyricsLine.Attachments.Tag.translation) ?? LyricsLine.Attachments.Tag.translation
         return (content[tag] as? LyricsLine.Attachments.PlainText)?.text
@@ -55,13 +64,12 @@ extension LyricsLine.Attachments {
         return content[tag] = LyricsLine.Attachments.createAttachment(str: str, tag: tag)
     }
     
-    public subscript(_ tag: String) -> String? {
+    public subscript(_ tag: LyricsLine.Attachments.Tag) -> String? {
         get {
-            return content[.init(tag)]?.description
+            return content[tag]?.description
         }
         set {
-            let t = LyricsLine.Attachments.Tag(tag)
-            content[t] = newValue.flatMap { LyricsLine.Attachments.createAttachment(str: $0, tag: t) }
+            content[tag] = newValue.flatMap { LyricsLine.Attachments.createAttachment(str: $0, tag: tag) }
         }
     }
     
@@ -158,6 +166,7 @@ extension LyricsLine.Attachments {
     public struct WordTimeTag: LyricsLineAttachment {
         
         public struct Tag {
+            
             public var index: Int
             public var timeTag: TimeInterval  // since the line begin
             
@@ -230,7 +239,7 @@ extension LyricsLine.Attachments {
 
     public struct RangeAttribute: LyricsLineAttachment {
         
-        public struct Tag {
+        public struct Attribute {
             
             public var content: String
             public var range: Range<Int>
@@ -241,23 +250,27 @@ extension LyricsLine.Attachments {
             }
         }
         
-        public var attachment: [Tag]
+        public var attributes: [Attribute]
         
         public var description: String {
-            return attachment.map { $0.description }.joined()
+            return attributes.map { $0.description }.joined()
+        }
+        
+        public init(attributes: [Attribute] = []) {
+            self.attributes = attributes
         }
         
         public init?(_ description: String) {
             let matchs = rangeAttachmentRegex.matches(in: description)
-            attachment = matchs.compactMap { Tag($0[1]!.string) }
-            guard !attachment.isEmpty else {
+            attributes = matchs.compactMap { Attribute($0[1]!.string) }
+            guard !attributes.isEmpty else {
                 return nil
             }
         }
     }
 }
 
-extension LyricsLine.Attachments.RangeAttribute.Tag: LosslessStringConvertible {
+extension LyricsLine.Attachments.RangeAttribute.Attribute: LosslessStringConvertible {
     
     public var description: String {
         return "<\(content),\(range.lowerBound),\(range.upperBound)>"

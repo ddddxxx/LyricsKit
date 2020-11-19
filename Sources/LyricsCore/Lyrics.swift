@@ -53,12 +53,11 @@ final public class Lyrics: LosslessStringConvertible {
             let timeTags = resolveTimeTag(timeTagStr)
             
             let attachmentTagStr = match[2]!.string
-            
             let attachmentStr = match[3]?.string ?? ""
             
             for timeTag in timeTags {
                 if case let .found(at: index) = lineIndex(of: timeTag) {
-                    lines[index].attachments[attachmentTagStr] = attachmentStr
+                    lines[index].attachments[.init(attachmentTagStr)] = attachmentStr
                 }
             }
             tags.insert(.init(attachmentTagStr))
