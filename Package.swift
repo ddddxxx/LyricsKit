@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.2
 
 import PackageDescription
 
@@ -6,7 +6,7 @@ let package = Package(
     name: "LyricsKit",
     platforms: [
         .macOS(.v10_10),
-        .iOS(.v8),
+        .iOS(.minimalToolChainSupported),
         .tvOS(.v9),
         .watchOS(.v2),
     ],
@@ -16,27 +16,44 @@ let package = Package(
             targets: ["LyricsCore", "LyricsService"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/cx-org/CombineX", .upToNextMinor(from: "0.2.0")),
-        .package(url: "https://github.com/cx-org/CXExtensions", .upToNextMinor(from: "0.2.1")),
+        .package(url: "https://github.com/cx-org/CombineX", .upToNextMinor(from: "0.3.0")),
+        .package(url: "https://github.com/cx-org/CXExtensions", .upToNextMinor(from: "0.3.0")),
         .package(url: "https://github.com/ddddxxx/Regex", .upToNextMinor(from: "0.2.0")),
         .package(url: "https://github.com/ddddxxx/SwiftCF", .upToNextMinor(from: "0.1.4")),
-        .package(url: "https://github.com/1024jp/GzipSwift", from: "5.0.0"),
+        .package(name: "Gzip", url: "https://github.com/1024jp/GzipSwift", from: "5.0.0"),
     ],
     targets: [
         .target(
             name: "LyricsCore",
-            dependencies: ["Regex", "SwiftCF"]),
+            dependencies: [
+                "Regex",
+                "SwiftCF"
+            ]),
         .target(
             name: "LyricsService",
-            dependencies: ["LyricsCore", "CXShim", "CXExtensions", "Regex", "Gzip"]),
+            dependencies: [
+                "LyricsCore",
+                .product(name: "CXShim", package: "CombineX"),
+                "CXExtensions",
+                "Regex",
+                "Gzip"
+            ]),
         .testTarget(
             name: "LyricsKitTests",
-            dependencies: ["LyricsCore", "LyricsService"]),
-    ],
-    swiftLanguageVersions: [
-        .v5
+            dependencies: [
+                "LyricsCore",
+                "LyricsService"
+            ]),
     ]
 )
+
+extension SupportedPlatform.IOSVersion {
+    #if compiler(>=5.3)
+    static var minimalToolChainSupported = SupportedPlatform.IOSVersion.v9
+    #else
+    static var minimalToolChainSupported = SupportedPlatform.IOSVersion.v8
+    #endif
+}
 
 enum CombineImplementation {
     
