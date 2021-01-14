@@ -57,7 +57,6 @@ extension LyricsProviders.Gecimi: _LyricsProvider {
                         return nil
                 }
                 lrc.metadata.remoteURL = token.lrc
-                lrc.metadata.service = Self.service
                 lrc.metadata.serviceToken = "\(token.aid),\(token.lrc)"
                 return lrc
             }.ignoreError()

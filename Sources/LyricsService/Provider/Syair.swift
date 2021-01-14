@@ -20,7 +20,7 @@ private let syairLyricsBaseURL = URL(string: "https://syair.info")!
 extension LyricsProviders {
     public final class Syair {
         public init() {}
-}
+    }
 }
 
 extension LyricsProviders.Syair: _LyricsProvider {
@@ -62,7 +62,6 @@ extension LyricsProviders.Syair: _LyricsProvider {
                     let lrc = Lyrics(lrcStr) else {
                         return nil
                 }
-                lrc.metadata.service = Self.service
                 lrc.metadata.serviceToken = token
                 return lrc
             }.ignoreError()

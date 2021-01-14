@@ -22,7 +22,7 @@ private let netEaseLyricsBaseURLString = "http://music.163.com/api/song/lyric?"
 
 extension LyricsProviders {
     public final class NetEase {
-            public init() {}
+        public init() {}
     }
 }
 
@@ -85,7 +85,6 @@ extension LyricsProviders.NetEase: _LyricsProvider {
                 
                 lyrics.length = Double(token.duration) / 1000
                 lyrics.metadata.artworkURL = token.album.picUrl
-                lyrics.metadata.service = Self.service
                 lyrics.metadata.serviceToken = "\(token.id)"
                 
                 return lyrics

@@ -21,7 +21,7 @@ private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query
 
 extension LyricsProviders {
     public final class QQMusic {
-            public init() {}
+        public init() {}
     }
 }
 
@@ -68,7 +68,6 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
                 lrc.idTags[.album] = token.albumname
                 
                 lrc.length = Double(token.interval)
-                lrc.metadata.service = Self.service
                 lrc.metadata.serviceToken = "\(token.songmid)"
                 if let id = Int(token.songmid) {
                     lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")

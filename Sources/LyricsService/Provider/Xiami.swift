@@ -64,7 +64,6 @@ extension LyricsProviders.Xiami: _LyricsProvider {
                 lrc.idTags[.artist] = token.artist_name
                 
                 lrc.metadata.remoteURL = lrcURL
-                lrc.metadata.service = Self.service
                 lrc.metadata.artworkURL = token.album_logo
                 lrc.metadata.serviceToken = token.lyric
                 return lrc

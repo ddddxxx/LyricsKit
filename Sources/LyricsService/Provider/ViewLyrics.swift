@@ -75,7 +75,6 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
                         return nil
                 }
                 lrc.metadata.remoteURL = url
-                lrc.metadata.service = Self.service
                 lrc.metadata.serviceToken = token.link
                 if let length = token.timelength, lrc.length == nil {
                     lrc.length = TimeInterval(length)
