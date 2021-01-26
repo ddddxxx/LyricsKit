@@ -24,7 +24,7 @@ jobs:
       - name: Swift Version
         run: swift --version
       - name: Build and Test
-        run: swift test
+        run: swift test --enable-test-discovery
 
   combine:
     runs-on: macOS-latest
