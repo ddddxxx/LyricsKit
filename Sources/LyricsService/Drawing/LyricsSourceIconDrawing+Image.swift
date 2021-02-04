@@ -59,9 +59,9 @@
         
         public static let defaultSize = CGSize(width: 48, height: 48)
         
-        public static func icon(of source: LyricsProviderSource, size: CGSize = defaultSize) -> UIImage {
+        public static func icon(of service: LyricsProviders.Service, size: CGSize = defaultSize) -> UIImage {
             UIGraphicsBeginImageContextWithOptions(size, false, 0)
-            source.drawingMethod?(CGRect(origin: .zero, size: size))
+            service.drawingMethod?(CGRect(origin: .zero, size: size))
             let image = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
             UIGraphicsEndImageContext()
             return image ?? UIImage()

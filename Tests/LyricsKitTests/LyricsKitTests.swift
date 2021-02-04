@@ -21,8 +21,4 @@ final class LyricsKitTests: XCTestCase {
     func testManager() {
         _test(provider: LyricsProviders.Group())
     }
-
-    static var allTests = [
-        ("testManager", testManager),
-    ]
 }
