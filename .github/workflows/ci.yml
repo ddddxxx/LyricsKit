@@ -15,6 +15,22 @@ jobs:
       - name: Build and Test
         run: swift test
 
+  ios:
+    runs-on: macOS-latest
+    env:
+      CX_COMBINE_IMPLEMENTATION: CombineX
+      CX_CONTINUOUS_INTEGRATION: "YES"
+    steps:
+      - uses: actions/checkout@v1
+      - name: Xcode Version
+        run: xcodebuild -version
+      - name: Build and Test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme LyricsKit \
+            -destination "platform=iOS Simulator,name=iPhone 12" | xcpretty
+
   linux:
     runs-on: ubuntu-latest
     container:

@@ -19,7 +19,7 @@ let package = Package(
         .package(url: "https://github.com/cx-org/CombineX", .upToNextMinor(from: "0.3.0")),
         .package(url: "https://github.com/cx-org/CXExtensions", .upToNextMinor(from: "0.3.0")),
         .package(url: "https://github.com/ddddxxx/Regex", .upToNextMinor(from: "0.2.0")),
-        .package(url: "https://github.com/ddddxxx/SwiftCF", .upToNextMinor(from: "0.1.4")),
+        .package(url: "https://github.com/ddddxxx/SwiftCF", .upToNextMinor(from: "0.1.5")),
         .package(name: "Gzip", url: "https://github.com/1024jp/GzipSwift", from: "5.0.0"),
     ],
     targets: [
