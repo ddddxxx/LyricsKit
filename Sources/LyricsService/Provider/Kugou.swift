@@ -70,7 +70,6 @@ extension LyricsProviders.Kugou: _LyricsProvider {
                 lrc.idTags[.lrcBy] = "Kugou"
                 
                 lrc.length = Double(token.duration)/1000
-                lrc.metadata.service = Self.service
                 lrc.metadata.serviceToken = "\(token.id),\(token.accesskey)"
                 return lrc
             }.ignoreError()
