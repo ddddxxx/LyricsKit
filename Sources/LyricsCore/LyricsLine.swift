@@ -31,13 +31,19 @@ public struct LyricsLine {
     }
 }
 
-extension LyricsLine: Equatable {
+extension LyricsLine: Equatable, Hashable {
     
     public static func ==(lhs: LyricsLine, rhs: LyricsLine) -> Bool {
         return lhs.enabled == rhs.enabled &&
             lhs.position == rhs.position &&
             lhs.content == rhs.content &&
             lhs.attachments == rhs.attachments
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(enabled)
+        hasher.combine(position)
+        hasher.combine(content)
     }
 }
 

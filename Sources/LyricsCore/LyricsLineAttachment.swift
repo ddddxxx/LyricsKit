@@ -85,7 +85,7 @@ extension LyricsLine.Attachments {
     }
 }
 
-extension LyricsLine.Attachments: Equatable {
+extension LyricsLine.Attachments: Equatable, Hashable {
     
     public static func == (lhs: LyricsLine.Attachments, rhs: LyricsLine.Attachments) -> Bool {
         guard lhs.content.count == rhs.content.count else {
@@ -98,6 +98,13 @@ extension LyricsLine.Attachments: Equatable {
             }
         }
         return true
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        for (key, value) in content {
+            hasher.combine(key)
+            hasher.combine(value.description)
+        }
     }
 }
 
