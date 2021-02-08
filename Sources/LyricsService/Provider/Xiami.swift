@@ -26,9 +26,13 @@ extension LyricsProviders {
 
 extension LyricsProviders.Xiami: _LyricsProvider {
     
+    public struct LyricsToken {
+        let value: XiamiResponseSearchResult.Data.Song
+    }
+    
     public static let service: LyricsProviders.Service = .xiami
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<XiamiResponseSearchResult.Data.Song, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         let parameter: [String : Any] = [
             "key": request.searchTerm.description,
             "limit": 10,
@@ -46,11 +50,12 @@ extension LyricsProviders.Xiami: _LyricsProvider {
             .map { $0.data.songs.filter { $0.lyric != nil } }
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
+            .map(LyricsToken.init)
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: XiamiResponseSearchResult.Data.Song) -> AnyPublisher<Lyrics, Never> {
-        guard let lrcURLStr = token.lyric,
+    public func lyricsFetchPublisher(token: LyricsToken) -> AnyPublisher<Lyrics, Never> {
+        guard let lrcURLStr = token.value.lyric,
             let lrcURL = URL(string: lrcURLStr) else {
                 return Empty().eraseToAnyPublisher()
         }
@@ -60,12 +65,12 @@ extension LyricsProviders.Xiami: _LyricsProvider {
                     let lrc = Lyrics(ttpodXtrcContent:lrcStr) else {
                         return nil
                 }
-                lrc.idTags[.title] = token.song_name
-                lrc.idTags[.artist] = token.artist_name
+                lrc.idTags[.title] = token.value.song_name
+                lrc.idTags[.artist] = token.value.artist_name
                 
                 lrc.metadata.remoteURL = lrcURL
-                lrc.metadata.artworkURL = token.album_logo
-                lrc.metadata.serviceToken = token.lyric
+                lrc.metadata.artworkURL = token.value.album_logo
+                lrc.metadata.serviceToken = token.value.lyric
                 return lrc
             }.ignoreError()
             .eraseToAnyPublisher()

@@ -27,7 +27,7 @@ extension LyricsProviders.Syair: _LyricsProvider {
     
     public static let service: LyricsProviders.Service = .syair
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<String, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<String, Never> {
         var parameter: [String: Any] = ["page": 1]
         switch request.searchTerm {
         case let .info(title: title, artist: artist):
@@ -48,7 +48,7 @@ extension LyricsProviders.Syair: _LyricsProvider {
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: String) -> AnyPublisher<Lyrics, Never> {
+    public func lyricsFetchPublisher(token: String) -> AnyPublisher<Lyrics, Never> {
         guard let url = URL(string: token, relativeTo: syairLyricsBaseURL) else {
             return Empty().eraseToAnyPublisher()
         }

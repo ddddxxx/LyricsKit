@@ -27,9 +27,13 @@ extension LyricsProviders {
 
 extension LyricsProviders.QQMusic: _LyricsProvider {
     
+    public struct LyricsToken {
+        let value: QQResponseSearchResult.Data.Song.Item
+    }
+    
     public static let service: LyricsProviders.Service = .qq
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<QQResponseSearchResult.Data.Song.Item, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         let parameter = ["w": request.searchTerm.description]
         let url = URL(string: qqSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
         
@@ -39,10 +43,12 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
             .map(\.data.song.list)
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
+            .map(LyricsToken.init)
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: QQResponseSearchResult.Data.Song.Item) -> AnyPublisher<Lyrics, Never> {
+    public func lyricsFetchPublisher(token: LyricsToken) -> AnyPublisher<Lyrics, Never> {
+        let token = token.value
         let parameter: [String: Any] = [
             "songmid": token.songmid,
             "g_tk": 5381

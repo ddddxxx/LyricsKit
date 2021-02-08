@@ -27,9 +27,13 @@ extension LyricsProviders {
 
 extension LyricsProviders.Kugou: _LyricsProvider {
     
+    public struct LyricsToken {
+        let value: KugouResponseSearchResult.Item
+    }
+    
     public static let service: LyricsProviders.Service = .kugou
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<KugouResponseSearchResult.Item, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         let parameter: [String: Any] = [
             "keyword": request.searchTerm.description,
             "duration": Int(request.duration * 1000),
@@ -44,10 +48,12 @@ extension LyricsProviders.Kugou: _LyricsProvider {
             .map(\.candidates)
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
+            .map(LyricsToken.init)
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: KugouResponseSearchResult.Item) -> AnyPublisher<Lyrics, Never> {
+    public func lyricsFetchPublisher(token: LyricsToken) -> AnyPublisher<Lyrics, Never> {
+        let token = token.value
         let parameter: [String: Any] = [
             "id": token.id,
             "accesskey": token.accesskey,

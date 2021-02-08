@@ -31,6 +31,10 @@ extension LyricsProviders {
 
 extension LyricsProviders.ViewLyrics: _LyricsProvider {
     
+    public struct LyricsToken {
+        var value: ViewLyricsResponseSearchResult
+    }
+    
     public static let service: LyricsProviders.Service = .viewLyrics
     
     func assembleQuery(artist: String, title: String, page: Int = 0) -> Data {
@@ -41,7 +45,7 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
         return header + queryhash + queryForm.data(using: .utf8)!
     }
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<ViewLyricsResponseSearchResult, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         guard case let .info(title, artist) = request.searchTerm else {
             // cannot search by keyword
             return Empty().eraseToAnyPublisher()
@@ -61,10 +65,12 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
             }
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
+            .map(LyricsToken.init)
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: ViewLyricsResponseSearchResult) -> AnyPublisher<Lyrics, Never> {
+    public func lyricsFetchPublisher(token: LyricsToken) -> AnyPublisher<Lyrics, Never> {
+        let token = token.value
         guard let url = URL(string: token.link, relativeTo: viewLyricsItemBaseURL) else {
             return Empty().eraseToAnyPublisher()
         }

@@ -19,12 +19,12 @@ let sharedURLSession = URLSession(configuration: .ephemeral)
 
 public enum LyricsProviders {}
 
-protocol LyricsProvider {
+public protocol LyricsProvider {
     
     func lyricsPublisher(request: LyricsSearchRequest) -> AnyPublisher<Lyrics, Never>
 }
 
-protocol _LyricsProvider: LyricsProvider {
+public protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     

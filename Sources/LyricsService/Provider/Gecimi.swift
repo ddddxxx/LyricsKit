@@ -27,9 +27,13 @@ extension LyricsProviders {
 
 extension LyricsProviders.Gecimi: _LyricsProvider {
     
+    public struct LyricsToken {
+        let value: GecimiResponseSearchResult.Result
+    }
+    
     public static let service: LyricsProviders.Service = .gecimi
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<GecimiResponseSearchResult.Result, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         guard case let .info(title, artist) = request.searchTerm else {
             // cannot search by keyword
             return Empty().eraseToAnyPublisher()
@@ -46,10 +50,12 @@ extension LyricsProviders.Gecimi: _LyricsProvider {
             .map(\.result)
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
+            .map(LyricsToken.init)
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: GecimiResponseSearchResult.Result) -> AnyPublisher<Lyrics, Never> {
+    public func lyricsFetchPublisher(token: LyricsToken) -> AnyPublisher<Lyrics, Never> {
+        let token = token.value
         return sharedURLSession.cx.dataTaskPublisher(for: token.lrc)
             .compactMap {
                 guard let lrcContent = String(data: $0.data, encoding: .utf8),

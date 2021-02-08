@@ -28,9 +28,13 @@ extension LyricsProviders {
 
 extension LyricsProviders.NetEase: _LyricsProvider {
     
+    public struct LyricsToken {
+        let value: NetEaseResponseSearchResult.Result.Song
+    }
+    
     public static let service: LyricsProviders.Service = .netease
     
-    func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<NetEaseResponseSearchResult.Result.Song, Never> {
+    public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         let parameter: [String: Any] = [
             "s": request.searchTerm.description,
             "offset": 0,
@@ -48,12 +52,13 @@ extension LyricsProviders.NetEase: _LyricsProvider {
             .map(\.songs)
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
+            .map(LyricsToken.init)
             .eraseToAnyPublisher()
     }
     
-    func lyricsFetchPublisher(token: NetEaseResponseSearchResult.Result.Song) -> AnyPublisher<Lyrics, Never> {
+    public func lyricsFetchPublisher(token: LyricsToken) -> AnyPublisher<Lyrics, Never> {
         let parameter: [String: Any] = [
-            "id": token.id,
+            "id": token.value.id,
             "lv": 1,
             "kv": 1,
             "tv": -1,
@@ -78,14 +83,14 @@ extension LyricsProviders.NetEase: _LyricsProvider {
                 // FIXME: merge inline time tags back to lyrics
                 // if let taggedLrc = (model.klyric?.lyric).flatMap(Lyrics.init(netEaseKLyricContent:))
                 
-                lyrics.idTags[.title]   = token.name
-                lyrics.idTags[.artist]  = token.artists.first?.name
-                lyrics.idTags[.album]   = token.album.name
+                lyrics.idTags[.title]   = token.value.name
+                lyrics.idTags[.artist]  = token.value.artists.first?.name
+                lyrics.idTags[.album]   = token.value.album.name
                 lyrics.idTags[.lrcBy]   = $0.lyricUser?.nickname
                 
-                lyrics.length = Double(token.duration) / 1000
-                lyrics.metadata.artworkURL = token.album.picUrl
-                lyrics.metadata.serviceToken = "\(token.id)"
+                lyrics.length = Double(token.value.duration) / 1000
+                lyrics.metadata.artworkURL = token.value.album.picUrl
+                lyrics.metadata.serviceToken = "\(token.value.id)"
                 
                 return lyrics
             }.ignoreError()
