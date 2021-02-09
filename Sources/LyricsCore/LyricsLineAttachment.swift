@@ -55,15 +55,14 @@ extension LyricsLine.Attachments {
     }
     
     public func translation(languageCodeCandidate: [String?] = []) -> String? {
-        if languageCodeCandidate.isEmpty {
-            return content[.translation()]?.description
-        }
-        for tag in languageCodeCandidate.map(Tag.translation) {
-            if let attachment = content[tag] as? PlainText {
-                return attachment.description
+        var tags = languageCodeCandidate.map(Tag.translation)
+        if tags.isEmpty {
+            tags.append(.translation())
+            if let tag = content.keys.first(where: \.isTranslation) {
+                tags.append(tag)
             }
         }
-        return nil
+        return tags.lazy.compactMap { (content[$0] as? PlainText)?.description }.first
     }
     
     public subscript(_ tag: Tag) -> String? {
