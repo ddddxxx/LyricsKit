@@ -36,35 +36,37 @@ extension LyricsLine {
 
 extension LyricsLine.Attachments {
     
-    public var timetag: LyricsLine.Attachments.WordTimeTag? {
+    public var timetag: WordTimeTag? {
         get {
-            return content[.timetag] as? LyricsLine.Attachments.WordTimeTag
+            return content[.timetag] as? WordTimeTag
         }
         set {
             content[.timetag] = newValue
         }
     }
     
-    public var furigana: LyricsLine.Attachments.RangeAttribute? {
+    public var furigana: RangeAttribute? {
         get {
-            return content[.furigana] as? LyricsLine.Attachments.RangeAttribute
+            return content[.furigana] as? RangeAttribute
         }
         set {
             content[.furigana] = newValue
         }
     }
     
-    public func translation(languageCode: String? = nil) -> String? {
-        let tag = languageCode.map(LyricsLine.Attachments.Tag.translation) ?? LyricsLine.Attachments.Tag.translation
-        return (content[tag] as? LyricsLine.Attachments.PlainText)?.text
+    public func translation(languageCodeCandidate: [String?] = []) -> String? {
+        if languageCodeCandidate.isEmpty {
+            return content[.translation()]?.description
+        }
+        for tag in languageCodeCandidate.map(Tag.translation) {
+            if let attachment = content[tag] as? PlainText {
+                return attachment.description
+            }
+        }
+        return nil
     }
     
-    public mutating func setTranslation(_ str: String, languageCode: String? = nil) {
-        let tag = languageCode.map(LyricsLine.Attachments.Tag.translation) ?? LyricsLine.Attachments.Tag.translation
-        return content[tag] = LyricsLine.Attachments.createAttachment(str: str, tag: tag)
-    }
-    
-    public subscript(_ tag: LyricsLine.Attachments.Tag) -> String? {
+    public subscript(_ tag: Tag) -> String? {
         get {
             return content[tag]?.description
         }
@@ -73,14 +75,14 @@ extension LyricsLine.Attachments {
         }
     }
     
-    static func createAttachment(str: String, tag: LyricsLine.Attachments.Tag) -> LyricsLineAttachment? {
+    static func createAttachment(str: String, tag: Tag) -> LyricsLineAttachment? {
         switch tag {
         case .timetag:
-            return LyricsLine.Attachments.WordTimeTag(str)
+            return WordTimeTag(str)
         case .furigana, .romaji:
-            return LyricsLine.Attachments.RangeAttribute(str)
+            return RangeAttribute(str)
         default:
-            return LyricsLine.Attachments.PlainText(str)
+            return PlainText(str)
         }
     }
 }
@@ -116,16 +118,15 @@ extension LyricsLine.Attachments.Tag {
         self.rawValue = rawValue
     }
     
-    public static let translation: LyricsLine.Attachments.Tag = "tr"
     public static let timetag: LyricsLine.Attachments.Tag = "tt"
     public static let furigana: LyricsLine.Attachments.Tag = "fu"
     public static let romaji: LyricsLine.Attachments.Tag = "ro"
     
-    public static func translation(languageCode: String) -> LyricsLine.Attachments.Tag {
-        if languageCode.isEmpty {
-            return .init("tr")
+    public static func translation(languageCode: String? = nil) -> LyricsLine.Attachments.Tag {
+        if let code = languageCode, !code.isEmpty {
+            return .init("tr:" + code)
         } else {
-            return .init("tr:" + languageCode)
+            return .init("tr")
         }
     }
     

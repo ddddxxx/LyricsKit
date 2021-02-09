@@ -54,8 +54,8 @@ extension Lyrics {
             }
             
             if let translationStr = match[4]?.string, !translationStr.isEmpty {
-                line.attachments.setTranslation(translationStr)
-                metadata.attachmentTags.insert(.translation)
+                line.attachments[.translation()] = translationStr
+                metadata.attachmentTags.insert(.translation())
             }
             
             return timeTags.map { timeTag in

@@ -21,7 +21,7 @@ extension Lyrics {
             if abs(lines[index].position - translation.lines[transIndex].position) < mergeTimetagThreshold {
                 let transStr = translation.lines[transIndex].content
                 if !transStr.isEmpty, transStr != "//" {
-                    lines[index].attachments.setTranslation(transStr)
+                    lines[index].attachments[.translation()] = transStr
                 }
                 lines.formIndex(after: &index)
                 translation.lines.formIndex(after: &transIndex)
@@ -31,7 +31,7 @@ extension Lyrics {
                 lines.formIndex(after: &index)
             }
         }
-        metadata.attachmentTags.insert(.translation)
+        metadata.attachmentTags.insert(.translation())
     }
     
     /// merge without maching timetag
@@ -42,9 +42,9 @@ extension Lyrics {
         for idx in lines.indices {
             let transStr = translation.lines[idx].content
             if !transStr.isEmpty, transStr != "//" {
-                lines[idx].attachments.setTranslation(transStr)
+                lines[idx].attachments[.translation()] = transStr
             }
         }
-        metadata.attachmentTags.insert(.translation)
+        metadata.attachmentTags.insert(.translation())
     }
 }

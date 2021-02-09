@@ -65,9 +65,9 @@ extension Lyrics {
             transContent.prefix(lines.count).enumerated().forEach { index, item in
                 guard !item.isEmpty else { return }
                 let str = item.joined(separator: " ")
-                lines[index].attachments.setTranslation(str)
+                lines[index].attachments[.translation()] = str
             }
-            metadata.attachmentTags.insert(.translation)
+            metadata.attachmentTags.insert(.translation())
         }
         
         guard !lines.isEmpty else {
