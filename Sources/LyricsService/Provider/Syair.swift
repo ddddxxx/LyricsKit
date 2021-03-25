@@ -40,7 +40,7 @@ extension LyricsProviders.Syair: _LyricsProvider {
         return sharedURLSession.cx.dataTaskPublisher(for: url)
             .map {
                 return String(data: $0.data, encoding: .utf8).map {
-                    return syairSearchResultRegex.matches(in: $0).compactMap { ($0.captures[1]?.string) }
+                    return syairSearchResultRegex.matches(in: $0).compactMap { ($0[1]?.string) }
                 } ?? []
             }
             .replaceError(with: [])

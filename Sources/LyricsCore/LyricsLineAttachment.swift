@@ -216,7 +216,7 @@ extension LyricsLine.Attachments {
                 return nil
             }
             if let match = timeLineAttachmentDurationRegex.firstMatch(in: description) {
-                durationMSec = Int(match[1]!.string)
+                durationMSec = Int(match[1]!.content)
             }
         }
     }

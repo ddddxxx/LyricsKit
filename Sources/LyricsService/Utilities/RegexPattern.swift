@@ -10,37 +10,30 @@
 import Foundation
 import Regex
 
-private let timeTagPattern = "\\[([-+]?\\d+):(\\d+(?:\\.\\d+)?)\\]"
-private let timeTagRegex = try! Regex(timeTagPattern)
+private let timeTagRegex = Regex(#"\[([-+]?\d+):(\d+(?:\.\d+)?)\]"#)
 func resolveTimeTag(_ str: String) -> [TimeInterval] {
     let matchs = timeTagRegex.matches(in: str)
     return matchs.map { match in
-        let min = Double(match[1]!.string)!
-        let sec = Double(match[2]!.string)!
+        let min = Double(match[1]!.content)!
+        let sec = Double(match[2]!.content)!
         return min * 60 + sec
     }
 }
 
-private let id3TagPattern = "^(?!\\[[+-]?\\d+:\\d+(?:\\.\\d+)?\\])\\[(.+?):(.+)\\]$"
-let id3TagRegex = try! Regex(id3TagPattern, options: .anchorsMatchLines)
+let id3TagRegex = Regex(#"^(?!\[[+-]?\d+:\d+(?:\.\d+)?\])\[(.+?):(.+)\]$"#, options: .anchorsMatchLines)
 
-private let krcLinePattern = "^\\[(\\d+),(\\d+)\\](.*)"
-let krcLineRegex = try! Regex(krcLinePattern, options: .anchorsMatchLines)
+let krcLineRegex = Regex(#"^\[(\d+),(\d+)\](.*)"#, options: .anchorsMatchLines)
 
-private let netEaseInlineTagPattern = "\\(0,(\\d+)\\)([^(]+)(\\(0,1\\) )?"
-let netEaseInlineTagRegex = try! Regex(netEaseInlineTagPattern)
+let netEaseInlineTagRegex = Regex(#"\(0,(\d+)\)([^(]+)(\(0,1\) )?"#)
 
-private let kugouInlineTagPattern = "<(\\d+),(\\d+),0>([^<]*)"
-let kugouInlineTagRegex = try! Regex(kugouInlineTagPattern)
+let kugouInlineTagRegex = Regex(#"<(\d+),(\d+),0>([^<]*)"#)
 
-private let ttpodXtrcLinePattern = #"^((?:\[[+-]?\d+:\d+(?:\.\d+)?\])+)(?:((?:<\d+>[^<\r\n]+)+)|(.*))$(?:[\r\n]+\[x\-trans\](.*))?"#
-let ttpodXtrcLineRegex = try! Regex(ttpodXtrcLinePattern, options: .anchorsMatchLines)
+let ttpodXtrcLineRegex = Regex(
+    #"^((?:\[[+-]?\d+:\d+(?:\.\d+)?\])+)(?:((?:<\d+>[^<\r\n]+)+)|(.*))$(?:[\r\n]+\[x\-trans\](.*))?"#,
+    options: .anchorsMatchLines)
 
-private let ttpodXtrcInlineTagPattern = #"<(\d+)>([^<\r\n]*)"#
-let ttpodXtrcInlineTagRegex = try! Regex(ttpodXtrcInlineTagPattern)
+let ttpodXtrcInlineTagRegex = Regex(#"<(\d+)>([^<\r\n]*)"#)
 
-private let syairSearchResultPattern = "<div class=\"title\"><a href=\"([^\"]+)\">"
-let syairSearchResultRegex = try! Regex(syairSearchResultPattern)
+let syairSearchResultRegex = Regex(#"<div class="title"><a href="([^"]+)">"#)
 
-private let syairLyricsContentPattern = "<div class=\"entry\">(.+?)<div"
-let syairLyricsContentRegex = try! Regex(syairLyricsContentPattern, options: .dotMatchesLineSeparators)
+let syairLyricsContentRegex = Regex(#"<div class="entry">(.+?)<div"#, options: .dotMatchesLineSeparators)

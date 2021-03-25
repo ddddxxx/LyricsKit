@@ -19,8 +19,8 @@ final public class Lyrics: LosslessStringConvertible {
     
     public init?(_ description: String) {
         id3TagRegex.matches(in: description).forEach { match in
-            if let key = match[1]?.string.trimmingCharacters(in: .whitespaces),
-                let value = match[2]?.string.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !value.isEmpty {
                 idTags[.init(key)] = value
             }
@@ -146,8 +146,8 @@ extension Lyrics {
                 let match = base60TimeRegex.firstMatch(in: len) else {
                     return nil
             }
-            let min = (match[1]?.string).flatMap(Double.init) ?? 0
-            let sec = Double(match[2]!.string) ?? 0
+            let min = (match[1]?.content).flatMap(Double.init) ?? 0
+            let sec = Double(match[2]!.content) ?? 0
             return min * 60 + sec
         }
         set {

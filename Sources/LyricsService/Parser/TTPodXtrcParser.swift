@@ -20,8 +20,8 @@ extension Lyrics {
         }
         self.init()
         id3TagRegex.matches(in: content).forEach { match in
-            if let key = match[1]?.string.trimmingCharacters(in: .whitespaces),
-                let value = match[2]?.string.trimmingCharacters(in: .whitespaces),
+            if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
+                let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
                 !key.isEmpty,
                 !value.isEmpty {
                 idTags[.init(key)] = value
@@ -40,9 +40,9 @@ extension Lyrics {
                 var timetagAttachment = LyricsLine.Attachments.WordTimeTag(tags: [.init(timeTag: 0, index: 0)])
                 var dt = 0.0
                 ttpodXtrcInlineTagRegex.matches(in: content, range: match[2]!.range).forEach { m in
-                    let timeTagStr = m[1]!.string
+                    let timeTagStr = m[1]!.content
                     let timeTag = TimeInterval(timeTagStr)! / 1000
-                    let fragment = m[2]!.string
+                    let fragment = m[2]!.content
                     guard !fragment.isEmpty else { return }
                     lineContent += fragment
                     dt += timeTag
