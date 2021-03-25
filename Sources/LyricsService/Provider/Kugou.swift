@@ -43,7 +43,7 @@ extension LyricsProviders.Kugou: _LyricsProvider {
             ]
         let url = URL(string: kugouSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
         return sharedURLSession.cx.dataTaskPublisher(for: url)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: KugouResponseSearchResult.self, decoder: JSONDecoder().cx)
             .map(\.candidates)
             .replaceError(with: [])
@@ -64,7 +64,7 @@ extension LyricsProviders.Kugou: _LyricsProvider {
         ]
         let url = URL(string: kugouLyricsBaseURLString + "?" + parameter.stringFromHttpParameters)!
         return sharedURLSession.cx.dataTaskPublisher(for: url)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: KugouResponseSingleLyrics.self, decoder: JSONDecoder().cx)
             .compactMap {
                 guard let lrcContent = decryptKugouKrc($0.content),

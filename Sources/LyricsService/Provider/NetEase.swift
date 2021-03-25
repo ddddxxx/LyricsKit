@@ -47,7 +47,7 @@ extension LyricsProviders.NetEase: _LyricsProvider {
         req.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
         
         return sharedURLSession.cx.dataTaskPublisher(for: req)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: NetEaseResponseSearchResult.self, decoder: JSONDecoder().cx)
             .map(\.songs)
             .replaceError(with: [])
@@ -65,7 +65,7 @@ extension LyricsProviders.NetEase: _LyricsProvider {
         ]
         let url = URL(string: netEaseLyricsBaseURLString + parameter.stringFromHttpParameters)!
         return sharedURLSession.cx.dataTaskPublisher(for: url)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: NetEaseResponseSingleLyrics.self, decoder: JSONDecoder().cx)
             .compactMap {
                 let lyrics: Lyrics
@@ -98,7 +98,7 @@ extension LyricsProviders.NetEase: _LyricsProvider {
     }
 }
 
-private let netEaseTimeTagFixer = try! Regex(#"(\[\d+:\d+):(\d+\])"#)
+private let netEaseTimeTagFixer = Regex(#"(\[\d+:\d+):(\d+\])"#)
 
 private extension NetEaseResponseSingleLyrics.Lyric {
     var fixedLyric: String? {

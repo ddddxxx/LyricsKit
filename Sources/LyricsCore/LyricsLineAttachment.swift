@@ -197,7 +197,7 @@ extension LyricsLine.Attachments {
         }
         
         public var description: String {
-            var result = tags.map { $0.description }.joined()
+            var result = tags.map(\.description).joined()
             if let durationMSec = durationMSec {
                 result += "<\(durationMSec)>"
             }
@@ -260,7 +260,7 @@ extension LyricsLine.Attachments {
         public var attributes: [Attribute]
         
         public var description: String {
-            return attributes.map { $0.description }.joined()
+            return attributes.map(\.description).joined()
         }
         
         public init(attributes: [Attribute] = []) {

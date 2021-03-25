@@ -70,7 +70,7 @@ enum CombineImplementation {
     }
     
     init?(_ description: String) {
-        let desc = description.lowercased().filter { $0.isLetter }
+        let desc = description.lowercased().filter(\.isLetter)
         switch desc {
         case "combine":     self = .combine
         case "combinex":    self = .combineX
@@ -90,5 +90,5 @@ extension ProcessInfo {
 import Foundation
 
 if ProcessInfo.processInfo.combineImplementation == .combine {
-    package.platforms = [.macOS("10.15"), .iOS("13.0"), .tvOS("13.0"), .watchOS("6.0")]
+    package.platforms = [.macOS(.v10_15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6)]
 }

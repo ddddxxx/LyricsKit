@@ -45,7 +45,7 @@ extension LyricsProviders.Gecimi: _LyricsProvider {
         let req = URLRequest(url: url)
         
         return sharedURLSession.cx.dataTaskPublisher(for: req)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: GecimiResponseSearchResult.self, decoder: JSONDecoder().cx)
             .map(\.result)
             .replaceError(with: [])

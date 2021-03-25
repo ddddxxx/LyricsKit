@@ -21,8 +21,6 @@ extension Lyrics.MetaData {
     }
     
     public var hasTranslation: Bool {
-        return attachmentTags.contains { tag in
-            tag.isTranslation
-        }
+        return attachmentTags.contains(where: \.isTranslation)
     }
 }

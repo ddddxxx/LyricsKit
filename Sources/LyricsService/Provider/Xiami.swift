@@ -45,9 +45,9 @@ extension LyricsProviders.Xiami: _LyricsProvider {
         req.httpMethod = "POST"
         req.setValue("http://h.xiami.com/", forHTTPHeaderField: "Referer")
         return sharedURLSession.cx.dataTaskPublisher(for: req)
-            .map { $0.data }
+            .map(\.data)
             .decode(type: XiamiResponseSearchResult.self, decoder: JSONDecoder().cx)
-            .map { $0.data.songs.filter { $0.lyric != nil } }
+            .map(\.data.songs)
             .replaceError(with: [])
             .flatMap(Publishers.Sequence.init)
             .map(LyricsToken.init)

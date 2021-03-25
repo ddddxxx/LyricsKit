@@ -71,7 +71,7 @@ final public class Lyrics: LosslessStringConvertible {
     
     public var description: String {
         let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" }
-            + lines.map { $0.description }
+            + lines.map(\.description)
         return components.joined(separator: "\n")
     }
     
@@ -193,7 +193,7 @@ extension Lyrics {
         case let .notFound(insertAt: i): index = i
         }
         let current = (0..<index).reversed().first { lines[$0].enabled }
-        let next = lines[index...].firstIndex { $0.enabled }
+        let next = lines[index...].firstIndex(where: \.enabled)
         return (current, next)
     }
 }
