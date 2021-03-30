@@ -25,7 +25,7 @@ private extension LyricsLine {
     
     mutating func generateFurigana() {
         var attachment = LyricsLine.Attachments.RangeAttribute(attributes: [])
-        let tokenizer = CFStringTokenizer.create(string: content._bridgeToCoreFoundation())
+        let tokenizer = CFStringTokenizer.create(string: .from(content))
         for tokenType in IteratorSequence(tokenizer) where tokenType.contains(.isCJWordMask) {
             if let (furigana, range) = tokenizer.currentFuriganaAnnotation(in: content) {
                 let charRange = content.characterRange(range)
@@ -49,10 +49,10 @@ private extension String {
         if #available(macOS 10.11, iOS 9.0, tvOS 9.0, watchOS 2.0, *) {
             return applyingTransform(.latinToHiragana, reverse: false)
         }
-        let str = self._bridgeToCoreFoundation().mutableCopy()
+        let str = CFString.from(self).mutableCopy()
         var range = str.fullRange
         guard CFStringTransform(str, &range, kCFStringTransformLatinHiragana, false) else { return nil }
-        return String._bridgeFromCoreFoundation(str)
+        return str as String
     }
 }
 
@@ -64,7 +64,7 @@ private extension CFStringTokenizer {
         }
         let tokenStr = string[tokenRange]
         guard tokenStr.unicodeScalars.contains(where: CharacterSet.kanji.contains),
-              let latin = currentTokenAttribute(.latinTranscription).map(String._bridgeFromCoreFoundation),
+              let latin: String = currentTokenAttribute(.latinTranscription)?.asSwift(),
             let hiragana = latin.transformLatinToHiragana(),
             let (rangeToAnnotate, rangeInAnnotation) = rangeOfUncommonContent(tokenStr, hiragana) else {
                 return nil

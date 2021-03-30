@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/cx-org/CombineX",
         "state": {
           "branch": null,
-          "revision": "96cd76ccddac5d0493ebd91d69f1e6e9ccb58f5f",
-          "version": "0.3.0"
+          "revision": "b9afefe14653f02a80a9f5aa546859e99073d0c8",
+          "version": "0.3.1"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/ddddxxx/SwiftCF",
         "state": {
           "branch": null,
-          "revision": "845455788ed18a7885eca3c00114372d6ba1aa4c",
-          "version": "0.1.6"
+          "revision": "8d0425466f0660826a26ad3d77df447ecf6950a3",
+          "version": "0.2.0"
         }
       }
     ]
