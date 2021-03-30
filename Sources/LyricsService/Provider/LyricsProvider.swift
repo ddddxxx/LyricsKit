@@ -11,12 +11,6 @@ import Foundation
 import LyricsCore
 import CXShim
 
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-let sharedURLSession = URLSession(configuration: .ephemeral)
-
 public enum LyricsProviders {}
 
 public protocol LyricsProvider {
