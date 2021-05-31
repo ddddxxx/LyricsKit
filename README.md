@@ -2,6 +2,17 @@
 
 Lyrics submodule for [LyricsX](https://github.com/ddddxxx/LyricsX).
 
+## Supported Sources
+
+- NetEase Music
+- QQ Music
+- Kugou Music
+- Xiami Music
+- TTPod
+- Gecimi
+- Syair
+- ViewLyrics
+
 ## Usage
 
 #### Search lyrics from the internet
