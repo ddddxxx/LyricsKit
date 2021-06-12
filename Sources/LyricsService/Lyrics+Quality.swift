@@ -10,13 +10,15 @@
 import Foundation
 import LyricsCore
 
-private let translationFactor = 0.1
-private let wordTimeTagFactor = 0.1
+private let translationBonus = 0.1
+private let inlineTimeTagBonus = 0.1
 private let matchedArtistFactor = 1.3
 private let matchedTitleFactor = 1.5
-private let noArtistFactor = 0.7
-private let noTitleFactor = 0.7
-private let noDurationFactor = 0.7
+private let noArtistFactor = 0.8
+private let noTitleFactor = 0.8
+private let noDurationFactor = 0.8
+private let minimalDurationQuality = 0.5
+private let qualityMixBound = 1.05
 
 extension Lyrics {
     
@@ -24,12 +26,12 @@ extension Lyrics {
         if let quality = metadata.quality {
             return quality
         }
-        var quality = artistQuality + titleQuality + durationQuality
+        var quality = 1 - pow((qualityMixBound - artistQuality) * (qualityMixBound - titleQuality) * (qualityMixBound - durationQuality), 0.3333)
         if metadata.hasTranslation {
-            quality += translationFactor
+            quality += translationBonus
         }
         if metadata.attachmentTags.contains(.timetag) {
-            quality += wordTimeTagFactor
+            quality += inlineTimeTagBonus
         }
         metadata.quality = quality
         return quality
@@ -86,16 +88,10 @@ extension Lyrics {
                 return noDurationFactor
         }
         let dt = searchDuration - duration
-        switch abs(dt) {
-        case 0...1:
-            return 1
-        case 1...4:
-            return 0.9
-        case 4...10:
-            return 0.8
-        case _:
-            return 0.7
+        guard dt < 10 else {
+            return minimalDurationQuality
         }
+        return 1 - pow(1 - (dt / 10), 2) * (1 - minimalDurationQuality)
     }
 }
 
