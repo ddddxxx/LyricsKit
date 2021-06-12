@@ -29,7 +29,7 @@ private extension LyricsLine {
         for tokenType in IteratorSequence(tokenizer) where tokenType.contains(.isCJWordMask) {
             if let (furigana, range) = tokenizer.currentFuriganaAnnotation(in: content) {
                 let charRange = content.characterRange(range)
-                let attribute = LyricsLine.Attachments.RangeAttribute.Attribute(content: furigana, range: charRange)
+                let attribute = LyricsLine.Attachments.RangeAttribute.Attribute(range: charRange, content: furigana)
                 attachment.attributes.append(attribute)
             }
         }

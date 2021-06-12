@@ -40,7 +40,7 @@ extension Lyrics {
             let duration = TimeInterval(durationStr)! / 1000
             
             var lineContent = ""
-            var attachment = LyricsLine.Attachments.WordTimeTag(tags: [.init(timeTag: 0, index: 0)], duration: duration)
+            var attachment = LyricsLine.Attachments.InlineTimeTag(tags: [.init(index: 0, time: 0)], duration: duration)
             kugouInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
                 let t1 = Int(m[1]!.content)!
                 let t2 = Int(m[2]!.content)!
@@ -49,7 +49,7 @@ extension Lyrics {
                 let prevCount = lineContent.count
                 lineContent += fragment
                 if lineContent.count > prevCount {
-                    attachment.tags.append(.init(timeTag: t, index: lineContent.count))
+                    attachment.tags.append(.init(index: lineContent.count, time: t))
                 }
             }
             

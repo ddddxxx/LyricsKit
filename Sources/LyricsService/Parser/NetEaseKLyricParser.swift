@@ -31,7 +31,7 @@ extension Lyrics {
             let duration = TimeInterval(durationStr)! / 1000
             
             var lineContent = ""
-            var attachment = LyricsLine.Attachments.WordTimeTag(tags: [.init(timeTag: 0, index: 0)], duration: duration)
+            var attachment = LyricsLine.Attachments.InlineTimeTag(tags: [.init(index: 0, time: 0)], duration: duration)
             var dt = 0.0
             netEaseInlineTagRegex.matches(in: content, range: match[3]!.range).forEach { m in
                 let timeTagStr = m[1]!.content
@@ -43,7 +43,7 @@ extension Lyrics {
                 }
                 lineContent += fragment
                 dt += timeTag
-                attachment.tags.append(.init(timeTag: dt, index: lineContent.count))
+                attachment.tags.append(.init(index: lineContent.count, time: dt))
             }
             
             let att = LyricsLine.Attachments(attachments: [.timetag: attachment])

@@ -37,7 +37,7 @@ extension Lyrics {
                 line = LyricsLine(content: plainText, position: 0)
             } else {
                 var lineContent = ""
-                var timetagAttachment = LyricsLine.Attachments.WordTimeTag(tags: [.init(timeTag: 0, index: 0)])
+                var timetagAttachment = LyricsLine.Attachments.InlineTimeTag(tags: [.init(index: 0, time: 0)])
                 var dt = 0.0
                 ttpodXtrcInlineTagRegex.matches(in: content, range: match[2]!.range).forEach { m in
                     let timeTagStr = m[1]!.content
@@ -46,7 +46,7 @@ extension Lyrics {
                     guard !fragment.isEmpty else { return }
                     lineContent += fragment
                     dt += timeTag
-                    timetagAttachment.tags.append(.init(timeTag: dt, index: lineContent.count))
+                    timetagAttachment.tags.append(.init(index: lineContent.count, time: dt))
                 }
                 
                 let att = LyricsLine.Attachments(attachments: [.timetag: timetagAttachment])

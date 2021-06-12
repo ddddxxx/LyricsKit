@@ -36,9 +36,9 @@ extension LyricsLine {
 
 extension LyricsLine.Attachments {
     
-    public var timetag: WordTimeTag? {
+    public var timetag: InlineTimeTag? {
         get {
-            return content[.timetag] as? WordTimeTag
+            return content[.timetag] as? InlineTimeTag
         }
         set {
             content[.timetag] = newValue
@@ -77,7 +77,7 @@ extension LyricsLine.Attachments {
     static func createAttachment(str: String, tag: Tag) -> LyricsLineAttachment? {
         switch tag {
         case .timetag:
-            return WordTimeTag(str)
+            return InlineTimeTag(str)
         case .furigana, .romaji:
             return RangeAttribute(str)
         default:
@@ -166,24 +166,24 @@ extension LyricsLine.Attachments {
     }
 }
 
-// MARK: - LyricsLine.Attachments.WordTimeTag
+// MARK: - LyricsLine.Attachments.InlineTimeTag
 
 extension LyricsLine.Attachments {
 
-    public struct WordTimeTag: LyricsLineAttachment {
+    public struct InlineTimeTag: LyricsLineAttachment {
         
         public struct Tag {
             
             public var index: Int
-            public var timeTag: TimeInterval  // since the line begin
+            public var time: TimeInterval  // time offset since the line begining
             
-            public var timeTagMSec: Int {
-                get { return Int(timeTag * 1000) }
-                set { timeTag = TimeInterval(newValue) / 1000 }
+            public var timeMSec: Int {
+                get { return Int(time * 1000) }
+                set { time = TimeInterval(newValue) / 1000 }
             }
             
-            public init(timeTag: TimeInterval, index: Int) {
-                self.timeTag = timeTag
+            public init(index: Int, time: TimeInterval) {
+                self.time = time
                 self.index = index
             }
         }
@@ -222,10 +222,10 @@ extension LyricsLine.Attachments {
     }
 }
 
-extension LyricsLine.Attachments.WordTimeTag.Tag: LosslessStringConvertible {
+extension LyricsLine.Attachments.InlineTimeTag.Tag: LosslessStringConvertible {
     
     public var description: String {
-        return "<\(timeTagMSec),\(index)>"
+        return "<\(timeMSec),\(index)>"
     }
     
     public init?(_ description: String) {
@@ -235,7 +235,7 @@ extension LyricsLine.Attachments.WordTimeTag.Tag: LosslessStringConvertible {
             let index = Int(components[1]) else {
                 return nil
         }
-        self.timeTag = TimeInterval(msec) / 1000
+        self.time = TimeInterval(msec) / 1000
         self.index = index
     }
 }
@@ -248,12 +248,12 @@ extension LyricsLine.Attachments {
         
         public struct Attribute {
             
-            public var content: String
             public var range: Range<Int>
+            public var content: String
             
-            public init(content: String, range: Range<Int>) {
-                self.content = content
+            public init(range: Range<Int>, content: String) {
                 self.range = range
+                self.content = content
             }
         }
         
