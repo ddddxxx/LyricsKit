@@ -11,38 +11,38 @@
 
 #if canImport(Cocoa)
     
-    import Cocoa
+import Cocoa
+
+typealias BezierPath = NSBezierPath
+typealias Color = NSColor
+
+extension BezierPath {
     
-    typealias BezierPath = NSBezierPath
-    typealias Color = NSColor
-    
-    extension BezierPath {
-        
-        var usesEvenOddFillRule: Bool {
-            get {
-                return windingRule == .evenOdd
-            }
-            set {
-                windingRule = newValue ? .evenOdd : .nonZero
-            }
+    var usesEvenOddFillRule: Bool {
+        get {
+            return windingRule == .evenOdd
         }
-        
-        func addLine(to point: NSPoint) {
-            line(to: point)
+        set {
+            windingRule = newValue ? .evenOdd : .nonZero
         }
-        
-        func addCurve(to endPoint: NSPoint, controlPoint1: NSPoint, controlPoint2: NSPoint) {
-            curve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
-        }
-        
     }
+    
+    func addLine(to point: NSPoint) {
+        line(to: point)
+    }
+    
+    func addCurve(to endPoint: NSPoint, controlPoint1: NSPoint, controlPoint2: NSPoint) {
+        curve(to: endPoint, controlPoint1: controlPoint1, controlPoint2: controlPoint2)
+    }
+    
+}
     
 #elseif canImport(UIKit)
     
-    import UIKit
-    
-    typealias BezierPath = UIBezierPath
-    typealias Color = UIColor
+import UIKit
+
+typealias BezierPath = UIBezierPath
+typealias Color = UIColor
     
 #endif
 
