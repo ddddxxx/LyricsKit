@@ -13,11 +13,20 @@ final public class Lyrics: LosslessStringConvertible {
     
     public var lines: [LyricsLine] = []
     public var idTags: [IDTagKey: String] = [:]
-    public var metadata: MetaData = MetaData()
+    public var metadata: Metadata = Metadata()
     
-    public init() {}
+    public init(lines: [LyricsLine], idTags: [IDTagKey: String], metadata: Metadata = Metadata()) {
+        self.lines = lines
+        self.idTags = idTags
+        self.metadata = metadata
+        for idx in self.lines.indices {
+            self.lines[idx].lyrics = self
+        }
+        self.metadata.attachmentTags = Set(self.lines.flatMap(\.attachments.content.keys))
+    }
     
-    public init?(_ description: String) {
+    public convenience init?(_ description: String) {
+        var idTags: [IDTagKey: String] = [:]
         id3TagRegex.matches(in: description).forEach { match in
             if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
                 let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
@@ -26,7 +35,7 @@ final public class Lyrics: LosslessStringConvertible {
             }
         }
         
-        lines = lyricsLineRegex.matches(in: description).flatMap { match -> [LyricsLine] in
+        let lines = lyricsLineRegex.matches(in: description).flatMap { match -> [LyricsLine] in
             let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
@@ -40,12 +49,16 @@ final public class Lyrics: LosslessStringConvertible {
             return timeTags.map { timeTag in
                 var l = line
                 l.position = timeTag
-                l.lyrics = self
                 return l
             }
         }.sorted {
             $0.position < $1.position
         }
+        
+        guard !lines.isEmpty else {
+            return nil
+        }
+        self.init(lines: lines, idTags: idTags)
         
         var tags: Set<LyricsLine.Attachments.Tag> = []
         lyricsLineAttachmentRegex.matches(in: description).forEach { match in
@@ -57,16 +70,12 @@ final public class Lyrics: LosslessStringConvertible {
             
             for timeTag in timeTags {
                 if case let .found(at: index) = lineIndex(of: timeTag) {
-                    lines[index].attachments[.init(attachmentTagStr)] = attachmentStr
+                    self.lines[index].attachments[.init(attachmentTagStr)] = attachmentStr
                 }
             }
             tags.insert(.init(attachmentTagStr))
         }
         metadata.data[.attachmentTags] = tags
-        
-        guard !lines.isEmpty else {
-            return nil
-        }
     }
     
     public var description: String {
@@ -101,9 +110,13 @@ final public class Lyrics: LosslessStringConvertible {
         public static let length = IDTagKey("length")
     }
     
-    public struct MetaData {
+    public struct Metadata {
         
-        public var data: [Key: Any] = [:]
+        public var data: [Key: Any]
+        
+        public init(data: [Key: Any] = [:]) {
+            self.data = data
+        }
         
         public struct Key: RawRepresentable, Hashable {
             
@@ -211,7 +224,7 @@ extension Lyrics {
 
 // MARK: CustomStringConvertible
 
-extension Lyrics.MetaData: CustomStringConvertible {
+extension Lyrics.Metadata: CustomStringConvertible {
     
     public var description: String {
         return Mirror(reflecting: self).children.map { "[\($0!):\($1)]" }.joined(separator: "\n")

@@ -9,11 +9,11 @@
 
 import Foundation
 
-extension Lyrics.MetaData.Key {
-    public static var attachmentTags = Lyrics.MetaData.Key("attachmentTags")
+extension Lyrics.Metadata.Key {
+    public static var attachmentTags = Lyrics.Metadata.Key("attachmentTags")
 }
 
-extension Lyrics.MetaData {
+extension Lyrics.Metadata {
     
     public var attachmentTags: Set<LyricsLine.Attachments.Tag> {
         get { return data[.attachmentTags] as? Set<LyricsLine.Attachments.Tag> ?? [] }

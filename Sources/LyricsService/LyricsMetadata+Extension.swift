@@ -1,5 +1,5 @@
 //
-//  LyricsMetaData+Extension.swift
+//  LyricsMetadata+Extension.swift
 //  LyricsX - https://github.com/ddddxxx/LyricsX
 //
 //  This Source Code Form is subject to the terms of the Mozilla Public
@@ -10,18 +10,18 @@
 import Foundation
 import LyricsCore
 
-extension Lyrics.MetaData.Key {
-    public static var request       = Lyrics.MetaData.Key("request")
-    public static var remoteURL     = Lyrics.MetaData.Key("remoteURL")
-    public static var artworkURL    = Lyrics.MetaData.Key("artworkURL")
-    public static var service       = Lyrics.MetaData.Key("service")
-    public static var serviceToken  = Lyrics.MetaData.Key("serviceToken")
-    static var quality              = Lyrics.MetaData.Key("quality")
+extension Lyrics.Metadata.Key {
+    public static var request       = Lyrics.Metadata.Key("request")
+    public static var remoteURL     = Lyrics.Metadata.Key("remoteURL")
+    public static var artworkURL    = Lyrics.Metadata.Key("artworkURL")
+    public static var service       = Lyrics.Metadata.Key("service")
+    public static var serviceToken  = Lyrics.Metadata.Key("serviceToken")
+    static var quality              = Lyrics.Metadata.Key("quality")
     
-    static var searchIndex          = Lyrics.MetaData.Key("searchIndex")
+    static var searchIndex          = Lyrics.Metadata.Key("searchIndex")
 }
 
-extension Lyrics.MetaData {
+extension Lyrics.Metadata {
     
     public var request: LyricsSearchRequest? {
         get { return data[.request] as? LyricsSearchRequest }

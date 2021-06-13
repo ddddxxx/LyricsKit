@@ -18,7 +18,7 @@ extension Lyrics {
             self.init(content)
             return
         }
-        self.init()
+        var idTags: [IDTagKey: String] = [:]
         id3TagRegex.matches(in: content).forEach { match in
             if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
                 let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
@@ -28,7 +28,7 @@ extension Lyrics {
             }
         }
         
-        lines = lineMatchs.flatMap { match -> [LyricsLine] in
+        let lines = lineMatchs.flatMap { match -> [LyricsLine] in
             let timeTagStr = match[1]!.string
             let timeTags = resolveTimeTag(timeTagStr)
             
@@ -55,22 +55,19 @@ extension Lyrics {
             
             if let translationStr = match[4]?.string, !translationStr.isEmpty {
                 line.attachments[.translation()] = translationStr
-                metadata.attachmentTags.insert(.translation())
             }
             
             return timeTags.map { timeTag in
                 var l = line
                 l.position = timeTag
-                l.lyrics = self
                 return l
             }
         }.sorted {
             $0.position < $1.position
         }
-        metadata.attachmentTags.insert(.timetag)
-        
         guard !lines.isEmpty else {
             return nil
         }
+        self.init(lines: lines, idTags: idTags)
     }
 }

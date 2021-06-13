@@ -13,7 +13,7 @@ import LyricsCore
 extension Lyrics {
     
     convenience init?(kugouKrcContent content: String) {
-        self.init()
+        var idTags: [IDTagKey: String] = [:]
         var languageHeader: KugouKrcHeaderFieldLanguage?
         id3TagRegex.matches(in: content).forEach { match in
             guard let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
@@ -32,7 +32,7 @@ extension Lyrics {
             }
         }
         
-        lines = krcLineRegex.matches(in: content).map { match in
+        var lines: [LyricsLine] = krcLineRegex.matches(in: content).map { match in
             let timeTagStr = match[1]!.content
             let timeTag = TimeInterval(timeTagStr)! / 1000
             
@@ -54,11 +54,12 @@ extension Lyrics {
             }
             
             let att = LyricsLine.Attachments(attachments: [.timetag: attachment])
-            var line = LyricsLine(content: lineContent, position: timeTag, attachments: att)
-            line.lyrics = self
-            return line
+            return LyricsLine(content: lineContent, position: timeTag, attachments: att)
         }
-        metadata.attachmentTags.insert(.timetag)
+        guard !lines.isEmpty else {
+            return nil
+        }
+        self.init(lines: lines, idTags: idTags)
         
         // TODO: multiple translation
         if let transContent = languageHeader?.content.first?.lyricContent {
@@ -68,10 +69,6 @@ extension Lyrics {
                 lines[index].attachments[.translation()] = str
             }
             metadata.attachmentTags.insert(.translation())
-        }
-        
-        guard !lines.isEmpty else {
-            return nil
         }
     }
 }

@@ -13,7 +13,7 @@ import LyricsCore
 extension Lyrics {
     
     convenience init?(netEaseKLyricContent content: String) {
-        self.init()
+        var idTags: [IDTagKey: String] = [:]
         id3TagRegex.matches(in: content).forEach { match in
             if let key = match[1]?.content.trimmingCharacters(in: .whitespaces),
                 let value = match[2]?.content.trimmingCharacters(in: .whitespaces),
@@ -23,7 +23,7 @@ extension Lyrics {
             }
         }
         
-        lines = krcLineRegex.matches(in: content).map { match in
+        let lines: [LyricsLine] = krcLineRegex.matches(in: content).map { match in
             let timeTagStr = match[1]!.content
             let timeTag = TimeInterval(timeTagStr)! / 1000
             
@@ -47,14 +47,12 @@ extension Lyrics {
             }
             
             let att = LyricsLine.Attachments(attachments: [.timetag: attachment])
-            var line = LyricsLine(content: lineContent, position: timeTag, attachments: att)
-            line.lyrics = self
-            return line
+            return LyricsLine(content: lineContent, position: timeTag, attachments: att)
         }
-        metadata.attachmentTags.insert(.timetag)
-        
         guard !lines.isEmpty else {
             return nil
         }
+        
+        self.init(lines: lines, idTags: idTags)
     }
 }

@@ -69,11 +69,11 @@ extension LyricsProviders.NetEase: _LyricsProvider {
             .decode(type: NetEaseResponseSingleLyrics.self, decoder: JSONDecoder().cx)
             .compactMap {
                 let lyrics: Lyrics
-                let transLrc = ($0.tlyric?.fixedLyric).flatMap(Lyrics.init)
+                let transLrc = ($0.tlyric?.fixedLyric).flatMap(Lyrics.init(_:))
                 if let kLrc = ($0.klyric?.fixedLyric).flatMap(Lyrics.init(netEaseKLyricContent:)) {
                     transLrc.map(kLrc.forceMerge)
                     lyrics = kLrc
-                } else if let lrc = ($0.lrc?.fixedLyric).flatMap(Lyrics.init) {
+                } else if let lrc = ($0.lrc?.fixedLyric).flatMap(Lyrics.init(_:)) {
                     transLrc.map(lrc.merge)
                     lyrics = lrc
                 } else {
