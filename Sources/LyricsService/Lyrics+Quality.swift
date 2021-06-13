@@ -97,7 +97,7 @@ extension Lyrics {
 
 private extension String {
     
-    func distance(to other: String, substitutionCost: Int = 1, insertionCost: Int = 1, dedeletionCostl: Int = 1) -> Int {
+    func distance(to other: String, substitutionCost: Int = 1, insertionCost: Int = 1, deletionCost: Int = 1) -> Int {
         var d = Array(0...other.count)
         var t = 0
         for c1 in self {
@@ -108,7 +108,7 @@ private extension String {
                 if c1 == c2 {
                     d[i+1] = t
                 } else {
-                    d[i+1] = Swift.min(t + substitutionCost, d[i] + insertionCost, t2 + dedeletionCostl)
+                    d[i+1] = Swift.min(t + substitutionCost, d[i] + insertionCost, t2 + deletionCost)
                 }
                 t = t2
             }
@@ -125,7 +125,7 @@ private extension String {
 
 private func similarity(s1: String, s2: String) -> Double {
     let len = min(s1.count, s2.count)
-    let diff = min(s1.distance(to: s2, insertionCost: 0), s1.distance(to: s2, dedeletionCostl: 0))
+    let diff = min(s1.distance(to: s2, insertionCost: 0), s1.distance(to: s2, deletionCost: 0))
     return Double(len - diff) / Double(len)
 }
 
