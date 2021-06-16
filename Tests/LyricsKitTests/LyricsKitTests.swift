@@ -4,7 +4,7 @@ import XCTest
 let testSong = "Uprising"
 let testArtist = "Muse"
 let duration = 305.0
-let searchReq = LyricsSearchRequest(searchTerm: .info(title: testSong, artist: testArtist), title: testSong, artist: testArtist, duration: duration)
+let searchReq = LyricsSearchRequest(searchTerm: .info(title: testSong, artist: testArtist), duration: duration)
 
 final class LyricsKitTests: XCTestCase {
     

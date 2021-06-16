@@ -26,8 +26,6 @@ let artist = "The Killers"
 let duration = 225.2
 let searchReq = LyricsSearchRequest(
     searchTerm: .info(title: song, artist: artist),
-    title: song,
-    artist: artist,
     duration: duration
 )
 

@@ -12,24 +12,22 @@ import Foundation
 public struct LyricsSearchRequest: Equatable {
     
     public var searchTerm: SearchTerm
-    public var title: String
-    public var artist: String
     public var duration: TimeInterval
     public var limit: Int
     public var timeout: TimeInterval
+    public var userInfo: [String: String]
     
     public enum SearchTerm: Equatable {
         case keyword(String)
         case info(title: String, artist: String)
     }
     
-    public init(searchTerm: SearchTerm, title: String, artist: String, duration: TimeInterval, limit: Int = 6, timeout: TimeInterval = 10) {
+    public init(searchTerm: SearchTerm, duration: TimeInterval, limit: Int = 6, timeout: TimeInterval = 10, userInfo: [String: String] = [:]) {
         self.searchTerm = searchTerm
-        self.title = title
-        self.artist = artist
         self.duration = duration
         self.limit = limit
         self.timeout = timeout
+        self.userInfo = userInfo
     }
 }
 
