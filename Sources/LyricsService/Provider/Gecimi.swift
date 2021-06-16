@@ -31,7 +31,7 @@ extension LyricsProviders.Gecimi: _LyricsProvider {
         let value: GecimiResponseSearchResult.Result
     }
     
-    public static let service: LyricsProviders.Service = .gecimi
+    public static let service: LyricsProviders.Service? = .gecimi
     
     public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         guard case let .info(title, artist) = request.searchTerm else {

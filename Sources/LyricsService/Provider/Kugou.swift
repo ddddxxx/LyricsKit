@@ -31,7 +31,7 @@ extension LyricsProviders.Kugou: _LyricsProvider {
         let value: KugouResponseSearchResult.Item
     }
     
-    public static let service: LyricsProviders.Service = .kugou
+    public static let service: LyricsProviders.Service? = .kugou
     
     public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
         let parameter: [String: Any] = [

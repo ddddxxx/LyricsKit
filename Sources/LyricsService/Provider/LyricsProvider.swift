@@ -22,7 +22,7 @@ public protocol _LyricsProvider: LyricsProvider {
     
     associatedtype LyricsToken
     
-    static var service: LyricsProviders.Service { get }
+    static var service: LyricsProviders.Service? { get }
     
     func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never>
     

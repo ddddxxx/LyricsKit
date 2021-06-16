@@ -24,8 +24,6 @@ private extension LyricsProviders.Service {
             return LyricsSourceIconDrawing.drawKugou
         case .qq:
             return LyricsSourceIconDrawing.drawQQMusic
-        case .xiami:
-            return LyricsSourceIconDrawing.drawXiami
         default:
             return nil
         }

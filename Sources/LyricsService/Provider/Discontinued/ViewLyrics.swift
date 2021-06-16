@@ -35,7 +35,7 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
         var value: ViewLyricsResponseSearchResult
     }
     
-    public static let service: LyricsProviders.Service = .viewLyrics
+    public static let service: LyricsProviders.Service? = nil
     
     func assembleQuery(artist: String, title: String, page: Int = 0) -> Data {
         let watermark = "Mlv1clt4.0"
