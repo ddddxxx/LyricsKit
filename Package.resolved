@@ -2,21 +2,30 @@
   "object": {
     "pins": [
       {
-        "package": "CombineX",
-        "repositoryURL": "https://github.com/cx-org/CombineX",
-        "state": {
-          "branch": null,
-          "revision": "b9afefe14653f02a80a9f5aa546859e99073d0c8",
-          "version": "0.3.1"
-        }
-      },
-      {
         "package": "CXExtensions",
         "repositoryURL": "https://github.com/cx-org/CXExtensions",
         "state": {
           "branch": null,
-          "revision": "6843af94bfaedfe90df1435c1a6c83cc3366a62b",
-          "version": "0.3.0"
+          "revision": "4790ecd6a6c0e796d776a28a820b552f7e8f6abd",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "CXShim",
+        "repositoryURL": "https://github.com/cx-org/CXShim",
+        "state": {
+          "branch": null,
+          "revision": "82fecc246c7ca9f0ac1656b8199b7956e64d68f3",
+          "version": "0.4.0"
+        }
+      },
+      {
+        "package": "CXTest",
+        "repositoryURL": "https://github.com/cx-org/CXTest",
+        "state": {
+          "branch": null,
+          "revision": "929ce7cbd3005bc9356ae826bb65ee2611379b17",
+          "version": "0.4.0"
         }
       },
       {
