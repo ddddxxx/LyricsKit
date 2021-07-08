@@ -8,7 +8,7 @@
 //
 
 import Foundation
-import Regex
+@_implementationOnly import Regex
 
 private let timeTagRegex = Regex(#"\[([-+]?\d+):(\d+(?:\.\d+)?)\]"#)
 func resolveTimeTag(_ str: String) -> [TimeInterval] {

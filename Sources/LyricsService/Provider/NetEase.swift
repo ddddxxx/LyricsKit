@@ -11,7 +11,7 @@ import Foundation
 import LyricsCore
 import CXShim
 import CXExtensions
-import Regex
+@_implementationOnly import Regex
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking
