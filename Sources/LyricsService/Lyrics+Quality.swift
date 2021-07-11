@@ -87,7 +87,7 @@ extension Lyrics {
             let searchDuration = metadata.request?.duration else {
                 return noDurationFactor
         }
-        let dt = searchDuration - duration
+        let dt = abs(searchDuration - duration)
         guard dt < 10 else {
             return minimalDurationQuality
         }
