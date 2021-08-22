@@ -125,6 +125,10 @@ private extension String {
 
 private func similarity(s1: String, s2: String) -> Double {
     let len = min(s1.count, s2.count)
+    guard len > 0 else {
+        // empty string is not considered similar to another string, even an empty string.
+        return 0
+    }
     let diff = min(s1.distance(to: s2, insertionCost: 0), s1.distance(to: s2, deletionCost: 0))
     return Double(len - diff) / Double(len)
 }
