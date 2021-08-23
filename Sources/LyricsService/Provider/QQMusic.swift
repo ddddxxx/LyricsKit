@@ -78,6 +78,10 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
                 if let id = Int(token.songmid) {
                     lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")
                 }
+                
+                // remove their kana tag. we don't need it.
+                lrc.idTags.removeValue(forKey: .qqMusicKana)
+                
                 return lrc
             }.ignoreError()
             .eraseToAnyPublisher()
