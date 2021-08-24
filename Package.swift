@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -6,7 +6,7 @@ let package = Package(
     name: "LyricsKit",
     platforms: [
         .macOS(.v10_10),
-        .iOS(.minimalToolChainSupported),
+        .iOS(.v9),
         .tvOS(.v9),
         .watchOS(.v2),
     ],
@@ -31,17 +31,10 @@ let package = Package(
             dependencies: ["LyricsCore", "CXShim", "CXExtensions", "Regex", "Gzip"]),
         .testTarget(
             name: "LyricsKitTests",
-            dependencies: ["LyricsCore", "LyricsService"]),
+            dependencies: ["LyricsCore", "LyricsService"],
+            resources: [.copy("Resources")]),
     ]
 )
-
-extension SupportedPlatform.IOSVersion {
-    #if compiler(>=5.3)
-    static var minimalToolChainSupported = SupportedPlatform.IOSVersion.v9
-    #else
-    static var minimalToolChainSupported = SupportedPlatform.IOSVersion.v8
-    #endif
-}
 
 enum CombineImplementation {
     
