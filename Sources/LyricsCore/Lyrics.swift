@@ -199,9 +199,11 @@ extension Lyrics {
         return .notFound(insertAt: left)
     }
     
+    /// Get current lyrics line with playback position. with lyrics offset considered.
     public subscript(_ position: TimeInterval) -> (currentLineIndex:Int?, nextLineIndex:Int?) {
         let index: Int
-        switch lineIndex(of: position) {
+        let delayedPosition = position + timeDelay
+        switch lineIndex(of: delayedPosition) {
         case let .found(at: i): index = i + 1
         case let .notFound(insertAt: i): index = i
         }
