@@ -69,7 +69,7 @@ final public class Lyrics: LosslessStringConvertible {
             let attachmentStr = match[3]?.string ?? ""
             
             for timeTag in timeTags {
-                if case let .found(at: index) = lineIndex(of: timeTag) {
+                if case let .found(at: index) = searchLine(at: timeTag) {
                     self.lines[index].attachments[.init(attachmentTagStr)] = attachmentStr
                 }
             }
@@ -176,12 +176,12 @@ extension Lyrics {
         }
     }
     
-    fileprivate enum Match {
+    private enum Match {
         case found(at: Int)
         case notFound(insertAt: Int)
     }
     
-    fileprivate func lineIndex(of position: TimeInterval) -> Match {
+    private func searchLine(at position: TimeInterval) -> Match {
         var left = 0
         var right = lines.count - 1
         
@@ -200,13 +200,12 @@ extension Lyrics {
     }
     
     /// Get current lyrics line with playback position. with lyrics offset considered.
-    public subscript(_ position: TimeInterval) -> (currentLineIndex:Int?, nextLineIndex:Int?) {
+    /// - Returns: lyrics line index at specified position, or nil if all lines are after the position.
+    public func lineIndex(at position: TimeInterval) -> Int? {
         let delayedPosition = position + timeDelay
-        switch lineIndex(of: delayedPosition) {
-        case let .found(at: i):
-            return (i, lines.index(i, offsetBy: 1, limitedBy: lines.endIndex))
-        case let .notFound(insertAt: i):
-            return (lines.index(i, offsetBy: -1, limitedBy: lines.startIndex), i)
+        switch searchLine(at: delayedPosition) {
+        case let .found(at: i): return i
+        case let .notFound(insertAt: i): return lines.index(i, offsetBy: -1, limitedBy: lines.startIndex)
         }
     }
 }

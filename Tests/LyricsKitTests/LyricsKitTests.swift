@@ -10,12 +10,12 @@ final class LyricsKitTests: XCTestCase {
         XCTAssertEqual(lrc.lines.count, 61)
         XCTAssertEqual(lrc.idTags.count, 4)
         XCTAssertEqual(lrc.metadata.attachmentTags, [.timetag, .furigana, .translation(languageCode: "zh-Hans")])
-        XCTAssert(lrc[0] == (nil, 0))
-        XCTAssert(lrc[50] == (8, 9))
-        XCTAssert(lrc[320] == (60, nil))
+        XCTAssertEqual(lrc.lineIndex(at: 0), nil)
+        XCTAssertEqual(lrc.lineIndex(at: 50), 8)
+        XCTAssertEqual(lrc.lineIndex(at: 320), 60)
         lrc.timeDelay = 50
         XCTAssertEqual(lrc.offset, 50000)
-        XCTAssertEqual(lrc[0] == (8, 9))
+        XCTAssertEqual(lrc.lineIndex(at: 0), 8)
     }
     
     func testSearching() {
