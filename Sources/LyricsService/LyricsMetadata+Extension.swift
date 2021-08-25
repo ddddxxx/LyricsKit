@@ -11,7 +11,7 @@ import Foundation
 import LyricsCore
 
 extension Lyrics.Metadata.Key {
-    public static var request       = Lyrics.Metadata.Key("request")
+    public static var searchRequest = Lyrics.Metadata.Key("searchRequest")
     public static var remoteURL     = Lyrics.Metadata.Key("remoteURL")
     public static var artworkURL    = Lyrics.Metadata.Key("artworkURL")
     public static var service       = Lyrics.Metadata.Key("service")
@@ -23,9 +23,9 @@ extension Lyrics.Metadata.Key {
 
 extension Lyrics.Metadata {
     
-    public var request: LyricsSearchRequest? {
-        get { return self[.request] as? LyricsSearchRequest }
-        set { self[.request] = newValue }
+    public var searchRequest: LyricsSearchRequest? {
+        get { return self[.searchRequest] as? LyricsSearchRequest }
+        set { self[.searchRequest] = newValue }
     }
     
     public var remoteURL: URL? {
