@@ -88,93 +88,9 @@ final public class Lyrics: LosslessStringConvertible {
         let components = idTags.map { "[\($0.key.rawValue):\($0.value)]" } + lines.map { "[\($0.timeTag)]\($0.content)" + ($0.attachments.translation().map { "【\($0)】" } ?? "") }
         return components.joined(separator: "\n")
     }
-    
-    public struct IDTagKey: RawRepresentable, Hashable {
-        
-        public var rawValue: String
-        
-        public init(_ rawValue: String) {
-            self.rawValue = rawValue
-        }
-        
-        public init(rawValue: String) {
-            self.rawValue = rawValue
-        }
-        
-        public static let title = IDTagKey("ti")
-        public static let album = IDTagKey("al")
-        public static let artist = IDTagKey("ar")
-        public static let author = IDTagKey("au")
-        public static let lrcBy = IDTagKey("by")
-        public static let offset = IDTagKey("offset")
-        public static let length = IDTagKey("length")
-    }
-    
-    public struct Metadata {
-        
-        public var data: [Key: Any]
-        
-        public init(data: [Key: Any] = [:]) {
-            self.data = data
-        }
-        
-        public struct Key: RawRepresentable, Hashable {
-            
-            public var rawValue: String
-            
-            public init(_ rawValue: String) {
-                self.rawValue = rawValue
-            }
-            
-            public init(rawValue: String) {
-                self.rawValue = rawValue
-            }
-        }
-    }
 }
 
 extension Lyrics {
-    
-    public var offset: Int {
-        get {
-            return idTags[.offset].flatMap { Int($0) } ?? 0
-        }
-        set {
-            idTags[.offset] = "\(newValue)"
-        }
-    }
-    
-    public var timeDelay: TimeInterval {
-        get {
-            return TimeInterval(offset) / 1000
-        }
-        set {
-            offset = Int(newValue * 1000)
-        }
-    }
-    
-    public var length: TimeInterval? {
-        get {
-            guard let len = idTags[.length],
-                let match = base60TimeRegex.firstMatch(in: len) else {
-                    return nil
-            }
-            let min = (match[1]?.content).flatMap(Double.init) ?? 0
-            let sec = Double(match[2]!.content) ?? 0
-            return min * 60 + sec
-        }
-        set {
-            guard let newValue = newValue else {
-                idTags.removeValue(forKey: .length)
-                return
-            }
-            let fmt = NumberFormatter()
-            fmt.minimumFractionDigits = 0
-            fmt.maximumFractionDigits = 2
-            let str = fmt.string(from: newValue as NSNumber)
-            idTags[.length] = str
-        }
-    }
     
     private enum Match {
         case found(at: Int)
@@ -207,21 +123,5 @@ extension Lyrics {
         case let .found(at: i): return i
         case let .notFound(insertAt: i): return lines.index(i, offsetBy: -1, limitedBy: lines.startIndex)
         }
-    }
-}
-
-// MARK: CustomStringConvertible
-
-extension Lyrics.Metadata: CustomStringConvertible {
-    
-    public var description: String {
-        return Mirror(reflecting: self).children.map { "[\($0!):\($1)]" }.joined(separator: "\n")
-    }
-}
-
-extension Lyrics.IDTagKey: CustomStringConvertible {
-    
-    public var description: String {
-        return rawValue
     }
 }
