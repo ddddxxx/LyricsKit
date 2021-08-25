@@ -13,10 +13,19 @@ extension Lyrics {
     
     public struct Metadata {
         
-        public var data: [Key: Any]
+        private var data: [Key: Any]
         
-        public init(data: [Key: Any] = [:]) {
+        public init(_ data: [Key: Any] = [:]) {
             self.data = data
+        }
+        
+        public subscript(key: Key) -> Any? {
+            get {
+                return data[key]
+            }
+            set {
+                data[key] = newValue
+            }
         }
         
         public struct Key: RawRepresentable, Hashable {

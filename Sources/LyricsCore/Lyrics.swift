@@ -75,7 +75,7 @@ final public class Lyrics: LosslessStringConvertible {
             }
             tags.insert(.init(attachmentTagStr))
         }
-        metadata.data[.attachmentTags] = tags
+        metadata.attachmentTags = tags
     }
     
     public var description: String {

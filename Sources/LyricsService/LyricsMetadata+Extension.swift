@@ -24,37 +24,37 @@ extension Lyrics.Metadata.Key {
 extension Lyrics.Metadata {
     
     public var request: LyricsSearchRequest? {
-        get { return data[.request] as? LyricsSearchRequest }
-        set { data[.request] = newValue }
+        get { return self[.request] as? LyricsSearchRequest }
+        set { self[.request] = newValue }
     }
     
     public var remoteURL: URL? {
-        get { return data[.remoteURL] as? URL }
-        set { data[.remoteURL] = newValue }
+        get { return self[.remoteURL] as? URL }
+        set { self[.remoteURL] = newValue }
     }
     
     public var artworkURL: URL? {
-        get { return data[.artworkURL] as? URL }
-        set { data[.artworkURL] = newValue }
+        get { return self[.artworkURL] as? URL }
+        set { self[.artworkURL] = newValue }
     }
     
     public var service: LyricsProviders.Service? {
-        get { return data[.service] as? LyricsProviders.Service }
-        set { data[.service] = newValue }
+        get { return self[.service] as? LyricsProviders.Service }
+        set { self[.service] = newValue }
     }
     
     public var serviceToken: String? {
-        get { return data[.serviceToken] as? String }
-        set { data[.serviceToken] = newValue }
+        get { return self[.serviceToken] as? String }
+        set { self[.serviceToken] = newValue }
     }
     
     var quality: Double? {
-        get { return data[.quality] as? Double }
-        set { data[.quality] = newValue }
+        get { return self[.quality] as? Double }
+        set { self[.quality] = newValue }
     }
     
     var searchIndex: Int {
-        get { return data[.searchIndex] as? Int ?? 0 }
-        set { data[.searchIndex] = newValue }
+        get { return self[.searchIndex] as? Int ?? 0 }
+        set { self[.searchIndex] = newValue }
     }
 }
