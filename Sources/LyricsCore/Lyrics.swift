@@ -201,25 +201,12 @@ extension Lyrics {
     
     /// Get current lyrics line with playback position. with lyrics offset considered.
     public subscript(_ position: TimeInterval) -> (currentLineIndex:Int?, nextLineIndex:Int?) {
-        let index: Int
         let delayedPosition = position + timeDelay
         switch lineIndex(of: delayedPosition) {
-        case let .found(at: i): index = i + 1
-        case let .notFound(insertAt: i): index = i
-        }
-        let current = (0..<index).reversed().first { lines[$0].enabled }
-        let next = lines[index...].firstIndex(where: \.enabled)
-        return (current, next)
-    }
-}
-
-extension Lyrics {
-    
-    public func filtrate(isIncluded predicate: NSPredicate) {
-        for (index, lyric) in lines.enumerated() {
-            if !predicate.evaluate(with: lyric) {
-                lines[index].enabled = false
-            }
+        case let .found(at: i):
+            return (i, lines.index(i, offsetBy: 1, limitedBy: lines.endIndex))
+        case let .notFound(insertAt: i):
+            return (lines.index(i, offsetBy: -1, limitedBy: lines.startIndex), i)
         }
     }
 }
