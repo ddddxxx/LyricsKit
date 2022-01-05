@@ -33,7 +33,7 @@ public struct LyricsLine {
 
 extension LyricsLine {
     
-    func previousLine() -> LyricsLine? {
+    public func previousLine() -> LyricsLine? {
         guard let lyrics = self.lyrics, let index = self._index else {
             return nil
         }
@@ -44,7 +44,7 @@ extension LyricsLine {
         return lyrics[resultIndex]
     }
     
-    func nextLine() -> LyricsLine? {
+    public func nextLine() -> LyricsLine? {
         guard let lyrics = self.lyrics, let index = self._index else {
             return nil
         }
