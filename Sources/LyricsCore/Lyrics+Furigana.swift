@@ -15,8 +15,8 @@ import Foundation
 extension Lyrics {
     
     public func generateFurigana() {
-        for index in lines.indices {
-            lines[index].generateFurigana()
+        for index in self.indices {
+            self[index].generateFurigana()
         }
     }
 }

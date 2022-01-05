@@ -15,20 +15,20 @@ private let mergeTimetagThreshold = 0.02
 extension Lyrics {
     
     func merge(translation: Lyrics) {
-        var index = lines.startIndex
-        var transIndex = translation.lines.startIndex
-        while index < lines.endIndex, transIndex < translation.lines.endIndex {
-            if abs(lines[index].position - translation.lines[transIndex].position) < mergeTimetagThreshold {
-                let transStr = translation.lines[transIndex].content
+        var index = self.startIndex
+        var transIndex = translation.startIndex
+        while index < self.endIndex, transIndex < translation.endIndex {
+            if abs(self[index].position - translation[transIndex].position) < mergeTimetagThreshold {
+                let transStr = translation[transIndex].content
                 if !transStr.isEmpty, transStr != "//" {
-                    lines[index].attachments[.translation()] = transStr
+                    self[index].attachments[.translation()] = transStr
                 }
-                lines.formIndex(after: &index)
-                translation.lines.formIndex(after: &transIndex)
-            } else if lines[index].position > translation.lines[transIndex].position {
-                translation.lines.formIndex(after: &transIndex)
+                self.formIndex(after: &index)
+                translation.formIndex(after: &transIndex)
+            } else if self[index].position > translation[transIndex].position {
+                translation.formIndex(after: &transIndex)
             } else {
-                lines.formIndex(after: &index)
+                self.formIndex(after: &index)
             }
         }
         metadata.attachmentTags.insert(.translation())
@@ -36,13 +36,13 @@ extension Lyrics {
     
     /// merge without maching timetag
     func forceMerge(translation: Lyrics) {
-        guard lines.count == translation.lines.count else {
+        guard self.count == translation.count else {
             return
         }
-        for idx in lines.indices {
-            let transStr = translation.lines[idx].content
+        for idx in self.indices {
+            let transStr = translation[idx].content
             if !transStr.isEmpty, transStr != "//" {
-                lines[idx].attachments[.translation()] = transStr
+                self[idx].attachments[.translation()] = transStr
             }
         }
         metadata.attachmentTags.insert(.translation())

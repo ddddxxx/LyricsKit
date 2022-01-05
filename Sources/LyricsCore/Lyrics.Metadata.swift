@@ -20,11 +20,11 @@ extension Lyrics {
         }
         
         public subscript(key: Key) -> Any? {
-            get {
-                return data[key]
+            _read {
+                yield data[key]
             }
-            set {
-                data[key] = newValue
+            _modify {
+                yield &data[key]
             }
         }
         

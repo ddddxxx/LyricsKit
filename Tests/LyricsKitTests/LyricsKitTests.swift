@@ -7,7 +7,7 @@ final class LyricsKitTests: XCTestCase {
         let url = Bundle.module.url(forResource: "銀の龍の背に乗って", withExtension: "lrcx", subdirectory: "Resources")!
         let str = try! String(contentsOf: url)
         let lrc = Lyrics(str)!
-        XCTAssertEqual(lrc.lines.count, 61)
+        XCTAssertEqual(lrc.count, 61)
         XCTAssertEqual(lrc.idTags.count, 4)
         XCTAssertEqual(lrc.metadata.attachmentTags, [.timetag, .furigana, .translation(languageCode: "zh-Hans")])
         XCTAssertEqual(lrc.lineIndex(at: 0), nil)

@@ -9,9 +9,9 @@
 
 import Foundation
 
-final public class Lyrics: LosslessStringConvertible {
+final public class Lyrics {
     
-    public var lines: [LyricsLine] = []
+    private var lines: [LyricsLine] = []
     public var idTags: [IDTagKey: String] = [:]
     public var metadata: Metadata = Metadata()
     
@@ -21,9 +21,33 @@ final public class Lyrics: LosslessStringConvertible {
         self.metadata = metadata
         for idx in self.lines.indices {
             self.lines[idx].lyrics = self
+            self.lines[idx]._index = idx
         }
         self.metadata.attachmentTags = Set(self.lines.flatMap(\.attachments.content.keys))
     }
+}
+
+extension Lyrics: RandomAccessCollection {
+    
+    public var startIndex: Int {
+        return lines.startIndex
+    }
+    
+    public var endIndex: Int {
+        return lines.endIndex
+    }
+    
+    public subscript(position: Int) -> LyricsLine {
+        _read {
+            yield lines[position]
+        }
+        _modify {
+            yield &lines[position]
+        }
+    }
+}
+
+extension Lyrics: LosslessStringConvertible {
     
     public convenience init?(_ description: String) {
         var idTags: [IDTagKey: String] = [:]

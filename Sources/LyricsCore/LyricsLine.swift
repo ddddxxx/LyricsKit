@@ -16,6 +16,7 @@ public struct LyricsLine {
     public var attachments: Attachments
     
     public weak var lyrics: Lyrics?
+    internal var _index: Int?
     
     public var timeTag: String {
         let min = Int(position / 60)
@@ -27,6 +28,31 @@ public struct LyricsLine {
         self.content = content
         self.position = position
         self.attachments = attachments
+    }
+}
+
+extension LyricsLine {
+    
+    func previousLine() -> LyricsLine? {
+        guard let lyrics = self.lyrics, let index = self._index else {
+            return nil
+        }
+        let resultIndex = index - 1
+        guard lyrics.indices.contains(resultIndex) else {
+            return nil
+        }
+        return lyrics[resultIndex]
+    }
+    
+    func nextLine() -> LyricsLine? {
+        guard let lyrics = self.lyrics, let index = self._index else {
+            return nil
+        }
+        let resultIndex = index + 1
+        guard lyrics.indices.contains(resultIndex) else {
+            return nil
+        }
+        return lyrics[resultIndex]
     }
 }
 
