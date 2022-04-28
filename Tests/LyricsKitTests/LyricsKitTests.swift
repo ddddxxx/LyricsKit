@@ -29,4 +29,15 @@ final class LyricsKitTests: XCTestCase {
         waitForExpectations(timeout: 10)
         token.cancel()
     }
+    
+    func testNetEase() {
+        let searchResultEx = expectation(description: "search succeed")
+        let provider = LyricsProviders.NetEase()
+        let publisher = provider.lyricsPublisher(request: .init(searchTerm: .info(title: "One Last You", artist: "光田康典"), duration: 0))
+        let cancelable = publisher.sink { lyrics in
+            searchResultEx.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+        cancelable.cancel()
+    }
 }
