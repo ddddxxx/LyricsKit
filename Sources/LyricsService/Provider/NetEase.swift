@@ -47,17 +47,19 @@ extension LyricsProviders.NetEase: _LyricsProvider {
         req.setValue("http://music.163.com/", forHTTPHeaderField: "Referer")
         req.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15", forHTTPHeaderField: "User-Agent")
 
-        let publisher = sharedURLSession.cx.dataTaskPublisher(for: req)
-            .map { data, response -> String in
-                let setCookie = (response as! HTTPURLResponse).allHeaderFields["Set-Cookie"] as! String
-                return String(setCookie[..<setCookie.firstIndex(of: ";")!])
+        return sharedURLSession.cx.dataTaskPublisher(for: req)
+            .compactMap { data, response -> String? in
+                guard let httpResp = response as? HTTPURLResponse,
+                      let setCookie = httpResp.allHeaderFields["Set-Cookie"] as? String,
+                      let cookieIdx = setCookie.firstIndex(of: ";") else {
+                    return nil
+                }
+                return String(setCookie[..<cookieIdx])
             }
             .flatMap { cookie -> CXWrappers.URLSession.DataTaskPublisher in
                 req.setValue(cookie, forHTTPHeaderField: "Cookie")
                 return sharedURLSession.cx.dataTaskPublisher(for: req)
             }
-
-        return publisher
             .map(\.data)
             .decode(type: NetEaseResponseSearchResult.self, decoder: JSONDecoder().cx)
             .map(\.songs)
