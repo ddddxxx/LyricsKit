@@ -70,7 +70,7 @@ extension Lyrics {
           if let searchAlbum = searchAlbum {
               return similarity(s1: album, s2: searchAlbum)
           } else {
-              return 1 - qualityMixBound
+              return qualityMixBound - 1
           }
       case let .keyword(keyword)?:
           if keyword.contains(album) { return matchedAlbumFactor }
