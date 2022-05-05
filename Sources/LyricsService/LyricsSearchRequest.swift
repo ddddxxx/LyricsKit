@@ -18,7 +18,7 @@ public struct LyricsSearchRequest: Equatable {
     
     public enum SearchTerm: Equatable {
         case keyword(String)
-        case info(title: String, artist: String)
+        case info(title: String, artist: String, album: String? = nil)
     }
     
     public init(searchTerm: SearchTerm, duration: TimeInterval, limit: Int = 6, userInfo: [String: String] = [:]) {
@@ -35,8 +35,8 @@ extension LyricsSearchRequest.SearchTerm: CustomStringConvertible {
         switch self {
         case let .keyword(keyword):
             return keyword
-        case let .info(title: title, artist: artist):
-            return title + " " + artist
+        case let .info(title: title, artist: artist, album: album):
+            return title + " " + artist + (album != nil ? " \(album!)" : "")
         }
     }
 }

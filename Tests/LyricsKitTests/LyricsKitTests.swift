@@ -40,4 +40,19 @@ final class LyricsKitTests: XCTestCase {
         waitForExpectations(timeout: 10)
         cancelable.cancel()
     }
+    
+    func testNetEaseAlbumSearch() {
+        let searchResultEx = expectation(description: "search succeed")
+        let provider = LyricsProviders.NetEase()
+        let searchTerm = LyricsSearchRequest.SearchTerm.info(title: "Cocoa Hooves", artist: "Glass Animals", album: "ZABA")
+        let publisher = provider.lyricsPublisher(request: .init(searchTerm: searchTerm, duration: 271))
+        let cancelable = publisher.sink { lyrics in
+            guard case let .info(title, artist, album) = searchTerm else { return }
+            if lyrics.idTags[.title] == title && lyrics.idTags[.artist] == artist && lyrics.idTags[.album] == album {
+                searchResultEx.fulfill()
+            }
+        }
+        waitForExpectations(timeout: 10)
+        cancelable.cancel()
+    }
 }
