@@ -12,8 +12,10 @@ import LyricsCore
 
 private let translationBonus = 0.1
 private let inlineTimeTagBonus = 0.1
+private let matchedAlbumFactor = 1.0
 private let matchedArtistFactor = 1.3
 private let matchedTitleFactor = 1.5
+private let noAlbumFactor = 0.8
 private let noArtistFactor = 0.8
 private let noTitleFactor = 0.8
 private let noDurationFactor = 0.8
@@ -26,7 +28,7 @@ extension Lyrics {
         if let quality = metadata.quality {
             return quality
         }
-        var quality = 1 - pow((qualityMixBound - artistQuality) * (qualityMixBound - titleQuality) * (qualityMixBound - durationQuality), 0.3333)
+        var quality = 1 - pow((qualityMixBound - albumQuality) * (qualityMixBound - artistQuality) * (qualityMixBound - titleQuality) * (qualityMixBound - durationQuality), 0.3333)
         if metadata.hasTranslation {
             quality += translationBonus
         }
@@ -39,13 +41,19 @@ extension Lyrics {
     
     public func isMatched() -> Bool {
         guard let artist = idTags[.artist],
-            let title = idTags[.title] else {
+            let title = idTags[.title],
+            let album = idTags[.album] else {
             return false
         }
         switch metadata.searchRequest?.searchTerm {
-        case let .info(searchTitle, searchArtist)?:
-            return title.isCaseInsensitiveSimilar(to: searchTitle)
+        case let .info(searchTitle, searchArtist, searchAlbum)?:
+          let caseInsensitiveMatch = title.isCaseInsensitiveSimilar(to: searchTitle)
                 && artist.isCaseInsensitiveSimilar(to: searchArtist)
+          if let searchAlbum = searchAlbum {
+              return caseInsensitiveMatch && album.isCaseInsensitiveSimilar(to: searchAlbum)
+          } else {
+              return caseInsensitiveMatch
+          }
         case let .keyword(keyword)?:
             return title.isCaseInsensitiveSimilar(to: keyword)
                 && artist.isCaseInsensitiveSimilar(to: keyword)
@@ -53,11 +61,29 @@ extension Lyrics {
             return false
         }
     }
+  
+  private var albumQuality: Double {
+      guard let album = idTags[.album] else { return noAlbumFactor }
+      switch metadata.searchRequest?.searchTerm {
+      case let .info(_, _, searchAlbum)?:
+          if album == searchAlbum { return matchedAlbumFactor }
+          if let searchAlbum = searchAlbum {
+              return similarity(s1: album, s2: searchAlbum)
+          } else {
+              return 1 - qualityMixBound
+          }
+      case let .keyword(keyword)?:
+          if keyword.contains(album) { return matchedAlbumFactor }
+          return similarity(s1: album, in: keyword)
+      case nil:
+          return noAlbumFactor
+      }
+  }
     
     private var artistQuality: Double {
         guard let artist = idTags[.artist] else { return noArtistFactor }
         switch metadata.searchRequest?.searchTerm {
-        case let .info(_, searchArtist)?:
+        case let .info(_, searchArtist, _)?:
             if artist == searchArtist { return matchedArtistFactor }
             return similarity(s1: artist, s2: searchArtist)
         case let .keyword(keyword)?:
@@ -71,7 +97,7 @@ extension Lyrics {
     private var titleQuality: Double {
         guard let title = idTags[.title] else { return noTitleFactor }
         switch metadata.searchRequest?.searchTerm {
-        case let .info(searchTitle, _)?:
+        case let .info(searchTitle, _, _)?:
             if title == searchTitle { return matchedTitleFactor }
             return similarity(s1: title, s2: searchTitle)
         case let .keyword(keyword)?:

@@ -46,7 +46,7 @@ extension LyricsProviders.ViewLyrics: _LyricsProvider {
     }
     
     public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
-        guard case let .info(title, artist) = request.searchTerm else {
+        guard case let .info(title, artist, _) = request.searchTerm else {
             // cannot search by keyword
             return Empty().eraseToAnyPublisher()
         }
