@@ -48,7 +48,7 @@ extension LyricsProviders.NetEase: _LyricsProvider {
         req.setValue("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15", forHTTPHeaderField: "User-Agent")
 
         return sharedURLSession.cx.dataTaskPublisher(for: req)
-            .compactMap { data, response -> String? in
+            .map { data, response -> String? in
                 guard let httpResp = response as? HTTPURLResponse,
                       let setCookie = httpResp.allHeaderFields["Set-Cookie"] as? String,
                       let cookieIdx = setCookie.firstIndex(of: ";") else {
