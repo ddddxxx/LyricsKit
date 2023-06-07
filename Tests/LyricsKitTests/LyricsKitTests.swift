@@ -40,4 +40,16 @@ final class LyricsKitTests: XCTestCase {
         waitForExpectations(timeout: 10)
         cancelable.cancel()
     }
+    
+    func testQQMusic() {
+        let searchResultEx = expectation(description: "search succeed")
+        let provider = LyricsProviders.QQMusic()
+        let publisher = provider.lyricsPublisher(request: .init(searchTerm: .info(title: "One Last You", artist: "光田康典"), duration: 0))
+        let cancelable = publisher.sink { lyrics in
+            print(lyrics)
+            searchResultEx.fulfill()
+        }
+        waitForExpectations(timeout: 10)
+        cancelable.cancel()
+    }
 }
