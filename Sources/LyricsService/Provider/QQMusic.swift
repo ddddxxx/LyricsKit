@@ -16,7 +16,7 @@ import CXExtensions
 import FoundationNetworking
 #endif
 
-private let qqSearchBaseURLString = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
+private let qqSearchBaseURLString = "https://c.y.qq.com/splcloud/fcgi-bin/smartbox_new.fcg"
 private let qqLyricsBaseURLString = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg"
 
 extension LyricsProviders {
@@ -34,11 +34,11 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
     public static let service: LyricsProviders.Service? = .qq
     
     public func lyricsSearchPublisher(request: LyricsSearchRequest) -> AnyPublisher<LyricsToken, Never> {
-        let parameter = ["w": request.searchTerm.description]
+        let parameter = ["key": request.searchTerm.description]
         let url = URL(string: qqSearchBaseURLString + "?" + parameter.stringFromHttpParameters)!
         
         return sharedURLSession.cx.dataTaskPublisher(for: url)
-            .map { $0.data.dropFirst(9).dropLast() }
+            .map { $0.data }
             .decode(type: QQResponseSearchResult.self, decoder: JSONDecoder().cx)
             .map(\.data.song.list)
             .replaceError(with: [])
@@ -57,8 +57,8 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
         var req = URLRequest(url: url)
         req.setValue("y.qq.com/portal/player.html", forHTTPHeaderField: "Referer")
         return sharedURLSession.cx.dataTaskPublisher(for: req)
-            .compactMap {
-                let data = $0.data.dropFirst(18).dropLast()
+            .compactMap { response -> Lyrics? in
+                let data = response.data.dropFirst(18).dropLast()
                 guard let model = try? JSONDecoder().decode(QQResponseSingleLyrics.self, from: data),
                     let lrcContent = model.lyricString,
                     let lrc = Lyrics(lrcContent) else {
@@ -70,10 +70,10 @@ extension LyricsProviders.QQMusic: _LyricsProvider {
                 }
                 
                 lrc.idTags[.title] = token.songname
-                lrc.idTags[.artist] = token.singer.first?.name
-                lrc.idTags[.album] = token.albumname
+                lrc.idTags[.artist] = token.singer
+//                lrc.idTags[.album] = token.albumname
                 
-                lrc.length = Double(token.interval)
+//                lrc.length = Double(token.interval)
                 lrc.metadata.serviceToken = "\(token.songmid)"
                 if let id = Int(token.songmid) {
                     lrc.metadata.artworkURL = URL(string: "http://imgcache.qq.com/music/photo/album/\(id % 100)/\(id).jpg")

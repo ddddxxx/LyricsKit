@@ -31,7 +31,9 @@ struct QQResponseSearchResult: Decodable {
         
         struct Song: Decodable {
             let list: [Item]
-            
+            enum CodingKeys: String, CodingKey {
+                case list = "itemlist"
+            }
             /*
             let curnum: Int
             let curpage: Int
@@ -41,10 +43,16 @@ struct QQResponseSearchResult: Decodable {
             struct Item: Decodable {
                 let songmid: String
                 let songname: String
+                let singer: String
+                /*
                 let albumname: String
-                let singer: [Singer]
                 let interval: Int
-                
+                 */
+                enum CodingKeys: String, CodingKey {
+                    case songmid = "mid"
+                    case songname = "name"
+                    case singer
+                }
                 /*
                 let albummid: String
                 let albumname_hilight: String
@@ -84,7 +92,7 @@ struct QQResponseSearchResult: Decodable {
                  */
                 
                 // let grp: [Any]
-                
+                /*
                 struct Pay: Decodable {
                     let payalbum: Int
                     let payalbumprice: Int
@@ -104,12 +112,12 @@ struct QQResponseSearchResult: Decodable {
                 struct Singer: Decodable {
                     let name: String
                     
-                    /*
+                    
                     let id: Int
                     let mid: String
                     let name_hilight: String
-                     */
                 }
+                */
             }
         }
     }
